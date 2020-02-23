@@ -1,6 +1,7 @@
 import React from 'react';
 import {View, StyleSheet, TouchableOpacity, ImageBackground, StatusBar,Image, ScrollView} from 'react-native';
 import Text from '../main/components/CustomText';
+import LikeButton from './components/LikeButton'
 
 export default class MainPage extends React.Component {
 
@@ -20,6 +21,7 @@ export default class MainPage extends React.Component {
         }
     };
 
+
     render = () => {
         return(
             <View style={{flex: 1, backgroundColor: '#aaedaa'}}>
@@ -34,19 +36,17 @@ export default class MainPage extends React.Component {
                     source={require('../../assets/images/background.jpg')}
                 >
                     <View style={!this.state.scroll ?  styles.headerBar : styles.headerBarOnScroll}>
-                        <View style={styles.upView}>
-                            <View style={!this.state.scroll ? styles.header : styles.headerOnScroll}>
-                                <TouchableOpacity style={!this.state.scroll ? styles.burgerMenu : styles.burgerMenuOnScroll} onPress={() => this.setState({scroll: !this.state.scroll})}>
-                                    <Image style={{height: 33, width: 33}} source={require('../../assets/images/menu.png')}/>
+                        <View style={!this.state.scroll ? styles.header : styles.headerOnScroll}>
+                            <TouchableOpacity style={!this.state.scroll ? styles.burgerMenu : styles.burgerMenuOnScroll} onPress={() => this.setState({scroll: !this.state.scroll})}>
+                                <Image style={{height: 33, width: 33}} source={require('../../assets/images/menu.png')}/>
+                            </TouchableOpacity>
+                            <View style={styles.leftSmallMenu}>
+                                <TouchableOpacity>
+                                    <Image style={{height: 38, width: 38, marginRight: 10}} source={require('../../assets/images/global-search.png')}/>
                                 </TouchableOpacity>
-                                <View style={styles.leftSmallMenu}>
-                                    <TouchableOpacity>
-                                        <Image style={{height: 38, width: 38, marginRight: 10}} source={require('../../assets/images/global-search.png')}/>
-                                    </TouchableOpacity>
-                                    <TouchableOpacity>
-                                        <Image style={{height: 38, width: 38, marginRight: 10}} source={require('../../assets/images/pin.png')}/>
-                                    </TouchableOpacity>
-                                </View>
+                                <TouchableOpacity>
+                                    <Image style={{height: 38, width: 38, marginRight: 10}} source={require('../../assets/images/pin.png')}/>
+                                </TouchableOpacity>
                             </View>
                         </View>
                         <View style={{flex: 1, flexDirection: 'row', padding: 15}}>
@@ -104,9 +104,9 @@ export default class MainPage extends React.Component {
                                     <Text style={{fontSize: 30, textDecorationLine: 'underline'}}>It is snowing a bit.</Text>
                                 </View>
                             </View>
+                            <LikeButton/>
                         </View>
                         <View style={{marginTop: 10, width: '90%', height: 300, backgroundColor: 'white', borderRadius: 20}}>
-
                         </View>
                         <View style={{width: '100%', height: 300, backgroundColor: 'white', borderRadius: 20}}>
 
