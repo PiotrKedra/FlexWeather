@@ -16,14 +16,14 @@ export default class MainPage extends React.Component {
 
     onScrollNotTopMinimizeHeader = (event) => {
         const y = event.nativeEvent.contentOffset.y;
-        if(y > 0 && this.state.scroll===false){
+        if(y >= 5 && this.state.scroll===false){
             Animated.timing(this.state.locationOpacity, {
                 toValue: 0,
                 duration: 400
             }).start();
             this.setState({scroll: true});
         }
-        if(y === 0 && this.state.scroll===true){
+        if(y < 5 && this.state.scroll===true){
             Animated.timing(this.state.locationOpacity, {
                 toValue: 1,
                 duration: 400
