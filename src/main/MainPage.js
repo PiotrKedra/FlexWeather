@@ -1,29 +1,44 @@
 import React from 'react';
-import {View, StyleSheet, TouchableOpacity, ImageBackground, StatusBar,Image, ScrollView} from 'react-native';
+import {View, StyleSheet, TouchableOpacity, ImageBackground, StatusBar,Image, ScrollView, Animated} from 'react-native';
 import Text from '../main/components/CustomText';
+import LikeButton from './components/LikeButton';
+import Header from './components/Header';
+
 
 export default class MainPage extends React.Component {
 
     state = {
         scroll: false,
         fontLoaded: false,
-        days: [{date: 22, short: 'WEN'},{date: 23, short: 'THR'},{date: 24, short: 'FRI'},{date: 25, short: 'SUN'},{date: 26, short: 'SAT'},{date: 27, short: 'MON'}]
+        days: [{date: 22, short: 'WEN'},{date: 23, short: 'THR'},{date: 24, short: 'FRI'},{date: 25, short: 'SUN'},{date: 26, short: 'SAT'},{date: 27, short: 'MON'}],
+        locationOpacity: new Animated.Value(1)
     };
 
     onScrollNotTopMinimizeHeader = (event) => {
         const y = event.nativeEvent.contentOffset.y;
         if(y > 0 && this.state.scroll===false){
+            Animated.timing(this.state.locationOpacity, {
+                toValue: 0,
+                duration: 400
+            }).start();
             this.setState({scroll: true});
         }
         if(y === 0 && this.state.scroll===true){
+            Animated.timing(this.state.locationOpacity, {
+                toValue: 1,
+                duration: 400
+            }).start();
             this.setState({scroll: false});
         }
     };
 
     render = () => {
+        let locationStyle = {
+            opacity: this.state.locationOpacity
+        };
         return(
             <View style={{flex: 1, backgroundColor: '#aaedaa'}}>
-                <StatusBar hidden />
+                <View style={{width: '100%', height: StatusBar.currentHeight, backgroundColor: '#FFAD94'}}/>
                 <ImageBackground
                     style={{
                         flex: 1,
@@ -33,34 +48,14 @@ export default class MainPage extends React.Component {
                     }}
                     source={require('../../assets/images/background.jpg')}
                 >
-                    <View style={!this.state.scroll ?  styles.headerBar : styles.headerBarOnScroll}>
-                        <View style={styles.upView}>
-                            <View style={!this.state.scroll ? styles.header : styles.headerOnScroll}>
-                                <TouchableOpacity style={!this.state.scroll ? styles.burgerMenu : styles.burgerMenuOnScroll} onPress={() => this.setState({scroll: !this.state.scroll})}>
-                                    <Image style={{height: 33, width: 33}} source={require('../../assets/images/menu.png')}/>
-                                </TouchableOpacity>
-                                <View style={styles.leftSmallMenu}>
-                                    <TouchableOpacity>
-                                        <Image style={{height: 38, width: 38, marginRight: 10}} source={require('../../assets/images/global-search.png')}/>
-                                    </TouchableOpacity>
-                                    <TouchableOpacity>
-                                        <Image style={{height: 38, width: 38, marginRight: 10}} source={require('../../assets/images/pin.png')}/>
-                                    </TouchableOpacity>
-                                </View>
-                            </View>
-                        </View>
-                        <View style={{flex: 1, flexDirection: 'row', padding: 15}}>
-                            <View style={{width: '60%'}}>
+                    <Header isScrool={this.state.scroll}/>
+                    <ScrollView contentContainerStyle={{ alignItems: 'center'}} onScroll={this.onScrollNotTopMinimizeHeader}>
+                        <Animated.View style={[styles.locationView, locationStyle]}>
+                            <View style={{flex: 1, justifyContent: 'flex-start', alignItems: 'flex-start'}}>
                                 <Text style={{fontSize: 25}}>Widokowa 22</Text>
                                 <Text style={{fontSize: 50}}>Zabierzów</Text>
                             </View>
-                            <View style={{width: '40%', alignItems: 'center', justifyContent: 'flex-end'}}>
-                                <Image style={{height: 60, width: 60}}
-                                       source={require('../../assets/images/snowin.png')}/>
-                            </View>
-                        </View>
-                    </View>
-                    <ScrollView contentContainerStyle={{ alignItems: 'center'}} onScroll={this.onScrollNotTopMinimizeHeader}>
+                        </Animated.View>
                         <View style={{width: '90%', height: 300, backgroundColor: 'white', borderRadius: 20, elevation: 7}}>
                             <View style={{paddingHorizontal: '5%', flex: 1, flexDirection: 'row', justifyContent: 'space-around', borderBottomWidth: 1}}>
                                 <TouchableOpacity style={{width: 45, justifyContent: 'center', alignItems: 'center'}}>
@@ -104,9 +99,9 @@ export default class MainPage extends React.Component {
                                     <Text style={{fontSize: 30, textDecorationLine: 'underline'}}>It is snowing a bit.</Text>
                                 </View>
                             </View>
+                            <LikeButton/>
                         </View>
                         <View style={{marginTop: 10, width: '90%', height: 300, backgroundColor: 'white', borderRadius: 20}}>
-
                         </View>
                         <View style={{width: '100%', height: 300, backgroundColor: 'white', borderRadius: 20}}>
 
@@ -120,12 +115,7 @@ export default class MainPage extends React.Component {
 
 
 const styles = StyleSheet.create({
-    headerBar: {
-        height: '28%',
-    },
-    headerBarOnScroll:{
-        height: '11%',
-    },
+    locationView : {flex: 1, flexDirection: 'row', padding: 15},
     upView: {
         flexDirection: 'column',
     },
