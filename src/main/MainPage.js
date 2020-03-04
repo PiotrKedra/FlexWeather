@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, StyleSheet, TouchableOpacity, ImageBackground, StatusBar,Image, ScrollView, Animated} from 'react-native';
+import {View, StyleSheet, TouchableOpacity, ImageBackground, StatusBar,Image, ScrollView, Animated,FlatList} from 'react-native';
 import Text from '../main/components/CustomText';
 import LikeButton from './components/LikeButton';
 import Header from './components/Header';
@@ -49,43 +49,35 @@ export default class MainPage extends React.Component {
                     source={require('../../assets/images/background.jpg')}
                 >
                     <Header isScrool={this.state.scroll}/>
-                    <ScrollView contentContainerStyle={{ alignItems: 'center'}} onScroll={this.onScrollNotTopMinimizeHeader}>
+                    <ScrollView contentContainerStyle={{ alignItems: 'center'}} onScroll={this.onScrollNotTopMinimizeHeader} nestedScrollEnabled={true}>
                         <Animated.View style={[styles.locationView, locationStyle]}>
                             <View style={{flex: 1, justifyContent: 'flex-start', alignItems: 'flex-start'}}>
                                 <Text style={{fontSize: 25}}>Widokowa 22</Text>
                                 <Text style={{fontSize: 50}}>Zabierzów</Text>
                             </View>
                         </Animated.View>
+                        <FlatList
+                            nestedScrollEnabled={true}
+                            horizontal={true}
+                            style={{paddingLeft: '5%', marginBottom: 10, paddingRight: 100, flex: 1}}
+                            data={this.state.days}
+                            renderItem={item => (
+                                <TouchableOpacity style={{flexGrow: 1, width: 55, justifyContent: 'center', alignItems: 'center', backgroundColor: 'white', borderRadius: 10, marginRight: 8}}>
+                                    <Text style={{fontSize: 25}}>{item.item.date}</Text>
+                                    <Text style={{fontSize: 22}}>{item.item.short}</Text>
+                                </TouchableOpacity>
+                            )}
+                            ListFooterComponent={() => (
+                                <TouchableOpacity style={{height: 75, width: 55, marginRight: 8}}>
+                                </TouchableOpacity>
+                            )}
+                            keyExtractor={item => JSON.stringify(item.date)}
+                        />
                         <View style={{width: '90%', height: 300, backgroundColor: 'white', borderRadius: 20, elevation: 7}}>
-                            <View style={{paddingHorizontal: '5%', flex: 1, flexDirection: 'row', justifyContent: 'space-around', borderBottomWidth: 1}}>
-                                <TouchableOpacity style={{width: 45, justifyContent: 'center', alignItems: 'center'}}>
-                                   <Text style={{fontSize: 25}}>{this.state.days[0].date}</Text>
-                                   <Text style={{fontSize: 22}}>{this.state.days[0].short}</Text>
-                                </TouchableOpacity>
-                                <TouchableOpacity style={{width: 45, justifyContent: 'flex-end', alignItems: 'center'}}>
-                                    <View style={{height: '90%', width: '100%', alignItems: 'center', justifyContent: 'center', backgroundColor: '#FEE196', borderTopLeftRadius: 20, borderTopRightRadius: 20}}>
-                                        <Text style={{fontSize: 25}}>{this.state.days[1].date}</Text>
-                                        <Text style={{fontSize: 22}}>{this.state.days[1].short}</Text>
-                                    </View>
-                                </TouchableOpacity>
-                                <TouchableOpacity style={{width: 45, justifyContent: 'center', alignItems: 'center'}}>
-                                    <Text style={{fontSize: 25}}>{this.state.days[2].date}</Text>
-                                    <Text style={{fontSize: 22}}>{this.state.days[2].short}</Text>
-                                </TouchableOpacity>
-                                <TouchableOpacity style={{width: 45, justifyContent: 'center', alignItems: 'center'}}>
-                                    <Text style={{fontSize: 25}}>{this.state.days[3].date}</Text>
-                                    <Text style={{fontSize: 22}}>{this.state.days[3].short}</Text>
-                                </TouchableOpacity>
-                                <TouchableOpacity style={{width: 45, justifyContent: 'center', alignItems: 'center'}}>
-                                    <Text style={{fontSize: 25}}>{this.state.days[4].date}</Text>
-                                    <Text style={{fontSize: 22}}>{this.state.days[4].short}</Text>
-                                </TouchableOpacity>
-                                <TouchableOpacity style={{width: 45, justifyContent: 'center', alignItems: 'center'}}>
-                                    <Text style={{fontSize: 25}}>{this.state.days[5].date}</Text>
-                                    <Text style={{fontSize: 22}}>{this.state.days[5].short}</Text>
-                                </TouchableOpacity>
+                            <View style={{paddingHorizontal: '5%', flex: 1, flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center',  borderBottomWidth: 1}}>
+                                <Text style={{fontSize: 30, textDecorationLine: 'underline'}}>23 march 2020</Text>
                             </View>
-                            <View style={{flex: 3}}>
+                            <View style={{flex: 4}}>
                                 <View style={{flex: 3, flexDirection: 'row'}}>
                                     <View style={{flex: 1, justifyContent: 'center', alignItems: 'flex-end'}}>
                                         <Image style={{height: 150, width: 150}} source={require('../../assets/images/snow.png')}/>
@@ -115,7 +107,7 @@ export default class MainPage extends React.Component {
 
 
 const styles = StyleSheet.create({
-    locationView : {flex: 1, flexDirection: 'row', padding: 15},
+    locationView : {flex: 1, flexDirection: 'row', paddingHorizontal: '5%', marginVertical: 8},
     upView: {
         flexDirection: 'column',
     },
