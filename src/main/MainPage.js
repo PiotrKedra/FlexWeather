@@ -5,15 +5,55 @@ import Header from './menu/Header';
 import FooterMenu from './menu/FooterMenu';
 import BasicWeatherPanel from './weather/BasicWeatherPanel';
 import DayPickerList from './components/DayPickerList';
+import TOKEN from "./token";
 
 export default class MainPage extends React.Component {
 
     state = {
         scroll: false,
         fontLoaded: false,
-        days: [{date: 22, short: 'WEN'},{date: 23, short: 'THR'},{date: 24, short: 'FRI'},{date: 25, short: 'SUN'},{date: 26, short: 'SAT'},{date: 27, short: 'MON'}],
-        locationOpacity: new Animated.Value(1)
+        days: [],
+        locationOpacity: new Animated.Value(1),
+        forecast: {}
     };
+
+    constructor(props){
+        super(props);
+        this.loadDataWeather();
+    }
+
+    async loadDataWeather() {
+        try {
+            let response = await fetch('https://api.darksky.net/forecast/' + TOKEN + '/50.1102653,19.7615527');
+            let responseJson = await response.json();
+            this.setState({forecast: responseJson});
+
+            let dayForecastArray = responseJson.daily.data;
+            let days = this.getDateObjectsList(dayForecastArray);
+            this.setState({days: days})
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    getDateObjectsList(dayForecastArray){
+        let days = [];
+        for (let dayForecast of dayForecastArray){
+            let dateObject = this.convertUnixTime(dayForecast.time);
+            days.push(dateObject);
+        }
+        return days;
+    }
+
+    convertUnixTime(unixTimestamp){
+        let date = new Date(unixTimestamp * 1000);
+        let days = ['Sun', 'Mon','Tue','Wed','Thu','Fri','Sat'];
+        return {
+            unixTimestamp: unixTimestamp,
+            date: date.getDate(),
+            day: days[date.getDay()]
+        }
+    }
 
     onScrollNotTopMinimizeHeader = (event) => {
         const y = event.nativeEvent.contentOffset.y;
