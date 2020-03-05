@@ -25,11 +25,11 @@ class Header extends React.Component {
             Animated.parallel([
                 Animated.timing(this.state.width, {
                     toValue: 75,
-                    duration: 400
+                    duration: 300
                 }),
                 Animated.timing(this.state.height, {
                     toValue: 90,
-                    duration: 400
+                    duration: 300
                 }),
                 Animated.timing(this.state.locationOpacity, {
                     toValue: 0,
@@ -40,7 +40,7 @@ class Header extends React.Component {
             Animated.parallel([
                 Animated.timing(this.state.width, {
                     toValue: 355,
-                    duration: 700
+                    duration: 500
                 }),
                 Animated.timing(this.state.height, {
                     toValue: 70,
