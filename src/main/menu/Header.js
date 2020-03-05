@@ -1,7 +1,7 @@
 import React from 'react';
 import {Image, StyleSheet, TouchableOpacity, Animated} from "react-native";
 
-import CustomText from "./CustomText";
+import CustomText from "../components/CustomText";
 
 class Header extends React.Component {
 
