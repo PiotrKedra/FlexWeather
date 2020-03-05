@@ -17,8 +17,8 @@ class BasicWeatherPanel extends React.Component {
                             <Image style={{height: 150, width: 150}} source={require('../../../assets/images/snow.png')}/>
                         </View>
                         <View style={{alignItems: 'center', justifyContent: 'center'}}>
-                            <Text style={{fontSize: 70}}>-3°C</Text>
-                            <Text style={{fontSize: 30}}>-5°C/3°C</Text>
+                            <Text style={{fontSize: 70}}>{this.props.forecastData.temperature}°C</Text>
+                            <Text style={{fontSize: 30}}>{this.props.forecastData.temperatureMin}°C/{this.props.forecastData.temperatureMax}°C</Text>
                         </View>
                     </View>
                     <View style={styles.textView}>

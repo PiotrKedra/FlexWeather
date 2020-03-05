@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, StyleSheet, TouchableOpacity, ImageBackground, StatusBar,Image, ScrollView, Animated,FlatList} from 'react-native';
+import {View, StyleSheet, ImageBackground, StatusBar, ScrollView, Animated} from 'react-native';
 import Text from '../main/components/CustomText';
 import Header from './menu/Header';
 import FooterMenu from './menu/FooterMenu';
@@ -14,7 +14,8 @@ export default class MainPage extends React.Component {
         fontLoaded: false,
         days: [],
         locationOpacity: new Animated.Value(1),
-        forecast: {}
+        forecast: [],
+        currentTimestamp: 0
     };
 
     constructor(props){
@@ -24,9 +25,14 @@ export default class MainPage extends React.Component {
 
     async loadDataWeather() {
         try {
-            let response = await fetch('https://api.darksky.net/forecast/' + TOKEN + '/50.1102653,19.7615527');
+            let response = await fetch('https://api.darksky.net/forecast/' + TOKEN + '/50.1102653,19.7615527?units=si');
             let responseJson = await response.json();
-            this.setState({forecast: responseJson});
+
+            let forecastPerDay = this.parseToForecastPerDay(responseJson);
+            this.setState({
+                forecast: forecastPerDay,
+                currentTimestamp: forecastPerDay[0].timestamp
+            });
 
             let dayForecastArray = responseJson.daily.data;
             let days = this.getDateObjectsList(dayForecastArray);
@@ -35,6 +41,25 @@ export default class MainPage extends React.Component {
             console.log(error);
         }
     };
+
+    parseToForecastPerDay(forecast){
+        let dailyForecastArray = forecast.daily.data;
+
+        let forecastArray = [];
+        for(let dayForecast of dailyForecastArray){
+            let dailyForecast = {
+                temperature: (dayForecast.temperatureMin + dayForecast.temperatureMax)/2,
+                temperatureMin: dayForecast.temperatureMin,
+                temperatureMax: dayForecast.temperatureMax,
+                icon: dayForecast.icon,
+                summary: dayForecast.summary,
+                timestamp: dayForecast.time
+            };
+            forecastArray.push(dailyForecast);
+        }
+        forecastArray[0].temperature = forecast.currently.temperature;
+        return forecastArray;
+    }
 
     getDateObjectsList(dayForecastArray){
         let days = [];
@@ -49,7 +74,7 @@ export default class MainPage extends React.Component {
         let date = new Date(unixTimestamp * 1000);
         let days = ['Sun', 'Mon','Tue','Wed','Thu','Fri','Sat'];
         return {
-            unixTimestamp: unixTimestamp,
+            timestamp: unixTimestamp,
             date: date.getDate(),
             day: days[date.getDay()]
         }
@@ -73,10 +98,35 @@ export default class MainPage extends React.Component {
         }
     };
 
+    getCurrentForecast = () => {
+        if (this.state.currentTimestamp !== 0){
+            let forecast = this.state.forecast;
+
+            for (let daily of forecast) {
+                if (daily.timestamp === this.state.currentTimestamp) {
+                    return daily;
+                }
+            }
+        }
+        return {
+            temperature: 1,
+            temperatureMin: 0,
+            temperatureMax: 0,
+            icon: 'clear',
+            summary: 'error',
+            timestamp: 0
+        }
+    };
+
+    setCurrentTimestamp = (timestamp) => {
+        this.setState({currentTimestamp: timestamp});
+    };
+
     render = () => {
         let locationStyle = {
             opacity: this.state.locationOpacity
         };
+
         return(
             <View style={{flex: 1}}>
                 <View style={styles.statusBarCover}/>
@@ -96,8 +146,12 @@ export default class MainPage extends React.Component {
                                 <Text style={{fontSize: 50}}>Zabierzów</Text>
                             </View>
                         </Animated.View>
-                        <DayPickerList days={this.state.days}/>
-                        <BasicWeatherPanel/>
+                        <DayPickerList
+                            days={this.state.days}
+                            currentTimestamp={this.state.currentTimestamp}
+                            setCurrentTimestamp={this.setCurrentTimestamp}
+                        />
+                        <BasicWeatherPanel forecastData={this.getCurrentForecast()}/>
 
                         {/*todo to change*/}
                         <View style={{marginTop: 10, width: '90%', height: 300, backgroundColor: 'white', borderRadius: 20}}>
