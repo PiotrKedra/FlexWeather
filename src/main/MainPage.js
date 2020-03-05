@@ -48,9 +48,9 @@ export default class MainPage extends React.Component {
         let forecastArray = [];
         for(let dayForecast of dailyForecastArray){
             let dailyForecast = {
-                temperature: (dayForecast.temperatureMin + dayForecast.temperatureMax)/2,
-                temperatureMin: dayForecast.temperatureMin,
-                temperatureMax: dayForecast.temperatureMax,
+                temperature: this.parseNumber((dayForecast.temperatureMin + dayForecast.temperatureMax)/2),
+                temperatureMin: this.parseNumber(dayForecast.temperatureMin),
+                temperatureMax: this.parseNumber(dayForecast.temperatureMax),
                 icon: dayForecast.icon,
                 summary: dayForecast.summary,
                 timestamp: dayForecast.time
@@ -59,6 +59,10 @@ export default class MainPage extends React.Component {
         }
         forecastArray[0].temperature = forecast.currently.temperature;
         return forecastArray;
+    }
+
+    parseNumber(number){
+        return (Math.round(number * 100)/100).toFixed(1);
     }
 
     getDateObjectsList(dayForecastArray){
