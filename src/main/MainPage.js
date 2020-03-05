@@ -1,9 +1,8 @@
 import React from 'react';
 import {View, StyleSheet, TouchableOpacity, ImageBackground, StatusBar,Image, ScrollView, Animated,FlatList} from 'react-native';
 import Text from '../main/components/CustomText';
-import LikeButton from './components/LikeButton';
 import Header from './components/Header';
-
+import FooterMenu from './components/FooterMenu'
 
 export default class MainPage extends React.Component {
 
@@ -73,7 +72,7 @@ export default class MainPage extends React.Component {
                             )}
                             keyExtractor={item => JSON.stringify(item.date)}
                         />
-                        <View style={{width: '90%', height: 300, backgroundColor: 'white', borderRadius: 20, elevation: 7}}>
+                        <View style={{width: '90%', height: 250, backgroundColor: 'white', borderRadius: 20, elevation: 7}}>
                             <View style={{paddingHorizontal: '5%', flex: 1, flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center',  borderBottomWidth: 1}}>
                                 <Text style={{fontSize: 30, textDecorationLine: 'underline'}}>23 march 2020</Text>
                             </View>
@@ -91,14 +90,13 @@ export default class MainPage extends React.Component {
                                     <Text style={{fontSize: 30, textDecorationLine: 'underline'}}>It is snowing a bit.</Text>
                                 </View>
                             </View>
-                            <LikeButton/>
                         </View>
                         <View style={{marginTop: 10, width: '90%', height: 300, backgroundColor: 'white', borderRadius: 20}}>
                         </View>
-                        <View style={{width: '100%', height: 300, backgroundColor: 'white', borderRadius: 20}}>
-
+                        <View style={{marginTop: 10, width: '90%', height: 300, backgroundColor: 'white', borderRadius: 20}}>
                         </View>
                     </ScrollView>
+                    <FooterMenu/>
                 </ImageBackground>
             </View>
         )
