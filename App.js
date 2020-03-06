@@ -1,5 +1,5 @@
 import React from 'react';
-import MainPage from "./src/main/MainPage";
+import WeatherApp from "./src/main/WeatherApp";
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 
@@ -10,8 +10,8 @@ export default function App() {
       <NavigationContainer>
         <Stack.Navigator>
           <Stack.Screen
-              name="MainPage"
-              component={MainPage}
+              name="WeatherApp"
+              component={WeatherApp}
               options={{
                   headerShown : false
               }}

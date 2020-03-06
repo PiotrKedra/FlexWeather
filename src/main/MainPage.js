@@ -1,5 +1,7 @@
 import React from 'react';
 import {View, StyleSheet, ImageBackground, StatusBar, ScrollView, Animated} from 'react-native';
+import {connect} from 'react-redux';
+
 import Text from '../main/components/CustomText';
 import Header from './menu/Header';
 import FooterMenu from './menu/FooterMenu';
@@ -7,7 +9,7 @@ import BasicWeatherPanel from './weather/BasicWeatherPanel';
 import DayPickerList from './components/DayPickerList';
 import TOKEN from "./token";
 
-export default class MainPage extends React.Component {
+class MainPage extends React.Component {
 
     state = {
         scroll: false,
@@ -159,6 +161,7 @@ export default class MainPage extends React.Component {
 
                         {/*todo to change*/}
                         <View style={{marginTop: 10, width: '90%', height: 300, backgroundColor: 'white', borderRadius: 20}}>
+                            <Text>{this.props.forecastViewType}</Text>
                         </View>
                         <View style={{marginTop: 10, width: '90%', height: 300, backgroundColor: 'white', borderRadius: 20}}>
                         </View>
@@ -171,6 +174,13 @@ export default class MainPage extends React.Component {
     }
 }
 
+function mapStateToProps(state){
+    return {
+        forecastViewType: state.forecastViewType
+    }
+}
+
+export default connect(mapStateToProps)(MainPage);
 
 const styles = StyleSheet.create({
     statusBarCover: {width: '100%',
