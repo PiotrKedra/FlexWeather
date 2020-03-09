@@ -31,7 +31,15 @@ class WeatherApp extends React.Component {
             currentTimestamp: rootForecast.currentTimestamp,
             days: rootForecast.days
         };
-        const reducer = (state = initialState) => {
+        const reducer = (state = initialState, action) => {
+            switch (action.type) {
+                case 'CURRENT_TIMESTAMP':
+                    return Object.assign({}, state, {
+                        currentTimestamp: action.payload
+                    });
+                case 'ELSE':
+                    return state;
+            }
             return state;
         };
         return createStore(reducer);

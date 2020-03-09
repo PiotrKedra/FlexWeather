@@ -1,6 +1,7 @@
 import React from 'react';
 import {FlatList, TouchableOpacity} from 'react-native';
 import Text from './CustomText';
+import {connect} from 'react-redux';
 
 class DayPickerList extends React.Component{
 
@@ -37,4 +38,17 @@ class DayPickerList extends React.Component{
     }
 }
 
-export default DayPickerList;
+function mapStateToProps(state){
+    return {
+        days: state.days,
+        currentTimestamp: state.currentTimestamp
+    }
+}
+
+function mapDispatcherToProps(dispatch) {
+    return {
+        setCurrentTimestamp: (timestamp) => dispatch({ type: 'CURRENT_TIMESTAMP', payload: timestamp}),
+    }
+}
+
+export default connect(mapStateToProps, mapDispatcherToProps)(DayPickerList);

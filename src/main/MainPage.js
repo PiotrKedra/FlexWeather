@@ -54,11 +54,6 @@ class MainPage extends React.Component {
         }
     };
 
-    //todo change for REDUX
-    setCurrentTimestamp = (timestamp) => {
-        this.setState({currentTimestamp: timestamp});
-    };
-
     render = () => {
         let locationStyle = {
             opacity: this.state.locationOpacity
@@ -83,11 +78,7 @@ class MainPage extends React.Component {
                                 <Text style={{fontSize: 50}}>Zabierzów</Text>
                             </View>
                         </Animated.View>
-                        <DayPickerList
-                            days={this.props.days}
-                            currentTimestamp={this.props.currentTimestamp}
-                            setCurrentTimestamp={this.setCurrentTimestamp}
-                        />
+                        <DayPickerList/>
                         <BasicWeatherPanel forecastData={this.getCurrentForecast()}/>
 
                         {/*todo to change*/}
