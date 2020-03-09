@@ -1,88 +1,20 @@
 import React from 'react';
 import {View, StyleSheet, ImageBackground, StatusBar, ScrollView, Animated} from 'react-native';
+import {connect} from 'react-redux';
+
 import Text from '../main/components/CustomText';
 import Header from './menu/Header';
 import FooterMenu from './menu/FooterMenu';
 import BasicWeatherPanel from './weather/BasicWeatherPanel';
 import DayPickerList from './components/DayPickerList';
-import TOKEN from "./token";
 
-export default class MainPage extends React.Component {
+class MainPage extends React.Component {
 
     state = {
         scroll: false,
         fontLoaded: false,
-        days: [],
         locationOpacity: new Animated.Value(1),
-        forecast: [],
-        currentTimestamp: 0
     };
-
-    constructor(props){
-        super(props);
-        this.loadDataWeather();
-    }
-
-    async loadDataWeather() {
-        try {
-            let response = await fetch('https://api.darksky.net/forecast/' + TOKEN + '/50.1102653,19.7615527?units=si');
-            let responseJson = await response.json();
-
-            let forecastPerDay = this.parseToForecastPerDay(responseJson);
-            this.setState({
-                forecast: forecastPerDay,
-                currentTimestamp: forecastPerDay[0].timestamp
-            });
-
-            let dayForecastArray = responseJson.daily.data;
-            let days = this.getDateObjectsList(dayForecastArray);
-            this.setState({days: days})
-        } catch (error) {
-            console.log(error);
-        }
-    };
-
-    parseToForecastPerDay(forecast){
-        let dailyForecastArray = forecast.daily.data;
-
-        let forecastArray = [];
-        for(let dayForecast of dailyForecastArray){
-            let dailyForecast = {
-                temperature: this.parseNumber((dayForecast.temperatureMin + dayForecast.temperatureMax)/2),
-                temperatureMin: this.parseNumber(dayForecast.temperatureMin),
-                temperatureMax: this.parseNumber(dayForecast.temperatureMax),
-                icon: dayForecast.icon,
-                summary: dayForecast.summary,
-                timestamp: dayForecast.time
-            };
-            forecastArray.push(dailyForecast);
-        }
-        forecastArray[0].temperature = forecast.currently.temperature;
-        return forecastArray;
-    }
-
-    parseNumber(number){
-        return (Math.round(number * 100)/100).toFixed(1);
-    }
-
-    getDateObjectsList(dayForecastArray){
-        let days = [];
-        for (let dayForecast of dayForecastArray){
-            let dateObject = this.convertUnixTime(dayForecast.time);
-            days.push(dateObject);
-        }
-        return days;
-    }
-
-    convertUnixTime(unixTimestamp){
-        let date = new Date(unixTimestamp * 1000);
-        let days = ['Sun', 'Mon','Tue','Wed','Thu','Fri','Sat'];
-        return {
-            timestamp: unixTimestamp,
-            date: date.getDate(),
-            day: days[date.getDay()]
-        }
-    }
 
     onScrollNotTopMinimizeHeader = (event) => {
         const y = event.nativeEvent.contentOffset.y;
@@ -103,11 +35,11 @@ export default class MainPage extends React.Component {
     };
 
     getCurrentForecast = () => {
-        if (this.state.currentTimestamp !== 0){
-            let forecast = this.state.forecast;
+        if (this.props.currentTimestamp !== 0){
+            let forecast = this.props.forecast;
 
             for (let daily of forecast) {
-                if (daily.timestamp === this.state.currentTimestamp) {
+                if (daily.timestamp === this.props.currentTimestamp) {
                     return daily;
                 }
             }
@@ -120,10 +52,6 @@ export default class MainPage extends React.Component {
             summary: 'error',
             timestamp: 0
         }
-    };
-
-    setCurrentTimestamp = (timestamp) => {
-        this.setState({currentTimestamp: timestamp});
     };
 
     render = () => {
@@ -150,15 +78,12 @@ export default class MainPage extends React.Component {
                                 <Text style={{fontSize: 50}}>Zabierzów</Text>
                             </View>
                         </Animated.View>
-                        <DayPickerList
-                            days={this.state.days}
-                            currentTimestamp={this.state.currentTimestamp}
-                            setCurrentTimestamp={this.setCurrentTimestamp}
-                        />
+                        <DayPickerList/>
                         <BasicWeatherPanel forecastData={this.getCurrentForecast()}/>
 
                         {/*todo to change*/}
                         <View style={{marginTop: 10, width: '90%', height: 300, backgroundColor: 'white', borderRadius: 20}}>
+                            <Text>{this.props.forecastViewType}</Text>
                         </View>
                         <View style={{marginTop: 10, width: '90%', height: 300, backgroundColor: 'white', borderRadius: 20}}>
                         </View>
@@ -171,6 +96,16 @@ export default class MainPage extends React.Component {
     }
 }
 
+function mapStateToProps(state){
+    return {
+        forecastViewType: state.forecastViewType,
+        days: state.days,
+        forecast: state.rootForecastPerDay,
+        currentTimestamp: state.currentTimestamp
+    }
+}
+
+export default connect(mapStateToProps)(MainPage);
 
 const styles = StyleSheet.create({
     statusBarCover: {width: '100%',
