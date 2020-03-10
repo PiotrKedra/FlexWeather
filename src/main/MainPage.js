@@ -86,7 +86,6 @@ class MainPage extends React.Component {
                         <View style={{marginTop: 10, width: '90%', height: 300, backgroundColor: 'white', borderRadius: 20}}>
                             <Text>{this.props.forecastViewType}</Text>
                         </View>
-
                         <View style={{marginTop: 10, width: '90%', height: 300, backgroundColor: 'white', borderRadius: 20, overflow: 'hidden'}}>
                             <MapView
                                 style={{
