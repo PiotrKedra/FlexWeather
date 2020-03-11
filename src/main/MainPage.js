@@ -84,7 +84,6 @@ class MainPage extends React.Component {
 
                         {/*todo to change*/}
                         <View style={{marginTop: 10, width: '90%', height: 300, backgroundColor: 'white', borderRadius: 20}}>
-                            <Text>{this.props.forecastViewType}</Text>
                         </View>
                         <View style={{marginTop: 10, width: '90%', height: 300, backgroundColor: 'white', borderRadius: 20, overflow: 'hidden'}}>
                             <MapView
@@ -113,11 +112,9 @@ class MainPage extends React.Component {
 
 function mapStateToProps(state){
     return {
-        forecastViewType: state.forecastViewType,
         days: state.days,
         forecast: state.rootForecastPerDay,
         currentTimestamp: state.currentTimestamp,
-        navigation: state.navigation
     }
 }
 

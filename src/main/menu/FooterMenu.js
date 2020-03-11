@@ -28,13 +28,13 @@ const styles = StyleSheet.create({
         bottom: 0,
         left: 0,
         width: '100%',
+        backgroundColor: '#FFAD94',
         borderTopRightRadius: 5,
         borderTopLeftRadius: 5,
         elevation: 7,
         flexDirection: 'row',
     },
     footerItem: {
-        backgroundColor: '#FFAD94',
         flex: 1,
         height: 50,
         padding: 10,
@@ -42,12 +42,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         alignSelf: 'flex-end'
     },
-    locationSearchOn: {
-        position: 'absolute',
-        bottom: 0,
-        right: 0,
-        backgroundColor: '#FFAD94',
-    }
 });
 
 function mapStateToProps(state){

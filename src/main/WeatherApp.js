@@ -1,56 +1,32 @@
 import React from 'react';
-import {createStore} from "redux";
-import {Provider} from "react-redux";
+import {connect} from "react-redux";
 import {Text, View} from "react-native";
 
 import MainPage from "./MainPage";
 import fetchRootForecast from "./weather/api/ForecastApi"
 
-
-
-
 class WeatherApp extends React.Component {
 
     state = {
         isRootForecastLoaded: false,
-        store: undefined
     };
 
     async componentDidMount() {
         let rootForecast = await fetchRootForecast();
-        this.setState({
-            isRootForecastLoaded: true,
-            store: this.prepareStore(rootForecast)
-        });
-    }
-
-    prepareStore = (rootForecast) => {
-        const initialState = {
-            forecastViewType: 'DAY',
-            navigation: this.props.navigation,
+        let entity = {
             rootForecastPerDay: rootForecast.rootForecast,
             currentTimestamp: rootForecast.currentTimestamp,
-            days: rootForecast.days
+            days: rootForecast.days,
+            navigation: this.props.navigation
         };
-        const reducer = (state = initialState, action) => {
-            switch (action.type) {
-                case 'CURRENT_TIMESTAMP':
-                    return Object.assign({}, state, {
-                        currentTimestamp: action.payload
-                    });
-                case 'ELSE':
-                    return state;
-            }
-            return state;
-        };
-        return createStore(reducer);
-    };
+        console.log(entity);
+        this.props.loadInitialForecast(entity);
+        this.setState({isRootForecastLoaded: true});
+    }
 
     render() {
         return (this.state.isRootForecastLoaded ?
-                    <Provider store={this.state.store}>
-                        <MainPage/>
-                    </Provider>
+                    <MainPage/>
                     :
                     <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
                         <Text style={{fontSize: 25}}>Data not loaded</Text>
@@ -59,4 +35,15 @@ class WeatherApp extends React.Component {
     }
 }
 
-export default WeatherApp;
+function mapStateToProps(state){
+    return {
+    }
+}
+
+function mapDispatcherToProps(dispatch) {
+    return {
+        loadInitialForecast: (rootForecast) => dispatch({ type: 'ROOT_FORECAST', payload: rootForecast}),
+    }
+}
+
+export default connect(mapStateToProps, mapDispatcherToProps)(WeatherApp);
