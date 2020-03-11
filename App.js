@@ -1,7 +1,10 @@
+import 'react-native-gesture-handler';
 import React from 'react';
-import WeatherApp from "./src/main/WeatherApp";
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
+
+import WeatherApp from "./src/main/WeatherApp";
+import LocationSearch from "./src/main/location/LocationSearch";
 
 const Stack = createStackNavigator();
 
@@ -16,6 +19,7 @@ export default function App() {
                   headerShown : false
               }}
           />
+          <Stack.Screen name="LocationSearch" component={LocationSearch}/>
         </Stack.Navigator>
       </NavigationContainer>
   );

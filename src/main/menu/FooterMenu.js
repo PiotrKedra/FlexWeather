@@ -1,50 +1,23 @@
 import React from 'react'
-import {Dimensions , StyleSheet, TouchableOpacity, Image, Animated} from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome5';
-
-import LocationSearch from "../location/LocationSearch";
+import {View, StyleSheet, TouchableOpacity, Image} from 'react-native';
+import {connect} from 'react-redux';
 
 class FooterMenu extends React.Component{
 
-    state = {
-        locationViewHeight: new Animated.Value(50),
-        locationViewWidth: new Animated.Value(Math.round(Dimensions.get('window').width/3))
-    };
-
-    searchLocation = () => {
-        Animated.parallel([
-            Animated.timing(this.state.locationViewHeight, {
-                toValue: Math.round(Dimensions.get('window').height),
-                duration: 400,
-            }),
-            Animated.timing(this.state.locationViewWidth, {
-                toValue: Math.round(Dimensions.get('window').width),
-                duration: 400,
-            }),
-        ]).start()
-    };
-
     render() {
-        let locationStyle = {
-            height: this.state.locationViewHeight,
-            width: this.state.locationViewWidth
-        };
         return (
-            <Animated.View style={styles.footer}>
-                <Animated.View style={[styles.locationSearchOn, locationStyle]}>
-                    <LocationSearch/>
-                </Animated.View>
+            <View style={styles.footer}>
                 <TouchableOpacity style={styles.footerItem}>
-                    <Icon name="donate" size={33}/>
+                    <Image style={{height: 33, width: 33}} source={require('../../../assets/images/pin.png')}/>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.footerItem}>
                     <Image style={{height: 33, width: 33}} source={require('../../../assets/images/pin.png')}/>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.footerItem} onPress={this.searchLocation}>
+                <TouchableOpacity style={styles.footerItem} onPress={() => this.props.navigation.navigate('LocationSearch')}>
                     <Image style={{height: 33, width: 33}} source={require('../../../assets/images/global-search.png')}/>
                 </TouchableOpacity>
 
-            </Animated.View>
+            </View>
         )
     }
 }
@@ -77,4 +50,9 @@ const styles = StyleSheet.create({
     }
 });
 
-export default FooterMenu;
+function mapStateToProps(state){
+    return {
+        navigation: state.navigation
+    }
+}
+export default connect(mapStateToProps)(FooterMenu);

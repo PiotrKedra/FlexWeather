@@ -24,9 +24,10 @@ class WeatherApp extends React.Component {
         });
     }
 
-    prepareStore(rootForecast){
+    prepareStore = (rootForecast) => {
         const initialState = {
             forecastViewType: 'DAY',
+            navigation: this.props.navigation,
             rootForecastPerDay: rootForecast.rootForecast,
             currentTimestamp: rootForecast.currentTimestamp,
             days: rootForecast.days
@@ -43,7 +44,7 @@ class WeatherApp extends React.Component {
             return state;
         };
         return createStore(reducer);
-    }
+    };
 
     render() {
         return (this.state.isRootForecastLoaded ?

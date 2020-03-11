@@ -116,7 +116,8 @@ function mapStateToProps(state){
         forecastViewType: state.forecastViewType,
         days: state.days,
         forecast: state.rootForecastPerDay,
-        currentTimestamp: state.currentTimestamp
+        currentTimestamp: state.currentTimestamp,
+        navigation: state.navigation
     }
 }
 
