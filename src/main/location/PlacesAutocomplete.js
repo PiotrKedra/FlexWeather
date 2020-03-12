@@ -1,10 +1,22 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
 import {GooglePlacesAutocomplete} from "react-native-google-places-autocomplete";
+import * as Font from "expo-font";
 
 import {GOOGLE_TOKEN} from "../token";
 
 class PlacesAutocomplete extends React.Component {
+
+    async componentDidMount() {
+        await Font.loadAsync({
+            'Neucha': require('../../../assets/fonts/Neucha-Regular.ttf'),
+        });
+        this.setState({fontLoaded: true});
+    }
+
+    getDefaultValue(){
+        console.log('a');
+    }
 
     render() {
         return (
@@ -20,8 +32,6 @@ class PlacesAutocomplete extends React.Component {
                 onPress={(data, details = null) => { // 'details' is provided when fetchDetails = true
                     console.log(data, details);
                 }}
-
-                getDefaultValue={() => ''}
 
                 query={{
                     // available options: https://developers.google.com/places/web-service/autocomplete
@@ -62,19 +72,45 @@ const styles = StyleSheet.create({
         width: '100%',
         backgroundColor: 'rgba(0,0,0,0)',
         borderBottomWidth: 0,
-        paddingHorizontal: '5%'
+        paddingHorizontal: '5%',
+    },
+    textInput: {
+        backgroundColor: '#FFD7CB',
+        elevation: 7,
+        borderWidth: 1,
+        borderColor: '#FFCBBA',
+        color: 'black',
+        fontFamily: 'Neucha',
+        fontSize: 25,
+        height: 45,
     },
     container: {
         position: 'absolute',
         top: '5%',
         left: 0,
         width: '100%',
-        height: '50%',
-    },
-    description: {
-        fontWeight: 'bold'
+        height: '50%'
     },
     predefinedPlacesDescription: {
         color: '#1faadb'
-    }
+    },
+    poweredContainer: {
+        height: 0
+    },
+    listView: {
+        marginTop: '5%',
+        marginHorizontal: '7%',
+        backgroundColor: '#FFD7CB',
+        borderRadius: 5,
+        elevation: 7,
+        borderWidth: 1,
+        borderColor: '#FFCBBA',
+    },
+    row: {
+        height: 50,
+    },
+    description: {
+        fontFamily: 'Neucha',
+        fontSize: 20
+    },
 });
