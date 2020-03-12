@@ -1,54 +1,53 @@
 import React from 'react'
-import {View, StyleSheet, TouchableOpacity, Image, Text, Modal, TouchableHighlight} from 'react-native';
+import {View, StyleSheet, TouchableOpacity, Image, Text, Modal} from 'react-native';
 import {connect} from 'react-redux';
+
 
 class FooterMenu extends React.Component{
     state = {
-        modalVisible: true,
+        visible: false,
     };
 
     setModalVisible(visible) {
-        this.setState({modalVisible: visible});
+        console.log(visible);
+        this.setState({visible: visible});
     }
 
 
     render() {
         return (
-            <View style={styles.footer}>
-                <Modal
-                    animationType="slide"
-                    transparent={true}
-                    visible={this.state.modalVisible}
-                    onRequestClose={() => {
-                        Alert.alert('Modal has been closed.');
-                    }}
-                    style={{
-                        margin: 50
-                    }}
-                >
-                    <View style={{margin: 50, backgroundColor: 'black'}}>
-                        <View>
-                            <Text>Hello World!</Text>
-
-                            <TouchableHighlight
+            <View>
+            <Modal
+                visible={this.state.visible}
+                animationType="slide"
+                transparent={true}
+            >
+                    <View style={{backgroundColor: 'rgba(0,0,0,0.3)', height: '100%', width: '100%', justifyContent: 'center', alignItems: 'center'}}>
+                        <View style={{backgroundColor: 'white', width: '92%', height: '60%', borderRadius: 10}}>
+                            <TouchableOpacity
+                                style={{borderWidth: 1, padding: 10}}
                                 onPress={() => {
-                                    this.setModalVisible(!this.state.modalVisible);
+                                    this.setModalVisible(false);
                                 }}>
                                 <Text>Hide Modal</Text>
-                            </TouchableHighlight>
+                            </TouchableOpacity>
                         </View>
                     </View>
-                </Modal>
+            </Modal>
+            <View style={styles.footer}>
                 <TouchableOpacity style={styles.footerItem}>
                     <Image style={{height: 33, width: 33}} source={require('../../../assets/images/pin.png')}/>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.footerItem}>
+                <TouchableOpacity style={styles.footerItem} onPress={() => {
+                    this.setModalVisible(true);
+                }}>
                     <Image style={{height: 33, width: 33}} source={require('../../../assets/images/pin.png')}/>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.footerItem} onPress={() => this.props.navigation.navigate('LocationSearch')}>
                     <Image style={{height: 33, width: 33}} source={require('../../../assets/images/global-search.png')}/>
                 </TouchableOpacity>
 
+            </View>
             </View>
         )
     }
