@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, TextInput, Text, Image} from 'react-native';
+import {View} from 'react-native';
 import MapView from 'react-native-maps';
 import FooterMenu from "../menu/FooterMenu";
 import PlacesAutocomplete from "./PlacesAutocomplete";

@@ -75,8 +75,8 @@ class MainPage extends React.Component {
                     >
                         <Animated.View style={[styles.locationView, locationStyle]}>
                             <View style={{flex: 1, justifyContent: 'flex-start', alignItems: 'flex-start'}}>
-                                <Text style={{fontSize: 25}}>Widokowa 22</Text>
-                                <Text style={{fontSize: 50}}>Zabierzów</Text>
+                                <Text style={{fontSize: 25}}>{this.props.activeLocation.country}</Text>
+                                <Text style={{fontSize: 50}}>{this.props.activeLocation.city}</Text>
                             </View>
                         </Animated.View>
                         <DayPickerList/>
@@ -112,6 +112,7 @@ class MainPage extends React.Component {
 
 function mapStateToProps(state){
     return {
+        activeLocation: state.activeLocation,
         days: state.days,
         forecast: state.rootForecastPerDay,
         currentTimestamp: state.currentTimestamp,

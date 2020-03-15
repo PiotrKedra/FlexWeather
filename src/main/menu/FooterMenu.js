@@ -2,16 +2,19 @@ import React from 'react'
 import {View, StyleSheet, TouchableOpacity, Image, Text, Modal} from 'react-native';
 import {connect} from 'react-redux';
 
+import CustomText from "../components/CustomText";
+import PlacesAutocomplete from "../location/PlacesAutocomplete";
+
 
 class FooterMenu extends React.Component{
     state = {
         visible: false,
     };
 
-    setModalVisible(visible) {
+    setModalVisible = (visible) => {
         console.log(visible);
         this.setState({visible: visible});
-    }
+    };
 
 
     render() {
@@ -22,17 +25,23 @@ class FooterMenu extends React.Component{
                 animationType="slide"
                 transparent={true}
             >
-                    <View style={{backgroundColor: 'rgba(0,0,0,0.3)', height: '100%', width: '100%', justifyContent: 'center', alignItems: 'center'}}>
-                        <View style={{backgroundColor: 'white', width: '92%', height: '60%', borderRadius: 10}}>
+                    <TouchableOpacity
+                        style={{backgroundColor: 'rgba(0,0,0,0.3)', height: '100%', width: '100%', justifyContent: 'center', alignItems: 'center'}}
+                    >
+                        <View style={{backgroundColor: 'white', width: '92%', height: '60%', borderRadius: 20, flexDirection: 'column-reverse'}}>
+
                             <TouchableOpacity
-                                style={{borderWidth: 1, padding: 10}}
+                                style={{flex: 1, justifyContent: 'center', alignItems: 'center', margin: 5, borderBottomRightRadius: 19, borderBottomLeftRadius: 19, backgroundColor: '#5BC3CE'}}
                                 onPress={() => {
                                     this.setModalVisible(false);
                                 }}>
-                                <Text>Hide Modal</Text>
+                                <CustomText style={{fontSize: 20, color: 'white'}}>Find on map</CustomText>
                             </TouchableOpacity>
+                            <View style={{flex: 5}}>
+                                <PlacesAutocomplete setModalVisible={this.setModalVisible}/>
+                            </View>
                         </View>
-                    </View>
+                    </TouchableOpacity>
             </Modal>
             <View style={styles.footer}>
                 <TouchableOpacity style={styles.footerItem}>

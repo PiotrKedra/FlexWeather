@@ -10,14 +10,14 @@ import LocationSearch from "./src/main/location/LocationSearch";
 
 
 const initialState = {
+    activeLocation: {
+        city: 'Zabierzów',
+        country: 'Polska'
+    }
 };
 
 const reducer = (state = initialState, action) => {
     switch (action.type) {
-        case 'CURRENT_TIMESTAMP':
-            return Object.assign({}, state, {
-                currentTimestamp: action.payload
-            });
         case 'ROOT_FORECAST':
             console.log('ROOT_FORECAST');
             return Object.assign({}, state, {
@@ -26,6 +26,14 @@ const reducer = (state = initialState, action) => {
                 days: action.payload.days,
                 navigation: action.payload.navigation,
             });
+        case 'CURRENT_TIMESTAMP':
+            return Object.assign({}, state, {
+                currentTimestamp: action.payload
+            });
+        case 'ACTIVE_LOCATION':
+            return Object.assign({}, state, {
+                activeLocation: action.payload
+            })
     }
     return state;
 };
