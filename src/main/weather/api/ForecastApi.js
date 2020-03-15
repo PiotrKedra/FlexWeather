@@ -3,9 +3,9 @@ import {TOKEN} from "../../token";
 
 export default fetchRootForecast;
 
-async function fetchRootForecast(){
+async function fetchRootForecast(lat, lng){
     try {
-        let response = await fetch('https://api.darksky.net/forecast/' + TOKEN + '/50.1102653,19.7615527?units=si');
+        let response = await fetch('https://api.darksky.net/forecast/' + TOKEN + '/' + lat + ',' + lng + '?units=si');
         let responseJson = await response.json();
 
         let forecastPerDay = parseToForecastPerDay(responseJson);

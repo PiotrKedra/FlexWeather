@@ -33,6 +33,14 @@ const reducer = (state = initialState, action) => {
         case 'ACTIVE_LOCATION':
             return Object.assign({}, state, {
                 activeLocation: action.payload
+            });
+        case 'FORECAST_IN_NEW_LOCATION':
+            console.log('FORECAST_IN_NEW_LOCATION');
+            return Object.assign({}, state, {
+                activeLocation: action.payload.location,
+                rootForecastPerDay: action.payload.forecast.rootForecast,
+                currentTimestamp: action.payload.forecast.currentTimestamp,
+                days: action.payload.forecast.days,
             })
     }
     return state;

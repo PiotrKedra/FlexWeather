@@ -6,6 +6,7 @@ import {connect} from "react-redux";
 
 import {GOOGLE_TOKEN} from "../token";
 import CustomText from "../components/CustomText";
+import fetchRootForecast from "../weather/api/ForecastApi";
 
 class PlacesAutocomplete extends React.Component {
 
@@ -15,6 +16,18 @@ class PlacesAutocomplete extends React.Component {
         });
         this.setState({fontLoaded: true});
     }
+
+    async setActiveLocation(data, details){
+        const location = {
+            city: data.structured_formatting.main_text,
+            country: data.structured_formatting.secondary_text,
+            latitude: details.geometry.location.lat,
+            longitude: details.geometry.location.lng,
+        };
+        const forecast = await fetchRootForecast(location.latitude, location.longitude);
+        this.props.setForecastInNewLocation(location, forecast);
+        this.props.setModalVisible(false);
+    };
 
     render() {
         return (
@@ -27,14 +40,7 @@ class PlacesAutocomplete extends React.Component {
                 listViewDisplayed='auto'    // true/false/undefined
                 fetchDetails={true}
                 renderDescription={row => row.description} // custom description render
-                onPress={(data, details = null) => { // 'details' is provided when fetchDetails = true
-                    const location = {
-                        city: data.structured_formatting.main_text,
-                        country: data.structured_formatting.secondary_text
-                    };
-                    this.props.setActiveLocation(location);
-                    this.props.setModalVisible(false);
-                }}
+                onPress={(data, details = null) => this.setActiveLocation(data, details)}
                 query={{
                     // available options: https://developers.google.com/places/web-service/autocomplete
                     key: GOOGLE_TOKEN,
@@ -47,14 +53,10 @@ class PlacesAutocomplete extends React.Component {
                     // available options for GoogleReverseGeocoding API : https://developers.google.com/maps/documentation/geocoding/intro
                 }}
                 GooglePlacesSearchQuery={{
-                    // available options for GooglePlacesSearch API : https://developers.google.com/places/web-service/search
                     rankby: 'distance',
                     type: 'cafe'
                 }}
-                GooglePlacesDetailsQuery={{
-                    // available options for GooglePlacesDetails API : https://developers.google.com/places/web-service/details
-                    fields: 'formatted_address',
-                }}
+                GooglePlacesDetailsQuery={{ fields: 'geometry', }}
                 filterReverseGeocodingByTypes={['locality', 'administrative_area_level_3']} // filter the reverse geocoding results by types - ['locality', 'administrative_area_level_3'] if you want to display only cities
                 debounce={200} // debounce the requests in ms. Set to 0 to remove debounce. By default 0ms.
                 renderRightButton={() => <TouchableOpacity style={{height: '100%', justifyContent: 'center', alignItems: 'center', paddingRight: 10}}><CustomText style={{fontSize: 18}}>Cancel</CustomText></TouchableOpacity>}
@@ -70,6 +72,7 @@ function mapStateToProps(state){
 function mapDispatcherToProps(dispatch) {
     return {
         setActiveLocation: (location) => dispatch({ type: 'ACTIVE_LOCATION', payload: location}),
+        setForecastInNewLocation: (location, forecast) => dispatch({ type: 'FORECAST_IN_NEW_LOCATION', payload: { location: location, forecast: forecast}})
     }
 }
 
