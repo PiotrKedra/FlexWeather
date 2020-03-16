@@ -59,7 +59,9 @@ class PlacesAutocomplete extends React.Component {
                 GooglePlacesDetailsQuery={{ fields: 'geometry', }}
                 filterReverseGeocodingByTypes={['locality', 'administrative_area_level_3']} // filter the reverse geocoding results by types - ['locality', 'administrative_area_level_3'] if you want to display only cities
                 debounce={200} // debounce the requests in ms. Set to 0 to remove debounce. By default 0ms.
-                renderRightButton={() => <TouchableOpacity style={{height: '100%', justifyContent: 'center', alignItems: 'center', paddingRight: 10}}><CustomText style={{fontSize: 18}}>Cancel</CustomText></TouchableOpacity>}
+                renderRightButton={() => <TouchableOpacity
+                    onPress={this.clearInputText}
+                    style={{height: '100%', justifyContent: 'center', alignItems: 'center', paddingRight: 10}}><CustomText style={{fontSize: 18}}>Cancel</CustomText></TouchableOpacity>}
             />
         )
     }
@@ -83,10 +85,10 @@ const styles = StyleSheet.create({
     textInputContainer: {
         width: '100%',
         backgroundColor: 'rgba(0,0,0,0)',
+        borderTopWidth: 0,
         borderBottomWidth: 0,
         justifyContent: 'center',
         alignItems: 'center',
-        borderWidth: 1,
         height: 60
     },
     textInput: {
