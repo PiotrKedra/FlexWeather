@@ -30,10 +30,6 @@ const reducer = (state = initialState, action) => {
             return Object.assign({}, state, {
                 currentTimestamp: action.payload
             });
-        case 'ACTIVE_LOCATION':
-            return Object.assign({}, state, {
-                activeLocation: action.payload
-            });
         case 'FORECAST_IN_NEW_LOCATION':
             console.log('FORECAST_IN_NEW_LOCATION');
             return Object.assign({}, state, {

@@ -5,6 +5,7 @@ import {connect} from 'react-redux';
 import CustomText from "../components/CustomText";
 import PlacesAutocomplete from "../location/PlacesAutocomplete";
 import LocationSearch from "../location/LocationSearch";
+import fetchRootForecast from "../weather/api/ForecastApi";
 
 
 class FooterMenu extends React.Component{
@@ -14,20 +15,17 @@ class FooterMenu extends React.Component{
     };
 
     setModalVisible = (visible) => {
-        console.log(visible);
         this.setState({visible: visible});
     };
 
 
-    pickPlaceFromMap = () => {
+    changeMapVisible = () => {
         if(this.state.mapVisible){
-            console.log('picking a place');
-            this.setState({visible: false});
+            this.setState({mapVisible: false});
         } else {
             this.setState({mapVisible: true});
         }
     };
-
 
     render() {
         return (
@@ -41,20 +39,21 @@ class FooterMenu extends React.Component{
                         style={{backgroundColor: 'rgba(0,0,0,0.3)', height: '100%', width: '100%', justifyContent: 'center', alignItems: 'center'}}
                     >
                         <View style={{backgroundColor: 'white', width: '92%', height: '60%', borderRadius: 20}}>
+                            <View style={{flex: 4}}>
 
-                            { !this.state.mapVisible ?
-                                <View style={{flex: 4}}>
+                                { !this.state.mapVisible ?
                                     <PlacesAutocomplete setModalVisible={this.setModalVisible}/>
-                                </View>
-                            :
-                                <LocationSearch/>
-                            }
+                                :
+                                    <LocationSearch setModalVisible={this.setModalVisible}/>
+                                }
+                            </View>
+
 
                             <View style={{flex: 2, justifyContent: 'center'}}>
                                 <TouchableOpacity
                                     style={{flex: 1, justifyContent: 'center', alignItems: 'center', marginHorizontal: '4%', borderRadius: 10, borderWidth: 3, borderColor: '#5BC3CE', backgroundColor: '#5BC3CE', marginBottom: 10}}
-                                    onPress={this.pickPlaceFromMap}>
-                                    <CustomText style={{fontSize: 20, color: 'white'}}>{ !this.state.mapVisible ? 'Find on map' : 'Pick' }</CustomText>
+                                    onPress={this.changeMapVisible}>
+                                    <CustomText style={{fontSize: 20, color: 'white'}}>{ !this.state.mapVisible ? 'Find on map' : 'Find by writing' }</CustomText>
                                 </TouchableOpacity>
                                 <TouchableOpacity
                                     onPress={() => {

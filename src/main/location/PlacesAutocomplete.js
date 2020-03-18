@@ -73,7 +73,6 @@ function mapStateToProps(state){
 
 function mapDispatcherToProps(dispatch) {
     return {
-        setActiveLocation: (location) => dispatch({ type: 'ACTIVE_LOCATION', payload: location}),
         setForecastInNewLocation: (location, forecast) => dispatch({ type: 'FORECAST_IN_NEW_LOCATION', payload: { location: location, forecast: forecast}})
     }
 }
