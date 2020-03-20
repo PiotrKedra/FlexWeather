@@ -2,41 +2,41 @@ import React, { PureComponent } from 'react'
 import { Svg, G, Line, Rect, Text } from 'react-native-svg'
 import * as d3 from 'd3'
 
-const GRAPH_MARGIN = 20
-const GRAPH_BAR_WIDTH = 5
+const GRAPH_MARGIN = 20;
+const GRAPH_BAR_WIDTH = 5;
 const colors = {
     axis: '#E4E4E4',
     bars: '#15AD13'
-}
+};
 
 export default class BarChart extends PureComponent {
     render() {
         // Dimensions
-        const SVGHeight = 250
-        const SVGWidth = 600
-        const graphHeight = SVGHeight - 2 * GRAPH_MARGIN
-        const graphWidth = SVGWidth - 2 * GRAPH_MARGIN
-        const data = this.props.data
+        const SVGHeight = 250;
+        const SVGWidth = 600;
+        const graphHeight = SVGHeight - 2 * GRAPH_MARGIN;
+        const graphWidth = SVGWidth - 2 * GRAPH_MARGIN;
+        const data = this.props.data;
 
         // X scale point
-        const xDomain = data.map(item => item.label)
-        const xRange = [0, graphWidth]
+        const xDomain = data.map(item => item.label);
+        const xRange = [0, graphWidth];
         const x = d3.scalePoint()
             .domain(xDomain)
             .range(xRange)
-            .padding(1)
+            .padding(1);
 
         // Y scale linear
-        const maxValue = d3.max(data, d => d.value)
-        const topValue = Math.ceil(maxValue / this.props.round) * this.props.round
-        const yDomain = [0, topValue]
-        const yRange = [0, graphHeight]
+        const maxValue = d3.max(data, d => d.value);
+        const topValue = Math.ceil(maxValue / this.props.round) * this.props.round;
+        const yDomain = [0, topValue];
+        const yRange = [0, graphHeight];
         const y = d3.scaleLinear()
             .domain(yDomain)
-            .range(yRange)
+            .range(yRange);
 
         // top axis and middle axis
-        const middleValue = topValue / 2
+        const middleValue = topValue / 2;
 
         return (
             <Svg width={SVGWidth} height={SVGHeight}>
