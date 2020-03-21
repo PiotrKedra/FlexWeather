@@ -35,6 +35,7 @@ export default class BarChart extends PureComponent {
             .domain(yDomain)
             .range(yRange);
 
+
         // top axis and middle axis
         const middleValue = topValue / 2;
 
@@ -43,7 +44,7 @@ export default class BarChart extends PureComponent {
                 <G y={graphHeight + GRAPH_MARGIN}>
                     {/* Top value label */}
                     <Text
-                        x={graphWidth}
+                        x={70}
                         textAnchor="end"
                         y={y(topValue) * -1 - 5}
                         fontSize={12}

@@ -8,6 +8,7 @@ import FooterMenu from './menu/FooterMenu';
 import BasicWeatherPanel from './weather/BasicWeatherPanel';
 import DayPickerList from './components/DayPickerList';
 import HourlyTemperaturePanel from "./weather/temperature/HourlyTemperaturePanel";
+import LearnChart from "./weather/temperature/LearnChart";
 
 class MainPage extends React.Component {
 
@@ -86,7 +87,11 @@ class MainPage extends React.Component {
                         <View style={{marginTop: 10, width: '90%', height: 300, backgroundColor: 'white', borderRadius: 20}}>
                             <HourlyTemperaturePanel/>
                         </View>
-                        <View style={{marginTop: 10, width: '90%', height: 300, backgroundColor: 'white', borderRadius: 20, overflow: 'hidden'}}>
+                        <View style={{marginTop: 10, width: '90%', height: 300, backgroundColor: 'white', borderRadius: 20, marginBottom: 100}}>
+                            <ScrollView style={{flex: 1, paddingTop: 40}} horizontal={true}>
+
+                            <LearnChart/>
+                            </ScrollView>
                         </View>
 
                     </ScrollView>

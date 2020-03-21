@@ -18,7 +18,7 @@ class HourlyTemperaturePanel extends React.Component {
             { label: 'Oct', value: 186 },
             { label: 'Nov', value: 689 },
             { label: 'Dec', value: 643 }
-        ]
+        ];
         return (
             <View style={{flex: 1, borderWidth: 1}}>
                 <ScrollView style={{flex: 1, borderWidth: 1}} horizontal={true}>
