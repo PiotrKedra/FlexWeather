@@ -10,6 +10,7 @@ import LocationSearch from "./src/main/location/LocationSearch";
 
 
 const initialState = {
+    fontLoaded: false,
     activeLocation: {
         city: 'Zabierzów',
         country: 'Polska'
@@ -37,7 +38,11 @@ const reducer = (state = initialState, action) => {
                 rootForecastPerDay: action.payload.forecast.rootForecast,
                 currentTimestamp: action.payload.forecast.currentTimestamp,
                 days: action.payload.forecast.days,
-            })
+            });
+        case 'FONT_LOADED':
+            return Object.assign({}, state, {
+                fontLoaded: true,
+            });
     }
     return state;
 };

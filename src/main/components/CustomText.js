@@ -1,31 +1,24 @@
 import React from 'react';
-import * as Font from 'expo-font';
+import {connect} from 'react-redux';
 import {Text} from 'react-native';
 
 
-class CustomText extends React.Component {
-
-    state = {
-        fontLoaded: false
-    };
-
-    async componentDidMount() {
-        await Font.loadAsync({
-            'Neucha': require('../../../assets/fonts/Neucha-Regular.ttf'),
-        });
-        this.setState({fontLoaded: true});
-    }
+class CustomText extends React.PureComponent {
 
     render() {
         let style;
-        if (this.state.fontLoaded === true) {
+        if (this.props.fontLoaded === true) {
             style = [{fontFamily: 'Neucha'}, this.props.style || {}];
         }
         else {
             style = this.props.style;
         }
-        return <Text style={style}>{this.props.children}</Text>
+        return <Text x={this.props.x} style={style}>{this.props.children}</Text>
     }
 }
 
-export default CustomText;
+const mapStateToProps = (state) => {
+    return { fontLoaded: state.fontLoaded };
+};
+
+export default connect(mapStateToProps)(CustomText);

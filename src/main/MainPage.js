@@ -87,10 +87,10 @@ class MainPage extends React.Component {
                         <View style={{marginTop: 10, width: '90%', height: 300, backgroundColor: 'white', borderRadius: 20}}>
                             <HourlyTemperaturePanel/>
                         </View>
-                        <View style={{marginTop: 10, width: '90%', height: 300, backgroundColor: 'white', borderRadius: 20, marginBottom: 100}}>
-                            <ScrollView style={{flex: 1, paddingTop: 40}} horizontal={true}>
 
-                            <LearnChart/>
+                        <View style={{marginTop: 10, width: '90%', height: 300, backgroundColor: 'white', borderRadius: 20, marginBottom: 100}}>
+                            <ScrollView style={{flex: 1, paddingTop: 40, borderWidth: 1}} horizontal={true}>
+                                <LearnChart/>
                             </ScrollView>
                         </View>
 

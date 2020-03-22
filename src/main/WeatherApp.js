@@ -1,6 +1,7 @@
 import React from 'react';
 import {connect} from "react-redux";
 import {Text, View} from "react-native";
+import * as Font from 'expo-font';
 
 import MainPage from "./MainPage";
 import fetchRootForecast from "./weather/api/ForecastApi"
@@ -20,6 +21,10 @@ class WeatherApp extends React.Component {
             navigation: this.props.navigation
         };
         console.log(entity);
+        await Font.loadAsync({
+            'Neucha': require('../../assets/fonts/Neucha-Regular.ttf'),
+        });
+        this.props.fontLoaded();
         this.props.loadInitialForecast(entity);
         this.setState({isRootForecastLoaded: true});
     }
@@ -43,6 +48,7 @@ function mapStateToProps(state){
 function mapDispatcherToProps(dispatch) {
     return {
         loadInitialForecast: (rootForecast) => dispatch({ type: 'ROOT_FORECAST', payload: rootForecast}),
+        fontLoaded: () => dispatch({type: 'FONT_LOADED'})
     }
 }
 
