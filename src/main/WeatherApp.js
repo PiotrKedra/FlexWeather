@@ -1,6 +1,6 @@
 import React from 'react';
-import {connect} from 'react-redux';
-import {Text, View} from 'react-native';
+import { connect } from 'react-redux';
+import { Text, View } from 'react-native';
 
 import MainPage from './MainPage';
 import fetchRootForecast from './weather/api/ForecastApi';

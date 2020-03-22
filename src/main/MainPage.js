@@ -7,7 +7,7 @@ import {
   ScrollView,
   Animated,
 } from 'react-native';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 
 import Text from '../main/components/CustomText';
 import Header from './menu/Header';
@@ -31,14 +31,14 @@ class MainPage extends React.Component {
         toValue: 0,
         duration: 400,
       }).start();
-      this.setState({scroll: true});
+      this.setState({ scroll: true });
     }
     if (y < 10 && this.state.scroll === true) {
       Animated.timing(this.state.locationOpacity, {
         toValue: 1,
         duration: 400,
       }).start();
-      this.setState({scroll: false});
+      this.setState({ scroll: false });
     }
   };
 
@@ -68,27 +68,30 @@ class MainPage extends React.Component {
     };
 
     return (
-      <View style={{flex: 1}}>
+      <View style={{ flex: 1 }}>
         <View style={styles.statusBarCover} />
         <ImageBackground
           style={styles.imageBackground}
-          source={require('../../assets/images/background.jpg')}>
+          source={require('../../assets/images/background.jpg')}
+        >
           <Header isScrool={this.state.scroll} />
           <ScrollView
-            contentContainerStyle={{alignItems: 'center'}}
+            contentContainerStyle={{ alignItems: 'center' }}
             onScroll={this.onScrollNotTopMinimizeHeader}
-            nestedScrollEnabled={true}>
+            nestedScrollEnabled={true}
+          >
             <Animated.View style={[styles.locationView, locationStyle]}>
               <View
                 style={{
                   flex: 1,
                   justifyContent: 'flex-start',
-                  alignItems: 'flex-start',
-                }}>
-                <Text style={{fontSize: 25}}>
+                  alignItems: 'flex-start'
+                }}
+              >
+                <Text style={{ fontSize: 25 }}>
                   {this.props.activeLocation.country}
                 </Text>
-                <Text style={{fontSize: 50}}>
+                <Text style={{ fontSize: 50 }}>
                   {this.props.activeLocation.city}
                 </Text>
               </View>
@@ -103,7 +106,8 @@ class MainPage extends React.Component {
                 height: 300,
                 backgroundColor: 'white',
                 borderRadius: 20,
-              }}>
+              }}
+            >
               <HourlyTemperaturePanel />
             </View>
 
@@ -115,10 +119,12 @@ class MainPage extends React.Component {
                 backgroundColor: 'white',
                 borderRadius: 20,
                 marginBottom: 100,
-              }}>
+              }}
+            >
               <ScrollView
-                style={{flex: 1, paddingTop: 40, borderWidth: 1}}
-                horizontal={true}>
+                style={{ flex: 1, paddingTop: 40, borderWidth: 1 }}
+                horizontal={true}
+              >
                 <LearnChart />
               </ScrollView>
             </View>
