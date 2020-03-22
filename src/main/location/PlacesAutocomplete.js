@@ -1,7 +1,6 @@
 import React from 'react';
 import { StyleSheet, TouchableOpacity } from 'react-native';
 import {GooglePlacesAutocomplete} from "react-native-google-places-autocomplete";
-import * as Font from "expo-font";
 import {connect} from "react-redux";
 
 import {GOOGLE_TOKEN} from "../token";
@@ -9,13 +8,6 @@ import CustomText from "../components/CustomText";
 import fetchRootForecast from "../weather/api/ForecastApi";
 
 class PlacesAutocomplete extends React.Component {
-
-    async componentDidMount() {
-        await Font.loadAsync({
-            'Neucha': require('../../../assets/fonts/Neucha-Regular.ttf'),
-        });
-        this.setState({fontLoaded: true});
-    }
 
     async setActiveLocation(data, details){
         const location = {
