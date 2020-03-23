@@ -69,7 +69,6 @@ class MainPage extends React.Component {
 
     return (
       <View style={{ flex: 1 }}>
-        <View style={styles.statusBarCover} />
         <ImageBackground
           style={styles.imageBackground}
           source={require('../../assets/images/background.jpg')}
