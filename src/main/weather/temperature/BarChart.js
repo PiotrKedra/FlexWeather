@@ -45,7 +45,7 @@ export default class BarChart extends PureComponent {
         <G y={graphHeight + GRAPH_MARGIN}>
           {/* Top value label */}
           <Text
-            x={70}
+            x={100}
             textAnchor="end"
             y={y(topValue) * -1 - 5}
             fontSize={12}

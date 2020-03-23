@@ -99,6 +99,22 @@ class MainPage extends React.Component {
             <BasicWeatherPanel forecastData={this.getCurrentForecast()} />
 
             <View
+                style={{
+                  marginTop: 10,
+                  width: '90%',
+                  height: 300,
+                  backgroundColor: 'white',
+                  borderRadius: 20,
+                }}
+            >
+              <ScrollView
+                  style={{ flex: 1, paddingTop: 40, borderWidth: 1 }}
+                  horizontal={true}
+              >
+                <LearnChart />
+              </ScrollView>
+            </View>
+            <View
               style={{
                 marginTop: 10,
                 width: '90%',
