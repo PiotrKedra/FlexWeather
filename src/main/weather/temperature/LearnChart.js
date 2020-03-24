@@ -4,10 +4,10 @@ import * as d3 from 'd3';
 import {connect} from 'react-redux';
 
 const svgWidth = 800;
-const svgHeight = 200;
+const svgHeight = 250;
 
 const graphHeight = 70;
-const startYPointOfGraph = 30;
+const startYPointOfGraph = 60;
 
 const DEGREE_SIGN = '°';
 
@@ -152,6 +152,30 @@ class LearnChart extends React.PureComponent {
                   href={require('../../../../assets/images/sun-cloud.png')}
                   clipPath="url(#clip)"
               />
+          ))}
+          {tmpData.map(item => (
+              <Image
+                  x={x(item.label) - 17}
+                  y={-30}
+                  width={20}
+                  height={20}
+                  preserveAspectRatio="xMidYMid slice"
+                  opacity="0.4"
+                  href={require('../../../../assets/images/rain-umbrella.png')}
+                  clipPath="url(#clip)"
+              />
+          ))}
+          {tmpData.map(item => (
+              <Text
+                  key={'ttt' + item.label}
+                  fontSize="14"
+                  x={x(item.label) - 17}
+                  y={-30}
+                  textAnchor="middle"
+                  fill="black"
+                  fontFamily="Neucha-Regular">
+                11%
+              </Text>
           ))}
           {tmpData.map(item => (
             <Text
