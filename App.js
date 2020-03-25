@@ -23,6 +23,7 @@ const reducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         rootForecastPerDay: action.payload.rootForecastPerDay,
         currentTimestamp: action.payload.currentTimestamp,
+        hourlyForecast: action.payload.hourlyForecast,
         days: action.payload.days,
         navigation: action.payload.navigation,
       });
@@ -36,6 +37,7 @@ const reducer = (state = initialState, action) => {
         activeLocation: action.payload.location,
         rootForecastPerDay: action.payload.forecast.rootForecast,
         currentTimestamp: action.payload.forecast.currentTimestamp,
+        hourlyForecast: action.payload.forecast.hourlyForecast,
         days: action.payload.forecast.days,
       });
     case 'FONT_LOADED':

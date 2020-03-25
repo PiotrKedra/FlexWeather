@@ -2,6 +2,7 @@ import React from 'react';
 import {View, ScrollView, FlatList, TouchableOpacity} from 'react-native';
 import TemperatureChart from "./TemperatureChart";
 import Text from "../../components/CustomText";
+import { connect } from 'react-redux';
 
 
 class HourlyTemperaturePanel extends React.Component {
@@ -43,11 +44,35 @@ class HourlyTemperaturePanel extends React.Component {
                     keyExtractor={(item)=> (item.value)}
                 />
                 <ScrollView horizontal={true}>
-                    <TemperatureChart data={tmpData} />
+                    <TemperatureChart data={this.getProperHourlyForecast()} />
                 </ScrollView>
             </View>
         )
     }
+
+    getProperHourlyForecast = () => {
+        let result = [];
+        for (let item of this.props.hourlyForecast) {
+            if (this.checkIfSameDay(this.props.currentTimestamp ,item.timeObject.timestamp)) {
+                result.push(item);
+            }
+        }
+        console.log(result);
+        return result
+    };
+
+    checkIfSameDay(currentTimestamp, timestamp) {
+        let currentDate = new Date(currentTimestamp * 1000);
+        let date = new Date(timestamp * 1000);
+        return currentDate.getDate() === date.getDate();
+    }
 }
 
-export default HourlyTemperaturePanel;
+function mapStateToProps(state) {
+    return {
+        hourlyForecast: state.hourlyForecast,
+        currentTimestamp: state.currentTimestamp
+    };
+}
+
+export default connect(mapStateToProps, {})(HourlyTemperaturePanel);

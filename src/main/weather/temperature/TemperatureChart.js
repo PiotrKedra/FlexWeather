@@ -4,7 +4,7 @@ import * as d3 from 'd3';
 import IMAGES from "../../../resource/ImagePath";
 
 
-const SVG_WIDTH = 800;
+let SVG_WIDTH = 600;
 const SVG_HEIGHT = 240;
 const GRAPH_HEIGHT = 70;
 const START_Y_POSITION_OF_GRAPH = 60;
@@ -24,23 +24,14 @@ const COLORS = {
 class TemperatureChart extends React.Component {
 
   render() {
-    const tmpData = [
-      {label: '8:00', temp: 5, rain: '1%'},
-      {label: '9:00', temp: 5, rain: '0%'},
-      {label: '10:00', temp: 6, rain: '2%'},
-      {label: '11:00', temp: 8, rain: '2%'},
-      {label: '12:00', temp: 9, rain: '3%'},
-      {label: '13:00', temp: 9, rain: '0%'},
-      {label: '14:00', temp: 10, rain: '11%'},
-      {label: '15:00', temp: 8, rain: '20%'},
-      {label: '16:00', temp: 7, rain: '69%'},
-      {label: '17:00', temp: 6, rain: '0%'},
-      {label: '18:00', temp: 4, rain: '0%'},
-    ];
+    SVG_WIDTH = 80 * this.props.data.length;
+    console.log("CUS NIE HALO");
+
+    console.log(this.props.data);
     const data = this.props.data;
 
-    const minValue = d3.min(data, d => d.temp);
-    const maxValue = d3.max(data, d => d.temp);
+    const minValue = d3.min(data, d => d.temperature);
+    const maxValue = d3.max(data, d => d.temperature);
     const xFunction = this.getFunctionX(data);
     const yFunction = this.getFunctionY(minValue, maxValue);
 
@@ -68,17 +59,17 @@ class TemperatureChart extends React.Component {
           {this.generateLineComponents(data, xFunction, yFunction)}
           {this.generateDotForEach(data, xFunction, yFunction)}
 
-          {/* data values ( text for: hour, temp, rainfall % ) */}
+          {/* data values ( text for: hour, temperature, rainfall % ) */}
           {this.generateDegreeTextForEachItem(data, xFunction, yFunction)}
-          {this.generateTextForEachItem(data, 'rain', xFunction, 8, -20, 14)}
-          {this.generateTextForEachItem(data, 'label', xFunction, 0, (START_Y_POSITION_OF_GRAPH + GRAPH_HEIGHT) * GRAPH_TRANSFORMATION - 70, 20)}
+          {this.generateTextForEachItem(data, 'precipProbability', xFunction, 8, -20, 14)}
+          {this.generateTextForEachItem(data, 'time', xFunction, 0, (START_Y_POSITION_OF_GRAPH + GRAPH_HEIGHT) * GRAPH_TRANSFORMATION - 70, 20)}
         </G>
       </Svg>
     );
   }
 
   getFunctionX(data) {
-    const xDomain = data.map(item => item.label);
+    const xDomain = data.map(item => item.time);
     const xRange = [0, SVG_WIDTH];
     return d3
         .scalePoint()
@@ -120,10 +111,10 @@ class TemperatureChart extends React.Component {
   generateVerticalGridLines(data, x) {
     return (data.map(item => (
         <Line
-            key={item.label}
-            x1={x(item.label)}
+            key={item.timeObject.timestamp}
+            x1={x(item.time)}
             y1={-START_Y_POSITION_OF_GRAPH + 10}
-            x2={x(item.label)}
+            x2={x(item.time)}
             y2={-START_Y_POSITION_OF_GRAPH - GRAPH_HEIGHT - 10}
             stroke={COLORS.gridColor}
             strokeDasharray={[3, 3]}
@@ -135,8 +126,8 @@ class TemperatureChart extends React.Component {
   generateForecastImageForEach(data, x) {
     return (data.map(item => (
           <Image
-              key={item.label}
-              x={x(item.label) - 17}
+              key={item.timeObject.timestamp}
+              x={x(item.time) - 17}
               y={(START_Y_POSITION_OF_GRAPH + GRAPH_HEIGHT) * GRAPH_TRANSFORMATION - 60}
               width={35}
               height={35}
@@ -150,8 +141,8 @@ class TemperatureChart extends React.Component {
   generateRainfallImageForEach(data, x) {
     return (data.map(item => (
         <Image
-            key={item.label}
-            x={x(item.label) - 20}
+            key={item.timeObject.timestamp}
+            x={x(item.time) - 20}
             y={-35}
             width={17}
             height={17}
@@ -165,10 +156,10 @@ class TemperatureChart extends React.Component {
   generateGradientComponent(data, x, y){
     let polygonPoints = "";
     for (let item of data) {
-      polygonPoints += Math.ceil(x(item.label)) + ',' + -Math.ceil(y(item.temp)) + ' ';
+      polygonPoints += Math.ceil(x(item.time)) + ',' + -Math.ceil(y(item.temperature)) + ' ';
     }
-    polygonPoints +=  Math.ceil(x(data[data.length - 1].label)) + ',' + -START_Y_POSITION_OF_GRAPH +  ' '
-        + Math.ceil(x(data[0].label)) + ',' + -START_Y_POSITION_OF_GRAPH;
+    polygonPoints +=  Math.ceil(x(data[data.length - 1].time)) + ',' + -START_Y_POSITION_OF_GRAPH +  ' '
+        + Math.ceil(x(data[0].time)) + ',' + -START_Y_POSITION_OF_GRAPH;
     return (
         <Polygon
             points={polygonPoints}
@@ -180,13 +171,13 @@ class TemperatureChart extends React.Component {
   generateLineComponents(data, x, y) {
     let lineArray = [];
     for (let i = 0; i < data.length - 1; i++) {
-      const x1 = x(data[i].label);
-      const y1 = y(data[i].temp);
-      const x2 = x(data[i + 1].label);
-      const y2 = y(data[i + 1].temp);
+      const x1 = x(data[i].time);
+      const y1 = y(data[i].temperature);
+      const x2 = x(data[i + 1].time);
+      const y2 = y(data[i + 1].temperature);
       const lineComponent = (
           <Line
-              key={data[i].label}
+              key={data[i].timeObject.timestamp}
               x1={x1}
               y1={y1 * GRAPH_TRANSFORMATION}
               x2={x2}
@@ -203,9 +194,9 @@ class TemperatureChart extends React.Component {
   generateDotForEach(data, x, y) {
     return (data.map(item => (
           <Circle
-              key={item.label}
-              cx={x(item.label)}
-              cy={y(item.temp) * GRAPH_TRANSFORMATION}
+              key={item.timeObject.timestamp}
+              cx={x(item.time)}
+              cy={y(item.temperature) * GRAPH_TRANSFORMATION}
               r="2"
               fill={COLORS.pathBlue}
           />
@@ -227,14 +218,14 @@ class TemperatureChart extends React.Component {
   generateDegreeTextForEachItem(data, x, y) {
     return (data.map(item => (
         <Text
-            key={'degree' + item.label}
+            key={'degree' + item.timeObject.timestamp}
             fontSize={16}
-            x={x(item.label)}
-            y={y(item.temp) * GRAPH_TRANSFORMATION - 6}
+            x={x(item.time)}
+            y={y(item.temperature) * GRAPH_TRANSFORMATION - 6}
             textAnchor="middle"
             fill={COLORS.mainText}
             fontFamily="Neucha-Regular">
-          {item.temp + DEGREE_SIGN}
+          {item.temperature + DEGREE_SIGN}
         </Text>
     )))
   }
@@ -242,9 +233,9 @@ class TemperatureChart extends React.Component {
   generateTextForEachItem(data, itemKey, xFunction, xShift, y, fontSize) {
     return (data.map(item => (
           <Text
-              key={itemKey + item.label}
+              key={itemKey + item.timeObject.timestamp}
               fontSize={fontSize}
-              x={xFunction(item.label) + xShift}
+              x={xFunction(item.time) + xShift}
               y={y}
               textAnchor="middle"
               fill={COLORS.mainText}

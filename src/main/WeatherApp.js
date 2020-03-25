@@ -16,9 +16,9 @@ class WeatherApp extends React.Component {
       rootForecastPerDay: rootForecast.rootForecast,
       currentTimestamp: rootForecast.currentTimestamp,
       days: rootForecast.days,
+      hourlyForecast: rootForecast.hourlyForecast,
       navigation: this.props.navigation,
     };
-    console.log(entity);
     this.props.fontLoaded();
     this.props.loadInitialForecast(entity);
     this.setState({isRootForecastLoaded: true});
@@ -41,8 +41,7 @@ function mapStateToProps(state) {
 
 function mapDispatcherToProps(dispatch) {
   return {
-    loadInitialForecast: rootForecast =>
-      dispatch({type: 'ROOT_FORECAST', payload: rootForecast}),
+    loadInitialForecast: rootForecast => dispatch({type: 'ROOT_FORECAST', payload: rootForecast}),
     fontLoaded: () => dispatch({type: 'FONT_LOADED'}),
   };
 }

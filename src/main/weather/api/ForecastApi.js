@@ -10,17 +10,43 @@ async function fetchRootForecast(lat, lng){
 
         let forecastPerDay = parseToForecastPerDay(responseJson);
 
+        let hourlyForecast = getHourlyForecast(responseJson.hourly);
+
         let dayForecastArray = responseJson.daily.data;
         let days = getDateObjectsList(dayForecastArray);
 
         return {
             rootForecast: forecastPerDay,
-            currentTimestamp: forecastPerDay[0].timestamp,
-            days: days
+            currentTimestamp: responseJson.currently.time,
+            days: days,
+            hourlyForecast: hourlyForecast,
         }
     } catch (error) {
         console.log(error);
     }
+}
+
+function getHourlyForecast(hourly) {
+    return hourly.data.map(item => ({
+            time: getHourFromUnixTime(item.time),
+            timeObject: convertUnixTime(item.time),
+            summary: item.summary,
+            icon: item.icon,
+            precipIntensity: item.precipIntensity,
+            precipProbability: item.precipProbability*100 + '%',
+            temperature: Math.round(item.temperature),
+            apparentTemperature: Math.round(item.apparentTemperature),
+            dewPoint: item.dewPoint,
+            humidity: item.humidity,
+            pressure: item.pressure,
+            windSpeed: item.windSpeed,
+            windGust: item.windGust,
+            windBearing: item.windBearing,
+            cloudCover: item.cloudCover,
+            uvIndex: item.uvIndex,
+            visibility: item.visibility,
+            ozone: item.ozone
+    }))
 }
 
 function parseToForecastPerDay(forecast){
@@ -53,6 +79,11 @@ function getDateObjectsList(dayForecastArray){
         days.push(dateObject);
     }
     return days;
+}
+
+function getHourFromUnixTime(unixTimestamp) {
+    let date = new Date(unixTimestamp * 1000);
+    return date.getHours() + ':00';
 }
 
 function convertUnixTime(unixTimestamp){
