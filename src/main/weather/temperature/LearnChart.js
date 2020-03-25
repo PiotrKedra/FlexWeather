@@ -4,7 +4,7 @@ import * as d3 from 'd3';
 import {connect} from 'react-redux';
 
 const svgWidth = 800;
-const svgHeight = 250;
+const svgHeight = 240;
 
 const graphHeight = 70;
 const startYPointOfGraph = 60;
@@ -98,7 +98,7 @@ class LearnChart extends React.PureComponent {
     const minValue = d3.min(tmpData, d => d.temp);
 
     return (
-      <Svg style={{borderWidth: 1}} width={svgWidth} height={svgHeight}>
+      <Svg width={svgWidth} height={svgHeight}>
         <G y={svgHeight}>
           {this.generateGradientComponent(tmpData, x, y)}
 
@@ -155,10 +155,10 @@ class LearnChart extends React.PureComponent {
           ))}
           {tmpData.map(item => (
               <Image
-                  x={x(item.label) - 17}
-                  y={-30}
-                  width={20}
-                  height={20}
+                  x={x(item.label) - 20}
+                  y={-35}
+                  width={17}
+                  height={17}
                   preserveAspectRatio="xMidYMid slice"
                   opacity="0.4"
                   href={require('../../../../assets/images/rain-umbrella.png')}
@@ -169,8 +169,8 @@ class LearnChart extends React.PureComponent {
               <Text
                   key={'ttt' + item.label}
                   fontSize="14"
-                  x={x(item.label) - 17}
-                  y={-30}
+                  x={x(item.label) + 8}
+                  y={-20}
                   textAnchor="middle"
                   fill="black"
                   fontFamily="Neucha-Regular">

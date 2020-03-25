@@ -39,7 +39,7 @@ class BasicWeatherPanel extends React.Component {
 
 const styles = StyleSheet.create({
   mainView: {
-    width: '90%',
+    width: '95%',
     backgroundColor: 'white',
     borderRadius: 20,
     elevation: 7

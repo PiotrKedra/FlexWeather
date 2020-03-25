@@ -14,7 +14,7 @@ class DayPickerList extends React.Component{
             <FlatList
                 nestedScrollEnabled={true}
                 horizontal={true}
-                style={{paddingLeft: '5%', marginBottom: 10, paddingRight: 100, flex: 1}}
+                style={{paddingLeft: '2.5%', marginBottom: 10, paddingRight: 100, flex: 1}}
                 data={this.props.days}
                 renderItem={item => (
                     <TouchableOpacity

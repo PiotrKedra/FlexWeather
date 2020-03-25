@@ -6,6 +6,8 @@ import {
   StatusBar,
   ScrollView,
   Animated,
+  FlatList,
+  TouchableOpacity
 } from 'react-native';
 import { connect } from 'react-redux';
 
@@ -101,14 +103,25 @@ class MainPage extends React.Component {
             <View
                 style={{
                   marginTop: 10,
-                  width: '90%',
-                  height: 300,
+                  width: '95%',
                   backgroundColor: 'white',
                   borderRadius: 20,
                 }}
             >
+              <Text style={{fontSize: 30, paddingLeft: '5%', color: 'rgb(33,33,33)', marginTop: 10}}>
+                Hourly forecast
+              </Text>
+              <FlatList
+                  style={{paddingLeft: '5%', borderBottomWidth: 1, borderColor: 'rgba(66,66,66,0.5)', paddingVertical: 10}}
+                  horizontal={true}
+                  data={[{value: 'temperature'}, {value: 'rainfall'}, {value: 'wind'}, {value: 'pressure'}]}
+                  renderItem={(item) => (
+                      <TouchableOpacity style={{backgroundColor: 'rgba(240,240,240,1)', borderRadius: 15, elevation: 1, justifyContent: 'center', alignContent: 'center', marginRight: 20, paddingHorizontal: 15, paddingVertical: 5}}>
+                        <Text style={{fontSize: 20}}>{item.item.value}</Text>
+                      </TouchableOpacity>)}
+                  keyExtractor={(item)=> (item.value)}
+              />
               <ScrollView
-                  style={{ flex: 1, paddingTop: 40, borderWidth: 1 }}
                   horizontal={true}
               >
                 <LearnChart />
