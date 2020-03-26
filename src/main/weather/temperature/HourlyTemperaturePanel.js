@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import {View, ScrollView, FlatList, TouchableOpacity} from 'react-native';
 import TemperatureChart from "./TemperatureChart";
 import Text from "../../components/CustomText";
 import { connect } from 'react-redux';
+
 
 
 class HourlyTemperaturePanel extends React.Component {
@@ -21,6 +22,13 @@ class HourlyTemperaturePanel extends React.Component {
             {label: '17:00', temp: 6, rain: '0%'},
             {label: '18:00', temp: 4, rain: '0%'},
         ];
+
+        const LazyLargeComponent = React.lazy(() => {
+            return new Promise(resolve => setTimeout(resolve, 100)).then(
+                () => import("./TemperatureChart")
+            );
+        });
+
         return (
             <View
                 style={{
@@ -44,7 +52,9 @@ class HourlyTemperaturePanel extends React.Component {
                     keyExtractor={(item)=> (item.value)}
                 />
                 <ScrollView horizontal={true}>
-                    <TemperatureChart data={this.getProperHourlyForecast()} />
+                    <Suspense fallback={<Text>DUPA</Text>}>
+                        <LazyLargeComponent data={this.getProperHourlyForecast()} />
+                    </Suspense>
                 </ScrollView>
             </View>
         )
