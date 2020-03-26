@@ -21,15 +21,12 @@ const COLORS = {
 };
 
 
-class TemperatureChart extends React.Component {
+class TemperatureChart extends React.PureComponent {
 
   render() {
     SVG_WIDTH = 80 * this.props.data.length;
-    console.log("CUS NIE HALO");
 
-    console.log(this.props.data);
     const data = this.props.data;
-
     const minValue = d3.min(data, d => d.temperature);
     const maxValue = d3.max(data, d => d.temperature);
     const xFunction = this.getFunctionX(data);
@@ -41,14 +38,17 @@ class TemperatureChart extends React.Component {
           {this.getDefinitions()}
 
           {/* grid lines */}
+          {this.generateVerticalBeginLine()}
           {this.generateFullLengthLine(-START_Y_POSITION_OF_GRAPH - GRAPH_HEIGHT)}
           {this.generateFullLengthLine(-START_Y_POSITION_OF_GRAPH - GRAPH_HEIGHT / 2, 50)}
           {this.generateFullLengthLine(-START_Y_POSITION_OF_GRAPH)}
           {this.generateVerticalGridLines(data, xFunction)}
 
-          {/* min & max values*/}
-          {this.generateSingleText('MAX ' + maxValue + DEGREE_SIGN, 10, -START_Y_POSITION_OF_GRAPH - GRAPH_HEIGHT - 2)}
-          {this.generateSingleText('MIN ' + minValue + DEGREE_SIGN, 10, -START_Y_POSITION_OF_GRAPH - 2)}
+
+          {/* min & max values and data text*/}
+          {this.generateSingleText('MAX ' + maxValue + DEGREE_SIGN, 13, -START_Y_POSITION_OF_GRAPH - GRAPH_HEIGHT - 2)}
+          {this.generateSingleText('MIN ' + minValue + DEGREE_SIGN, 13, -START_Y_POSITION_OF_GRAPH - 2)}
+          {this.generateDateText(data)}
 
           {/* forecast images*/}
           {this.generateForecastImageForEach(data, xFunction)}
@@ -96,9 +96,21 @@ class TemperatureChart extends React.Component {
     </Defs>;
   }
 
+  generateVerticalBeginLine() {
+    return <Line
+        x1={10}
+        y1={-20}
+        x2={10}
+        y2={-SVG_HEIGHT}
+        stroke={COLORS.gridColor}
+        strokeDasharray={[3, 3]}
+        strokeWidth="0.5"
+    />;
+  }
+
   generateFullLengthLine(y, xPadding = 0) {
     return <Line
-        x1={xPadding}
+        x1={10 + xPadding}
         y1={y}
         x2={SVG_WIDTH - xPadding}
         y2={y}
@@ -212,6 +224,19 @@ class TemperatureChart extends React.Component {
         fill={COLORS.gridColor}
         fontFamily="Neucha-Regular">
       {textValue}
+    </Text>;
+  }
+
+  generateDateText(data) {
+    return <Text
+        fontSize="20"
+        x={13}
+        y={-SVG_HEIGHT}
+        textAnchor="start"
+        fill={COLORS.gridColor}
+        fontFamily="Neucha-Regular"
+        transform="rotate(90, 3, -230)">
+      {data[0].timeObject.day}
     </Text>;
   }
 

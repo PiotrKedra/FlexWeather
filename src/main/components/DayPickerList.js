@@ -25,7 +25,7 @@ class DayPickerList extends React.Component{
                         onPress={() => this.props.setCurrentTimestamp(item.item.timestamp)}
                     >
                         <Text style={{fontSize: 25}}>{item.item.date}</Text>
-                        <Text style={{fontSize: 22}}>{item.item.day}</Text>
+                        <Text style={{fontSize: 22}}>{item.item.day.substring(0,3)}</Text>
                     </TouchableOpacity>
                 )}
                 ListFooterComponent={() => (

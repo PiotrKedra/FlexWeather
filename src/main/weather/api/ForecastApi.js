@@ -88,7 +88,7 @@ function getHourFromUnixTime(unixTimestamp) {
 
 function convertUnixTime(unixTimestamp){
     let date = new Date(unixTimestamp * 1000);
-    let days = ['Sun', 'Mon','Tue','Wed','Thu','Fri','Sat'];
+    let days = ['Sunday', 'Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
     return {
         timestamp: unixTimestamp,
         date: date.getDate(),

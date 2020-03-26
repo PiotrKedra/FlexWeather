@@ -1,9 +1,9 @@
 import React, { Suspense } from 'react';
-import {View, ScrollView, FlatList, TouchableOpacity} from 'react-native';
-import TemperatureChart from "./TemperatureChart";
+import {View, ScrollView, FlatList, TouchableOpacity, Dimensions} from 'react-native';
 import Text from "../../components/CustomText";
 import { connect } from 'react-redux';
-
+import LottieView from 'lottie-react-native';
+import TemperatureChart from "./TemperatureChart";
 
 
 class HourlyTemperaturePanel extends React.Component {
@@ -23,11 +23,15 @@ class HourlyTemperaturePanel extends React.Component {
             {label: '18:00', temp: 4, rain: '0%'},
         ];
 
-        const LazyLargeComponent = React.lazy(() => {
-            return new Promise(resolve => setTimeout(resolve, 100)).then(
-                () => import("./TemperatureChart")
-            );
-        });
+        const currentChart = (<TemperatureChart data={this.getProperHourlyForecast(26)}/>);
+        const nextFirstChart = (<TemperatureChart data={this.getProperHourlyForecast(27)}/>);
+        const nextSecondChart = (<TemperatureChart data={this.getProperHourlyForecast(28)}/>);
+
+        // const LazyLargeComponent = React.lazy(() => {
+        //     return new Promise(resolve => setTimeout(resolve, 10)).then(
+        //         () => import("./TemperatureChart")
+        //     );
+        // });
 
         return (
             <View
@@ -52,18 +56,24 @@ class HourlyTemperaturePanel extends React.Component {
                     keyExtractor={(item)=> (item.value)}
                 />
                 <ScrollView horizontal={true}>
-                    <Suspense fallback={<Text>DUPA</Text>}>
-                        <LazyLargeComponent data={this.getProperHourlyForecast()} />
-                    </Suspense>
+                    {currentChart}
+                    {nextFirstChart}
+                    {nextSecondChart}
+                    {/*{ this.checkIfSameDay(26, this.props.currentTimestamp) && currentChart}*/}
+                    {/*{ this.checkIfSameDay(27, this.props.currentTimestamp) && nextFirstChart}*/}
+                    {/*{ this.checkIfSameDay(28, this.props.currentTimestamp) && nextSecondChart}*/}
+                    {/*<Suspense fallback={<View style={{height: 240, width: Dimensions.get('window').width*0.95, justifyContent: 'center', alignItems: 'center'}}><LottieView style={{height: 200}} source={require('../../../../assets/lottie/loading')} autoPlay loop /></View>}>*/}
+                    {/*    <LazyLargeComponent data={this.getProperHourlyForecast()} />*/}
+                    {/*</Suspense>*/}
                 </ScrollView>
             </View>
         )
     }
 
-    getProperHourlyForecast = () => {
+    getProperHourlyForecast = (day) => {
         let result = [];
         for (let item of this.props.hourlyForecast) {
-            if (this.checkIfSameDay(this.props.currentTimestamp ,item.timeObject.timestamp)) {
+            if (this.checkIfSameDay(day ,item.timeObject.timestamp)) {
                 result.push(item);
             }
         }
@@ -72,16 +82,15 @@ class HourlyTemperaturePanel extends React.Component {
     };
 
     checkIfSameDay(currentTimestamp, timestamp) {
-        let currentDate = new Date(currentTimestamp * 1000);
+        //let currentDate = new Date(currentTimestamp * 1000);
         let date = new Date(timestamp * 1000);
-        return currentDate.getDate() === date.getDate();
+        return currentTimestamp === date.getDate();
     }
 }
 
 function mapStateToProps(state) {
     return {
         hourlyForecast: state.hourlyForecast,
-        currentTimestamp: state.currentTimestamp
     };
 }
 
