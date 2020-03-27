@@ -2,8 +2,8 @@ import React, { Suspense } from 'react';
 import {View, ScrollView, FlatList, TouchableOpacity, Image} from 'react-native';
 import Text from "../../components/CustomText";
 import { connect } from 'react-redux';
-import LottieView from 'lottie-react-native';
 import TemperatureChart from "./TemperatureChart";
+import Info from "../Info";
 
 
 class HourlyTemperaturePanel extends React.Component {
@@ -34,12 +34,7 @@ class HourlyTemperaturePanel extends React.Component {
                 <ScrollView horizontal={true}>
                     {this.generateChartComponentsForNext48H(this.props.hourlyForecast)}
                 </ScrollView>
-                <TouchableOpacity style={{paddingHorizontal: '5%', marginBottom: 10, flexDirection: 'row', alignItems: 'center'}}>
-                    <Image style={{height: 25, width: 25}} source={require('../../../../assets/images/info.png')}/>
-                    <Text style={{fontSize: 15, color: 'rgba(33,33,33,0.5)', marginHorizontal: 8}}>
-                        Info
-                    </Text>
-                </TouchableOpacity>
+                <Info/>
             </View>
         )
     }
