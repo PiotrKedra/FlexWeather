@@ -17,7 +17,7 @@ import FooterMenu from './menu/FooterMenu';
 import BasicWeatherPanel from './weather/BasicWeatherPanel';
 import DayPickerList from './components/DayPickerList';
 import HourlyTemperaturePanel from './weather/temperature/HourlyTemperaturePanel';
-import TemperatureChart from './weather/temperature/TemperatureChart';
+import HourlyForecastInfo from './weather/HourlyForecastInfo'
 
 class MainPage extends React.Component {
   state = {
@@ -69,6 +69,8 @@ class MainPage extends React.Component {
       opacity: this.state.locationOpacity,
     };
 
+    this.shouldDisplayHourlyCharts();
+
     return (
       <View style={{ flex: 1 }}>
         <ImageBackground
@@ -99,7 +101,8 @@ class MainPage extends React.Component {
             </Animated.View>
             <DayPickerList />
             <BasicWeatherPanel forecastData={this.getCurrentForecast()} />
-            <HourlyTemperaturePanel />
+            {this.shouldDisplayHourlyCharts() ? <HourlyTemperaturePanel /> : <HourlyForecastInfo/>
+            }
             <View
               style={{
                 marginTop: 10,
@@ -122,6 +125,13 @@ class MainPage extends React.Component {
       </View>
     );
   };
+
+  shouldDisplayHourlyCharts = () => {
+    let date = new Date(this.props.currentTimestamp * 1000);
+    date.setDate(date.getDate() - 2);
+    let today = new Date();
+    return today.getTime() > date.getTime();
+  }
 }
 
 function mapStateToProps(state) {

@@ -44,7 +44,6 @@ class TemperatureChart extends React.PureComponent {
           {this.generateFullLengthLine(-START_Y_POSITION_OF_GRAPH)}
           {this.generateVerticalGridLines(data, xFunction)}
 
-
           {/* min & max values and data text*/}
           {this.generateSingleText('MAX ' + maxValue + DEGREE_SIGN, 13, -START_Y_POSITION_OF_GRAPH - GRAPH_HEIGHT - 2)}
           {this.generateSingleText('MIN ' + minValue + DEGREE_SIGN, 13, -START_Y_POSITION_OF_GRAPH - 2)}

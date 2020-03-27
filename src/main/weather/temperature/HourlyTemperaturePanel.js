@@ -1,5 +1,5 @@
 import React, { Suspense } from 'react';
-import {View, ScrollView, FlatList, TouchableOpacity, Dimensions} from 'react-native';
+import {View, ScrollView, FlatList, TouchableOpacity, Image} from 'react-native';
 import Text from "../../components/CustomText";
 import { connect } from 'react-redux';
 import LottieView from 'lottie-react-native';
@@ -9,30 +9,6 @@ import TemperatureChart from "./TemperatureChart";
 class HourlyTemperaturePanel extends React.Component {
 
     render() {
-        const tmpData = [
-            {label: '8:00', temp: 5, rain: '1%'},
-            {label: '9:00', temp: 5, rain: '0%'},
-            {label: '10:00', temp: 6, rain: '2%'},
-            {label: '11:00', temp: 8, rain: '2%'},
-            {label: '12:00', temp: 9, rain: '3%'},
-            {label: '13:00', temp: 9, rain: '0%'},
-            {label: '14:00', temp: 10, rain: '11%'},
-            {label: '15:00', temp: 8, rain: '20%'},
-            {label: '16:00', temp: 7, rain: '69%'},
-            {label: '17:00', temp: 6, rain: '0%'},
-            {label: '18:00', temp: 4, rain: '0%'},
-        ];
-
-        const currentChart = (<TemperatureChart data={this.getProperHourlyForecast(26)}/>);
-        const nextFirstChart = (<TemperatureChart data={this.getProperHourlyForecast(27)}/>);
-        const nextSecondChart = (<TemperatureChart data={this.getProperHourlyForecast(28)}/>);
-
-        // const LazyLargeComponent = React.lazy(() => {
-        //     return new Promise(resolve => setTimeout(resolve, 10)).then(
-        //         () => import("./TemperatureChart")
-        //     );
-        // });
-
         return (
             <View
                 style={{
@@ -56,35 +32,41 @@ class HourlyTemperaturePanel extends React.Component {
                     keyExtractor={(item)=> (item.value)}
                 />
                 <ScrollView horizontal={true}>
-                    {currentChart}
-                    {nextFirstChart}
-                    {nextSecondChart}
-                    {/*{ this.checkIfSameDay(26, this.props.currentTimestamp) && currentChart}*/}
-                    {/*{ this.checkIfSameDay(27, this.props.currentTimestamp) && nextFirstChart}*/}
-                    {/*{ this.checkIfSameDay(28, this.props.currentTimestamp) && nextSecondChart}*/}
-                    {/*<Suspense fallback={<View style={{height: 240, width: Dimensions.get('window').width*0.95, justifyContent: 'center', alignItems: 'center'}}><LottieView style={{height: 200}} source={require('../../../../assets/lottie/loading')} autoPlay loop /></View>}>*/}
-                    {/*    <LazyLargeComponent data={this.getProperHourlyForecast()} />*/}
-                    {/*</Suspense>*/}
+                    {this.generateChartComponentsForNext48H(this.props.hourlyForecast)}
                 </ScrollView>
+                <TouchableOpacity style={{paddingHorizontal: '5%', marginBottom: 10, flexDirection: 'row', alignItems: 'center'}}>
+                    <Image style={{height: 25, width: 25}} source={require('../../../../assets/images/info.png')}/>
+                    <Text style={{fontSize: 15, color: 'rgba(33,33,33,0.5)', marginHorizontal: 8}}>
+                        Info
+                    </Text>
+                </TouchableOpacity>
             </View>
         )
     }
 
-    getProperHourlyForecast = (day) => {
-        let result = [];
-        for (let item of this.props.hourlyForecast) {
-            if (this.checkIfSameDay(day ,item.timeObject.timestamp)) {
-                result.push(item);
+    generateChartComponentsForNext48H(hourlyForecast) {
+        let currentDate = new Date(hourlyForecast[0].timeObject.timestamp * 1000).getDate();
+        let hourlyForecastByDailyDate = [];
+        let tmpArray = [];
+        hourlyForecast.forEach(item => {
+            if ( currentDate === new Date(item.timeObject.timestamp * 1000).getDate()) {
+                tmpArray.push(item);
+            } else {
+                let tmpItem = Object.assign({}, item);
+                tmpItem.time = '23:59';
+                tmpArray.push(tmpItem);
+                hourlyForecastByDailyDate.push(tmpArray);
+                currentDate = new Date(item.timeObject.timestamp * 1000).getDate();
+                tmpArray = [item];
             }
-        }
-        console.log(result);
-        return result
-    };
-
-    checkIfSameDay(currentTimestamp, timestamp) {
-        //let currentDate = new Date(currentTimestamp * 1000);
-        let date = new Date(timestamp * 1000);
-        return currentTimestamp === date.getDate();
+        });
+        hourlyForecastByDailyDate.push(tmpArray);
+        let index=0;
+        return hourlyForecastByDailyDate.map(hourlyForecastPerDay => {
+            let key = 'k' + index;
+            index = index + 1;
+            return (<TemperatureChart key={key} data={hourlyForecastPerDay}/>)
+        })
     }
 }
 
