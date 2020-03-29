@@ -17,7 +17,7 @@ async function fetchRootForecast(lat, lng){
 
         return {
             rootForecast: forecastPerDay,
-            currentTimestamp: responseJson.currently.time,
+            currentTimestamp: forecastPerDay[0].timestamp,
             days: days,
             hourlyForecast: hourlyForecast,
         }
@@ -58,18 +58,36 @@ function parseToForecastPerDay(forecast){
             temperature: parseNumber((dayForecast.temperatureMin + dayForecast.temperatureMax)/2),
             temperatureMin: parseNumber(dayForecast.temperatureMin),
             temperatureMax: parseNumber(dayForecast.temperatureMax),
+            apparentTemperatureMin: parseNumber(dayForecast.apparentTemperatureMin),
+            apparentTemperatureMax: parseNumber(dayForecast.apparentTemperatureMax),
             icon: dayForecast.icon,
             summary: dayForecast.summary,
-            timestamp: dayForecast.time
+            timestamp: dayForecast.time,
+            sunriseTime: dayForecast.sunriseTime,
+            sunsetTime: dayForecast.sunsetTime,
+            moonPhase: dayForecast.moonPhase,
+            precipIntensity: dayForecast.precipIntensity,
+            precipProbability: dayForecast.precipProbability,
+            dewPoint: dayForecast.dewPoint,
+            humidity: dayForecast.humidity,
+            pressure: dayForecast.pressure,
+            windSpeed: dayForecast.windSpeed,
+            windGust: dayForecast.windGust,
+            windBearing: dayForecast.windBearing,
+            cloudCover: dayForecast.cloudCover,
+            uvIndex: dayForecast.uvIndex,
+            visibility: parseNumber(dayForecast.visibility),
+            ozone: dayForecast.ozone,
+
         };
         forecastArray.push(dailyForecast);
     }
-    forecastArray[0].temperature = forecast.currently.temperature;
+    forecastArray[0].temperature = parseNumber(forecast.currently.temperature);
     return forecastArray;
 }
 
 function parseNumber(number){
-    return (Math.round(number * 100)/100).toFixed(1);
+    return (Math.round(number)).toFixed(0);
 }
 
 function getDateObjectsList(dayForecastArray){
