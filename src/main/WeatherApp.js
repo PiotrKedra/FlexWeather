@@ -12,6 +12,7 @@ class WeatherApp extends React.Component {
 
   async componentDidMount() {
     let rootForecast = await fetchRootForecast(50.1102653, 19.7615527);
+    console.log(rootForecast.currentTimestamp);
     let entity = {
       rootForecastPerDay: rootForecast.rootForecast,
       currentTimestamp: rootForecast.currentTimestamp,

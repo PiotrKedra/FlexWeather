@@ -18,6 +18,7 @@ import BasicWeatherPanel from './weather/BasicWeatherPanel';
 import DayPickerList from './components/DayPickerList';
 import HourlyTemperaturePanel from './weather/temperature/HourlyTemperaturePanel';
 import HourlyForecastInfo from './weather/HourlyForecastInfo'
+import SummaryPanel from "./weather/SummaryPanel";
 
 class MainPage extends React.Component {
   state = {
@@ -103,22 +104,8 @@ class MainPage extends React.Component {
             <BasicWeatherPanel forecastData={this.getCurrentForecast()} />
             {this.shouldDisplayHourlyCharts() ? <HourlyTemperaturePanel /> : <HourlyForecastInfo/>
             }
-            <View
-              style={{
-                marginTop: 10,
-                width: '90%',
-                height: 300,
-                backgroundColor: 'white',
-                borderRadius: 20,
-                marginBottom: 100,
-              }}
-            >
-              <ScrollView
-                style={{ flex: 1, paddingTop: 40, borderWidth: 1 }}
-                horizontal={true}
-              >
-              </ScrollView>
-            </View>
+            <SummaryPanel/>
+            <View style={{height: 100}}/>
           </ScrollView>
           <FooterMenu />
         </ImageBackground>

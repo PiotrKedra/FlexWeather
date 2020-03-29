@@ -1,4 +1,4 @@
-import React, { Suspense } from 'react';
+import React from 'react';
 import {View, ScrollView, FlatList, TouchableOpacity, Image} from 'react-native';
 import Text from "../../components/CustomText";
 import { connect } from 'react-redux';
