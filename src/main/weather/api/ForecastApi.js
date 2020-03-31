@@ -33,7 +33,7 @@ function getHourlyForecast(hourly) {
             summary: item.summary,
             icon: item.icon,
             precipIntensity: item.precipIntensity,
-            precipProbability: item.precipProbability*100 + '%',
+            precipProbability: parseNumber(item.precipProbability*100) + '%',
             temperature: Math.round(item.temperature),
             apparentTemperature: Math.round(item.apparentTemperature),
             dewPoint: item.dewPoint,
