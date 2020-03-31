@@ -1,6 +1,7 @@
 import React from 'react';
-import {Image, View} from "react-native";
-import { connect } from 'react-redux';
+import {Image, View, StyleSheet} from "react-native";
+import {connect} from 'react-redux';
+
 import Text from '../components/CustomText'
 import {DETAIL_ICONS} from "../../resource/ImagePath";
 
@@ -15,18 +16,9 @@ const DETAILS = [
 
 function DetailsPanel(props) {
     return (
-        <View
-            style={{
-                marginTop: 10,
-                width: '95%',
-                backgroundColor: 'white',
-                borderRadius: 20,
-            }}
-        >
-            <Text style={{fontSize: 30, paddingLeft: '5%', color: 'rgb(33,33,33)', marginVertical: 10, borderBottomWidth: 1, borderColor: 'rgba(66,66,66,0.5)'}}>
-                Summary
-            </Text>
-            { generateDetailItems(props.currentTimestamp, props.forecast) }
+        <View style={styles.tab}>
+            <Text style={styles.mainTitleText}>Details</Text>
+            {generateDetailItems(props.currentTimestamp, props.forecast)}
         </View>
     )
 }
@@ -36,15 +28,18 @@ function generateDetailItems(currentTimestamp, forecast) {
     return DETAILS.map(item => (
         <View
             key={item.name}
-            style={{flex: 1, flexDirection: 'row', marginHorizontal: '5%', marginTop: 10}}>
+            style={styles.detailView}>
             <Image
-                style={{height: 35, width: 35}}
+                style={styles.icon}
                 source={item.icon}
             />
-            <View style={{marginLeft: 15, flexDirection: 'column', flex: 1, width: '100%', justifyContent: 'space-between'}}>
-                <Text style={{fontSize: 25}}>{item.title}</Text>
-                <Text
-                    style={{fontSize: 25, color: 'rgba(66,66,66,0.8)'}}>{currentForecast[item.name] + item.suffix}</Text>
+            <View style={styles.detailTextView}>
+                <Text style={styles.detailTitle}>
+                    {item.title}
+                </Text>
+                <Text style={styles.detailDataText}>
+                    {currentForecast[item.name] + item.suffix}
+                </Text>
             </View>
         </View>
     ));
@@ -56,6 +51,50 @@ function getCurrentForecast(currentTimestamp, forecast) {
             return dayForecast;
     }
 }
+
+const styles = StyleSheet.create({
+    tab: {
+        marginTop: 10,
+        width: '95%',
+        backgroundColor: 'white',
+        borderRadius: 20,
+    },
+    mainTitleText: {
+        fontSize: 30,
+        paddingLeft: '5%',
+        color: 'rgb(33,33,33)',
+        marginVertical: 10,
+        borderBottomWidth: 1,
+        borderColor: 'rgba(66,66,66,0.5)'
+    },
+    detailView: {
+        flex: 1,
+        flexDirection: 'row',
+        marginHorizontal: '5%',
+        marginTop: 10
+    },
+    icon: {
+        height: 35,
+        width: 35
+    },
+    detailTextView: {
+        marginLeft: 15,
+        flexDirection: 'column',
+        flex: 1,
+
+        //if flexDirection: row -> need those two
+        width: '100%',
+        justifyContent: 'space-between'
+    },
+    detailTitle: {
+        fontSize: 25
+    },
+    detailDataText: {
+        fontSize: 25,
+        color: 'rgba(66,66,66,0.8)'
+    }
+
+});
 
 function mapStateToProps(state) {
     return {
