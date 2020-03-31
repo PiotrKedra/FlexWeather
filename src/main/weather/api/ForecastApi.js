@@ -67,7 +67,7 @@ function parseToForecastPerDay(forecast){
             sunsetTime: dayForecast.sunsetTime,
             moonPhase: dayForecast.moonPhase,
             precipIntensity: dayForecast.precipIntensity,
-            precipProbability: dayForecast.precipProbability,
+            precipProbability: parseNumber(dayForecast.precipProbability) + '%',
             dewPoint: dayForecast.dewPoint,
             humidity: parseNumber(dayForecast.humidity*100),
             pressure: dayForecast.pressure,
