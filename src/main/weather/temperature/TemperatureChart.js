@@ -2,6 +2,7 @@ import React from 'react';
 import {Svg, G, Line, Circle, Text, Image, Polygon, Defs, LinearGradient, Stop} from 'react-native-svg';
 import * as d3 from 'd3';
 import IMAGES from "../../../resource/ImagePath";
+import mapDataToIcon from "./ForecastIconMapper";
 
 
 let SVG_WIDTH = 600;
@@ -135,18 +136,17 @@ class TemperatureChart extends React.PureComponent {
   }
 
   generateForecastImageForEach(data, x) {
-    return (data.map(item => (
-          <Image
-              key={item.timeObject.timestamp}
-              x={x(item.time) - 17}
-              y={(START_Y_POSITION_OF_GRAPH + GRAPH_HEIGHT) * GRAPH_TRANSFORMATION - 60}
-              width={35}
-              height={35}
-              preserveAspectRatio="xMidYMid slice"
-              opacity="0.6"
-              href={IMAGES.sunCloudIcon}
-          />
-      )))
+    return (data.map(item => (<Image
+            key={item.timeObject.timestamp}
+            x={x(item.time) - 17}
+            y={(START_Y_POSITION_OF_GRAPH + GRAPH_HEIGHT) * GRAPH_TRANSFORMATION - 60}
+            width={35}
+            height={35}
+            preserveAspectRatio="xMidYMid slice"
+            opacity="0.8"
+            href={mapDataToIcon(item.icon)}
+        />)
+    ))
   }
 
   generateRainfallImageForEach(data, x) {

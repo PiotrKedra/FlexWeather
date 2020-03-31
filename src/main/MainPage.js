@@ -18,7 +18,7 @@ import BasicWeatherPanel from './weather/BasicWeatherPanel';
 import DayPickerList from './components/DayPickerList';
 import HourlyTemperaturePanel from './weather/temperature/HourlyTemperaturePanel';
 import HourlyForecastInfo from './weather/HourlyForecastInfo'
-import DetailsPanel from "./weather/SummaryPanel";
+import DetailsPanel from "./weather/DetailPanel";
 
 class MainPage extends React.Component {
   state = {

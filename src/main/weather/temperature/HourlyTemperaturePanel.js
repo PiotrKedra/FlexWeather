@@ -14,7 +14,7 @@ class HourlyTemperaturePanel extends React.Component {
                 style={{
                     marginTop: 10,
                     width: '95%',
-                    backgroundColor: 'white',
+                    backgroundColor: '#EEE',
                     borderRadius: 20,
                 }}
             >

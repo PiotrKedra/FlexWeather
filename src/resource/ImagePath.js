@@ -6,6 +6,19 @@ const IMAGES = {
 
 };
 
+const FORECAST_ICONS = {
+    clearDay: require('../../assets/images/forecast/clear-day.png'),
+    clearNight: require('../../assets/images/forecast/clear-night.png'),
+    cloudy: require('../../assets/images/forecast/cloudy.png'),
+    fog: require('../../assets/images/forecast/fog.png'),
+    partlyCloudyDay: require('../../assets/images/forecast/partly-cloudy-day.png'),
+    partlyCloudyNight: require('../../assets/images/forecast/partly-cloudy-night.png'),
+    rain: require('../../assets/images/forecast/rain.png'),
+    sleet: require('../../assets/images/forecast/sleet.png'),
+    snow: require('../../assets/images/forecast/snow.png'),
+    wind: require('../../assets/images/forecast/wind.png'),
+};
+
 const DETAIL_ICONS = {
     humidity: require('../../assets/images/details/humidity.png'),
     pressure: require('../../assets/images/details/pressure.png'),
@@ -15,6 +28,6 @@ const DETAIL_ICONS = {
     uvIndex: require('../../assets/images/details/uv-index.png'),
 };
 
-export { DETAIL_ICONS };
+export { FORECAST_ICONS, DETAIL_ICONS };
 
 export default IMAGES;
