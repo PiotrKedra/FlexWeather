@@ -1,11 +1,10 @@
 import React from 'react';
 import {Image, View, StyleSheet, ImageBackground} from 'react-native';
-import Text from '../components/CustomText';
-import {FORECAST_ART} from "../../resource/ImagePath";
-import Info from "./Info";
+import Text from '../../components/CustomText';
 import mapDataToImage from "./ArtIconMapper";
+import LastUpdateInfo from "./LastUpdateInfo";
 
-class BasicWeatherPanel extends React.Component {
+class RootWeatherPanel extends React.Component {
   render() {
     return (
       <View style={styles.mainView}>
@@ -13,7 +12,7 @@ class BasicWeatherPanel extends React.Component {
             <Text style={{fontSize: 30, color: 'rgb(33,33,33)'}}>Friday, 3 april</Text>
           <Text style={{fontSize: 24, color: 'rgba(33,33,33,0.6)'}}>{this.props.forecastData.summary}</Text>
         </View>
-        <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center', height: 200, borderBottomWidth: 1, borderColor: 'rgba(66,66,66,0.5)'}}>
+        <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center', borderBottomWidth: 1, borderColor: 'rgba(66,66,66,0.5)', height: 200}}>
           <ImageBackground
               style={{
                 flex: 1,
@@ -41,7 +40,8 @@ class BasicWeatherPanel extends React.Component {
                   Wind has a speed of {this.props.forecastData.windSpeed} and has {this.props.forecastData.windGust} guest.
               </Text>
           </View>
-          <Info/>
+
+          <LastUpdateInfo/>
       </View>
     );
   }
@@ -64,4 +64,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default BasicWeatherPanel;
+export default RootWeatherPanel;

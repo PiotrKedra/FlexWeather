@@ -1,4 +1,4 @@
-import {FORECAST_ART} from "../../resource/ImagePath";
+import {FORECAST_ART} from "../../../resource/ImagePath";
 
 const MAPPER = [
     {name: 'default', icon: FORECAST_ART.partlyCloudyDay},

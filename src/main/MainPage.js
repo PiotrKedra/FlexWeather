@@ -14,7 +14,7 @@ import { connect } from 'react-redux';
 import Text from '../main/components/CustomText';
 import Header from './menu/Header';
 import FooterMenu from './menu/FooterMenu';
-import BasicWeatherPanel from './weather/BasicWeatherPanel';
+import RootWeatherPanel from './weather/rootpanel/RootWeatherPanel';
 import DayPickerList from './components/DayPickerList';
 import HourlyTemperaturePanel from './weather/temperature/HourlyTemperaturePanel';
 import HourlyForecastInfo from './weather/HourlyForecastInfo'
@@ -101,7 +101,7 @@ class MainPage extends React.Component {
               </View>
             </Animated.View>
             <DayPickerList />
-            <BasicWeatherPanel forecastData={this.getCurrentForecast()} />
+            <RootWeatherPanel forecastData={this.getCurrentForecast()} />
             {this.shouldDisplayHourlyCharts() ? <HourlyTemperaturePanel /> : <HourlyForecastInfo/>
             }
             <DetailsPanel/>
