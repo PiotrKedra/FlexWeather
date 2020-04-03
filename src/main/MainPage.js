@@ -101,7 +101,7 @@ class MainPage extends React.Component {
               </View>
             </Animated.View>
             <DayPickerList />
-            <RootWeatherPanel forecastData={this.getCurrentForecast()} />
+            <RootWeatherPanel forecast={this.getCurrentForecast()} />
             {this.shouldDisplayHourlyCharts() ? <HourlyTemperaturePanel /> : <HourlyForecastInfo/>
             }
             <DetailsPanel/>
