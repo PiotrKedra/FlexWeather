@@ -20,7 +20,16 @@ const FORECAST_ICONS = {
 };
 
 const FORECAST_ART = {
-    clearDay: require('../../assets/images/art/clear-sun.png'),
+    clearDay: require('../../assets/images/art/clear-day.png'),
+    clearNight: require('../../assets/images/art/clear-night.png'),
+    cloudy: require('../../assets/images/art/cloudy.png'),
+    fog: require('../../assets/images/art/fog.png'),
+    partlyCloudyDay: require('../../assets/images/art/partly-cloudy-day.png'),
+    partlyCloudyNight: require('../../assets/images/art/partly-cloudy-night.png'),
+    rain: require('../../assets/images/art/rain.png'),
+    sleet: require('../../assets/images/art/sleet.png'),
+    snow: require('../../assets/images/art/snow.png'),
+    wind: require('../../assets/images/art/wind.png'),
 };
 
 const DETAIL_ICONS = {

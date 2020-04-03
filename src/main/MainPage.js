@@ -107,7 +107,7 @@ class MainPage extends React.Component {
             <DetailsPanel/>
             <View style={{height: 100}}/>
           </ScrollView>
-          <FooterMenu />
+          {/*<FooterMenu />*/}
         </ImageBackground>
       </View>
     );
