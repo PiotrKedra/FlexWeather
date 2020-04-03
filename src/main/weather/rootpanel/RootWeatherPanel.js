@@ -1,15 +1,24 @@
 import React from 'react';
-import {Image, View, StyleSheet, ImageBackground} from 'react-native';
+import {View, StyleSheet, ImageBackground} from 'react-native';
 import Text from '../../components/CustomText';
 import mapDataToImage from "./ArtIconMapper";
 import LastUpdateInfo from "./LastUpdateInfo";
 
 class RootWeatherPanel extends React.Component {
+
+    parseTimestamp(timestamp){
+        const date = new Date(timestamp * 1000);
+        const days = ['Sunday', 'Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+        const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+        return days[date.getDay()] + ', ' + date.getDate() + ' ' + months[date.getMonth()];
+    }
   render() {
     return (
       <View style={styles.mainView}>
         <View style={{paddingLeft: '5%', marginTop: 10, borderBottomWidth: 1, borderColor: 'rgba(66,66,66,0.5)'}}>
-            <Text style={{fontSize: 30, color: 'rgb(33,33,33)'}}>Friday, 3 april</Text>
+            <Text style={{fontSize: 30, color: 'rgb(33,33,33)'}}>
+                {this.parseTimestamp(this.props.forecastData.timestamp)}
+            </Text>
           <Text style={{fontSize: 24, color: 'rgba(33,33,33,0.6)'}}>{this.props.forecastData.summary}</Text>
         </View>
         <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center', borderBottomWidth: 1, borderColor: 'rgba(66,66,66,0.5)', height: 200}}>
