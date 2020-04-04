@@ -1,4 +1,4 @@
-import {FORECAST_ICONS} from "../../../resource/ImagePath";
+import {FORECAST_ICONS} from "../../../../resource/ImagePath";
 
 const MAPPER = [
     {name: 'default', icon: FORECAST_ICONS.partlyCloudyDay},

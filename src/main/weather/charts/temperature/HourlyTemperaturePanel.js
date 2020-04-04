@@ -1,9 +1,9 @@
 import React from 'react';
 import {View, ScrollView, FlatList, TouchableOpacity, Image} from 'react-native';
-import Text from "../../components/CustomText";
+import Text from "../../../components/CustomText";
 import { connect } from 'react-redux';
 import TemperatureChart from "./TemperatureChart";
-import Info from "../Info";
+import Info from "../common/Info";
 
 
 class HourlyTemperaturePanel extends React.Component {

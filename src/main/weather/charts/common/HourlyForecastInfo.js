@@ -1,6 +1,6 @@
 import React from 'react';
 import {Image, View} from 'react-native';
-import Text from '../components/CustomText';
+import Text from '../../../components/CustomText';
 
 class HourlyForecastInfo extends React.PureComponent {
 
@@ -18,7 +18,7 @@ class HourlyForecastInfo extends React.PureComponent {
                     Hourly forecast
                 </Text>
                 <View style={{paddingHorizontal: '5%', marginBottom: 10, flexDirection: 'row'}}>
-                    <Image style={{height: 25, width: 25}} source={require('../../../assets/images/info.png')}/>
+                    <Image style={{height: 25, width: 25}} source={require('../../../../../assets/images/info.png')}/>
                     <Text style={{fontSize: 18, color: 'rgba(33,33,33,0.5)', marginHorizontal: 5}}>
                         Our power can predict only hour by hour forecast for the next 48h. We are sorry.
                     </Text>

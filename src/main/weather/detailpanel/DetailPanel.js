@@ -2,8 +2,8 @@ import React from 'react';
 import {Image, View, StyleSheet} from "react-native";
 import {connect} from 'react-redux';
 
-import Text from '../components/CustomText'
-import {DETAIL_ICONS} from "../../resource/ImagePath";
+import Text from '../../components/CustomText'
+import {DETAIL_ICONS} from "../../../resource/ImagePath";
 
 const DETAILS = [
     {name: 'humidity', title: 'Humidity', icon: DETAIL_ICONS.humidity, suffix: '%'},

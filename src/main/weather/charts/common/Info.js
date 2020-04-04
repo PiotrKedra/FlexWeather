@@ -1,6 +1,6 @@
 import React from 'react';
 import {Image, TouchableOpacity, View, Animated} from 'react-native';
-import Text from '../components/CustomText';
+import Text from '../../../components/CustomText';
 
 class Info extends React.Component {
 
@@ -34,7 +34,7 @@ class Info extends React.Component {
             <Animated.View style={[{marginBottom: 10}, heightStyle]}>
                 <TouchableOpacity style={{ paddingHorizontal: '5%', flexDirection: 'row', alignItems: 'center'}}
                                   onPress={this.showOrHideInfo}>
-                    <Image style={{height: 25, width: 25}} source={require('../../../assets/images/info.png')}/>
+                    <Image style={{height: 25, width: 25}} source={require('../../../../../assets/images/info.png')}/>
                     <Text style={{fontSize: 15, color: 'rgba(33,33,33,0.5)', marginHorizontal: 8}}>
                         Info
                     </Text>

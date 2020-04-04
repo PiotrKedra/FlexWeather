@@ -1,8 +1,8 @@
 import React from 'react';
 import {Svg, G, Line, Circle, Text, Image, Polygon, Defs, LinearGradient, Stop} from 'react-native-svg';
 import * as d3 from 'd3';
-import IMAGES from "../../../resource/ImagePath";
-import mapDataToIcon from "./ForecastIconMapper";
+import IMAGES from "../../../../resource/ImagePath";
+import mapDataToIcon from "../common/ForecastIconMapper";
 
 
 let SVG_WIDTH = 600;
