@@ -1,42 +1,10 @@
 import React from 'react';
-import {View, ScrollView, FlatList, TouchableOpacity, Image} from 'react-native';
-import Text from "../../../components/CustomText";
-import { connect } from 'react-redux';
 import TemperatureChart from "./TemperatureChart";
-import Info from "../common/Info";
-
 
 class HourlyTemperaturePanel extends React.Component {
 
     render() {
-        return (
-            <View
-                style={{
-                    marginTop: 10,
-                    width: '95%',
-                    backgroundColor: '#EEE',
-                    borderRadius: 20,
-                }}
-            >
-                <Text style={{fontSize: 30, paddingLeft: '5%', color: 'rgb(33,33,33)', marginTop: 10}}>
-                    Hourly forecast
-                </Text>
-                <FlatList
-                    style={{paddingLeft: '5%', borderBottomWidth: 1, borderColor: 'rgba(66,66,66,0.5)', paddingVertical: 10}}
-                    horizontal={true}
-                    data={[{value: 'temperature'}, {value: 'rainfall'}, {value: 'wind'}, {value: 'pressure'}]}
-                    renderItem={(item) => (
-                        <TouchableOpacity style={{backgroundColor: 'rgba(240,240,240,1)', borderRadius: 15, elevation: 1, justifyContent: 'center', alignContent: 'center', marginRight: 20, paddingHorizontal: 15, paddingVertical: 5}}>
-                            <Text style={{fontSize: 20}}>{item.item.value}</Text>
-                        </TouchableOpacity>)}
-                    keyExtractor={(item)=> (item.value)}
-                />
-                <ScrollView horizontal={true}>
-                    {this.generateChartComponentsForNext48H(this.props.hourlyForecast)}
-                </ScrollView>
-                <Info/>
-            </View>
-        )
+        return this.generateChartComponentsForNext48H(this.props.hourlyForecast);
     }
 
     generateChartComponentsForNext48H(hourlyForecast) {
@@ -65,10 +33,4 @@ class HourlyTemperaturePanel extends React.Component {
     }
 }
 
-function mapStateToProps(state) {
-    return {
-        hourlyForecast: state.hourlyForecast,
-    };
-}
-
-export default connect(mapStateToProps, {})(HourlyTemperaturePanel);
+export default HourlyTemperaturePanel;
