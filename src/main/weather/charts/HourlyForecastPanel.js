@@ -5,36 +5,14 @@ import { connect } from 'react-redux';
 import Info from "./common/Info";
 import HourlyTemperaturePanel from "./temperature/HourlyTemperaturePanel";
 import HourlyRainfallPanel from "./rainfall/HourlyRainfallPanel";
+import HourlyUVIndexPanel from "./uvindex/HourlyUVIndexPanel";
 
 
-class HourlyForecastPanel extends React.Component {
+class HourlyForecastPanel extends React.PureComponent {
 
     state = {
-        temperatureChart: true,
-        rainfallChart: false,
+        currentChart: 'temperature',
     };
-
-    switchChart(newChart) {
-        switch (newChart) {
-            case 'temperature':
-                this.setState({
-                    temperatureChart: true,
-                    rainfallChart: false,
-                });
-                break;
-            case 'rainfall':
-                this.setState({
-                    temperatureChart: false,
-                    rainfallChart: true,
-                });
-                break;
-            default:
-                this.setState({
-                    temperatureChart: true,
-                    rainfallChart: false,
-                });
-        }
-    }
 
     render() {
         return (
@@ -52,23 +30,25 @@ class HourlyForecastPanel extends React.Component {
                 <ScrollView style={{paddingLeft: '5%', borderBottomWidth: 1, borderColor: 'rgba(66,66,66,0.5)', paddingVertical: 10}}
                             horizontal={true}>
                     <TouchableOpacity style={{backgroundColor: 'rgba(240,240,240,1)', borderRadius: 15, elevation: 1, justifyContent: 'center', alignContent: 'center', marginRight: 20, paddingHorizontal: 15, paddingVertical: 5}}
-                                      onPress={() => this.switchChart('temperature')}>
+                                      onPress={() => this.setState({currentChart: 'temperature'})}>
                         <Text style={{fontSize: 20}}>temperature</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={{backgroundColor: 'rgba(240,240,240,1)', borderRadius: 15, elevation: 1, justifyContent: 'center', alignContent: 'center', marginRight: 20, paddingHorizontal: 15, paddingVertical: 5}}
-                                      onPress={() => this.switchChart('rainfall')}>
+                                      onPress={() => this.setState({currentChart: 'rainfall'})}>
                         <Text style={{fontSize: 20}}>rainfall</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={{backgroundColor: 'rgba(240,240,240,1)', borderRadius: 15, elevation: 1, justifyContent: 'center', alignContent: 'center', marginRight: 20, paddingHorizontal: 15, paddingVertical: 5}}>
-                        <Text style={{fontSize: 20}}>wind</Text>
+                    <TouchableOpacity style={{backgroundColor: 'rgba(240,240,240,1)', borderRadius: 15, elevation: 1, justifyContent: 'center', alignContent: 'center', marginRight: 20, paddingHorizontal: 15, paddingVertical: 5}}
+                                      onPress={() => this.setState({currentChart: 'uv_index'})}>
+                        <Text style={{fontSize: 20}}>uv index</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={{backgroundColor: 'rgba(240,240,240,1)', borderRadius: 15, elevation: 1, justifyContent: 'center', alignContent: 'center', marginRight: 20, paddingHorizontal: 15, paddingVertical: 5}}>
                         <Text style={{fontSize: 20}}>pressure</Text>
                     </TouchableOpacity>
                 </ScrollView>
                 <ScrollView horizontal={true}>
-                    {this.state.temperatureChart && <HourlyTemperaturePanel hourlyForecast={this.props.hourlyForecast}/>}
-                    {this.state.rainfallChart && <HourlyRainfallPanel hourlyForecast={this.props.hourlyForecast}/>}
+                    {(this.state.currentChart === 'temperature') && <HourlyTemperaturePanel hourlyForecast={this.props.hourlyForecast}/>}
+                    {(this.state.currentChart === 'rainfall') && <HourlyRainfallPanel hourlyForecast={this.props.hourlyForecast}/>}
+                    {(this.state.currentChart === 'uv_index') && <HourlyUVIndexPanel hourlyForecast={this.props.hourlyForecast}/>}
                 </ScrollView>
                 <Info/>
             </View>
