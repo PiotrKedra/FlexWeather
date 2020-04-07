@@ -5,8 +5,8 @@ import { connect } from 'react-redux';
 import Info from "./common/Info";
 import HourlyTemperaturePanel from "./temperature/HourlyTemperaturePanel";
 import HourlyRainfallPanel from "./rainfall/HourlyRainfallPanel";
-import HourlyUVIndexPanel from "./uvindex/HourlyUVIndexPanel";
-import Tmp from "./uvindex/UVIndexLegend";
+import HourlyUvIndexPanel from "./uvindex/HourlyUvIndexPanel";
+import UvIndexLegend from "./uvindex/UvIndexLegend";
 
 
 class HourlyForecastPanel extends React.PureComponent {
@@ -49,9 +49,9 @@ class HourlyForecastPanel extends React.PureComponent {
                 <ScrollView horizontal={true}>
                     {(this.state.currentChart === 'temperature') && <HourlyTemperaturePanel hourlyForecast={this.props.hourlyForecast}/>}
                     {(this.state.currentChart === 'rainfall') && <HourlyRainfallPanel hourlyForecast={this.props.hourlyForecast}/>}
-                    {(this.state.currentChart === 'uv_index') && <HourlyUVIndexPanel hourlyForecast={this.props.hourlyForecast}/>}
+                    {(this.state.currentChart === 'uv_index') && <HourlyUvIndexPanel hourlyForecast={this.props.hourlyForecast}/>}
                 </ScrollView>
-                {(this.state.currentChart === 'uv_index') && <Tmp/>}
+                {(this.state.currentChart === 'uv_index') && <UvIndexLegend/>}
 
                 <Info/>
             </View>

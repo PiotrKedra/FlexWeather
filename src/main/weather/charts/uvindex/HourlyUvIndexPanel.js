@@ -1,7 +1,7 @@
 import React from 'react';
-import UVIndexChart from "./UVIndexChart";
+import UvIndexChart from "./UvIndexChart";
 
-function HourlyUVIndexPanel(props) {
+function HourlyUvIndexPanel(props) {
     return generateChartComponentsForNext48H(props.hourlyForecast);
 }
 
@@ -26,8 +26,8 @@ function generateChartComponentsForNext48H(hourlyForecast) {
     return hourlyForecastByDailyDate.map(hourlyForecastPerDay => {
         let key = 'k' + index;
         index = index + 1;
-        return (<UVIndexChart key={key} data={hourlyForecastPerDay}/>)
+        return (<UvIndexChart key={key} data={hourlyForecastPerDay}/>)
     })
 }
 
-export default HourlyUVIndexPanel;
+export default HourlyUvIndexPanel;

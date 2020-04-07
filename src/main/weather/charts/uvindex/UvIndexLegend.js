@@ -3,16 +3,9 @@ import {TouchableOpacity, View, Image, Animated, StyleSheet} from "react-native"
 
 import CustomText from "../../../components/CustomText";
 import {DETAIL_ICONS} from "../../../../resource/ImagePath";
+import COLORS from "./UvColors";
 
-const COLORS = {
-    uvLow: '#81F04C',
-    uvModerate: '#F0AA40',
-    uvHigh: '#E77A3D',
-    uvVeryHigh: '#EB3737',
-    uvExtreme: '#EB40E4',
-};
-
-const Tmp = () => {
+const UvIndexLegend = () => {
     const [isLegend, setIsLegend] = useState(false);
     const animation = useAnimation(isLegend);
     return (
@@ -82,7 +75,8 @@ const styles = StyleSheet.create({
     rootView: {
         marginHorizontal: '5%',
         marginBottom: 10,
-        borderBottomWidth: 1
+        borderBottomWidth: 1,
+        borderColor: 'rgba(66,66,66,0.3)'
     },
     touchableLegend: {
         flexDirection: 'row',
@@ -93,7 +87,8 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderRadius: 20,
         width: 21,
-        alignItems: 'center'
+        alignItems: 'center',
+        borderColor: '#444'
     },
     image: {
         width: 16,
@@ -102,7 +97,8 @@ const styles = StyleSheet.create({
     },
     touchableText: {
         fontSize: 20,
-        marginLeft: 8
+        marginLeft: 8,
+        color: '#444'
     },
     legendItemContainer: {
         flexDirection: 'row',
@@ -115,8 +111,9 @@ const styles = StyleSheet.create({
     },
     legendItemText: {
         fontSize: 18,
-        marginHorizontal: 5
+        marginHorizontal: 5,
+        color: '#444'
     },
 });
 
-export default Tmp;
+export default UvIndexLegend;

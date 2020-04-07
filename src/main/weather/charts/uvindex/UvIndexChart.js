@@ -2,23 +2,20 @@ import React from 'react';
 import {Svg, G, Line, Text, Rect} from 'react-native-svg';
 import * as d3 from 'd3';
 
+import UV_COLORS from './UvColors';
+
 let SVG_WIDTH = 600;
 const SVG_HEIGHT = 240;
 const GRAPH_HEIGHT = 100;
 const START_Y_POSITION_OF_GRAPH = 60;
 
 const COLORS = {
-    uvLow: '#81F04C',
-    uvModerate: '#F0AA40',
-    uvHigh: '#E77A3D',
-    uvVeryHigh: '#EB3737',
-    uvExtreme: '#EB40E4',
     mainText: '#111',
     gridColor: 'rgba(81,81,81,0.3)',
 };
 
 
-class UVIndexChart extends React.PureComponent {
+class UvIndexChart extends React.PureComponent {
 
     render() {
         SVG_WIDTH = 80 * this.props.data.length;
@@ -130,15 +127,15 @@ class UVIndexChart extends React.PureComponent {
 
     getUVIndexColor(uvIndex) {
         if(uvIndex <= 2)
-            return COLORS.uvLow;
+            return UV_COLORS.uvLow;
         else if(uvIndex <= 5)
-            return COLORS.uvModerate;
+            return UV_COLORS.uvModerate;
         else if(uvIndex <= 7)
-            return COLORS.uvHigh;
+            return UV_COLORS.uvHigh;
         else if(uvIndex <= 10)
-            return COLORS.uvVeryHigh;
+            return UV_COLORS.uvVeryHigh;
         else
-            return COLORS.uvExtreme;
+            return UV_COLORS.uvExtreme;
     }
 
     generateDateText(data) {
@@ -170,4 +167,4 @@ class UVIndexChart extends React.PureComponent {
     }
 }
 
-export default UVIndexChart;
+export default UvIndexChart;
