@@ -1,36 +1,31 @@
 import React from 'react';
-import {Svg, G, Line, Circle, Text, Image, Polygon, Defs, LinearGradient, Stop, Rect} from 'react-native-svg';
+import {Svg, G, Line, Text, Rect} from 'react-native-svg';
 import * as d3 from 'd3';
-import IMAGES from "../../../../resource/ImagePath";
-import mapDataToIcon from "../common/ForecastIconMapper";
-
 
 let SVG_WIDTH = 600;
 const SVG_HEIGHT = 240;
 const GRAPH_HEIGHT = 100;
 const START_Y_POSITION_OF_GRAPH = 60;
-const GRAPH_TRANSFORMATION = -1;
-
-const DEGREE_SIGN = '°';
-const GRADIENT_ID = 'grad';
 
 const COLORS = {
+    uvLow: '#81F04C',
+    uvModerate: '#F0AA40',
+    uvHigh: '#E77A3D',
+    uvVeryHigh: '#EB3737',
+    uvExtreme: '#EB40E4',
     mainText: '#111',
-    pathBlue: '#62EA43',
     gridColor: 'rgba(81,81,81,0.3)',
-    gradientLight: '#FFF'
 };
 
 
 class UVIndexChart extends React.PureComponent {
 
     render() {
-        SVG_WIDTH = 60 * this.props.data.length;
+        SVG_WIDTH = 80 * this.props.data.length;
 
         const data = this.props.data;
         const minValue = d3.min(data, d => d.uvIndex);
         const maxValue = d3.max(data, d => d.uvIndex);
-        console.log(data);
         const xFunction = this.getFunctionX(data);
         const yFunction = this.getFunctionY(minValue, maxValue);
 
@@ -45,14 +40,15 @@ class UVIndexChart extends React.PureComponent {
                     {this.generateFullLengthLine(-START_Y_POSITION_OF_GRAPH)}
                     {this.generateVerticalGridLines(data, xFunction)}
 
-                    {/* day date text */}
+                    {/* day date (day name) text */}
                     {this.generateDateText(data)}
 
+                    {/* data bars */}
                     {this.generateDataBars(data, xFunction, yFunction, maxValue)}
 
                     {/* data values ( text for: hour, temperature, rainfall % ) */}
                     {this.generateTextForEachItem(data, 'uvIndex', xFunction, 0, -20, 14)}
-                    {this.generateTextForEachItem(data, 'time', xFunction, 0, (START_Y_POSITION_OF_GRAPH + GRAPH_HEIGHT) * GRAPH_TRANSFORMATION - 20, 20)}
+                    {this.generateTextForEachItem(data, 'time', xFunction, 0, SVG_HEIGHT*-1 + 40, 20)}
                 </G>
             </Svg>
         );
@@ -121,14 +117,28 @@ class UVIndexChart extends React.PureComponent {
         return (data.map(item => (
             <Rect
                 key={'bar' + item.time}
-                x={x(item.time) - 5}
+                x={x(item.time) - 2.5}
                 y={y(item.uvIndex)*-1}
                 rx={2.5}
                 width={5}
                 height={y(item.uvIndex) - START_Y_POSITION_OF_GRAPH}
-                fill={COLORS.pathBlue}
+                fill={this.getUVIndexColor(item.uvIndex)}
+                opacity={0.8}
             />
         )))
+    }
+
+    getUVIndexColor(uvIndex) {
+        if(uvIndex <= 2)
+            return COLORS.uvLow;
+        else if(uvIndex <= 5)
+            return COLORS.uvModerate;
+        else if(uvIndex <= 7)
+            return COLORS.uvHigh;
+        else if(uvIndex <= 10)
+            return COLORS.uvVeryHigh;
+        else
+            return COLORS.uvExtreme;
     }
 
     generateDateText(data) {

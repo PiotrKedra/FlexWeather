@@ -62,7 +62,7 @@ class TemperatureChart extends React.PureComponent {
           {/* data values ( text for: hour, temperature, rainfall % ) */}
           {this.generateDegreeTextForEachItem(data, xFunction, yFunction)}
           {this.generateTextForEachItem(data, 'precipProbability', xFunction, 8, -20, 14)}
-          {this.generateTextForEachItem(data, 'time', xFunction, 0, (START_Y_POSITION_OF_GRAPH + GRAPH_HEIGHT) * GRAPH_TRANSFORMATION - 70, 20)}
+          {this.generateTextForEachItem(data, 'time', xFunction, 0, SVG_HEIGHT*-1 + 40, 20)}
         </G>
       </Svg>
     );
