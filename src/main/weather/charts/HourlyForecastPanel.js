@@ -6,7 +6,7 @@ import Info from "./common/Info";
 import HourlyTemperaturePanel from "./temperature/HourlyTemperaturePanel";
 import HourlyRainfallPanel from "./rainfall/HourlyRainfallPanel";
 import HourlyUVIndexPanel from "./uvindex/HourlyUVIndexPanel";
-import UVIndexLegend from "./uvindex/UVIndexLegend";
+import Tmp from "./uvindex/UVIndexLegend";
 
 
 class HourlyForecastPanel extends React.PureComponent {
@@ -51,7 +51,7 @@ class HourlyForecastPanel extends React.PureComponent {
                     {(this.state.currentChart === 'rainfall') && <HourlyRainfallPanel hourlyForecast={this.props.hourlyForecast}/>}
                     {(this.state.currentChart === 'uv_index') && <HourlyUVIndexPanel hourlyForecast={this.props.hourlyForecast}/>}
                 </ScrollView>
-                {(this.state.currentChart === 'uv_index') && <UVIndexLegend/>}
+                {(this.state.currentChart === 'uv_index') && <Tmp/>}
 
                 <Info/>
             </View>
