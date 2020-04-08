@@ -3,10 +3,8 @@ import {View, ScrollView, FlatList, TouchableOpacity, Image} from 'react-native'
 import Text from "../../components/CustomText";
 import { connect } from 'react-redux';
 import Info from "./common/Info";
-import HourlyTemperaturePanel from "./temperature/HourlyTemperaturePanel";
-import HourlyRainfallPanel from "./rainfall/HourlyRainfallPanel";
-import HourlyUvIndexPanel from "./uvindex/HourlyUvIndexPanel";
 import UvIndexLegend from "./uvindex/UvIndexLegend";
+import {HourlyTemperatureChart, HourlyRainfallChart, HourlyUvIndexChart} from "./HourlyChartService";
 
 
 class HourlyForecastPanel extends React.PureComponent {
@@ -47,9 +45,9 @@ class HourlyForecastPanel extends React.PureComponent {
                     </TouchableOpacity>
                 </ScrollView>
                 <ScrollView horizontal={true}>
-                    {(this.state.currentChart === 'temperature') && <HourlyTemperaturePanel hourlyForecast={this.props.hourlyForecast}/>}
-                    {(this.state.currentChart === 'rainfall') && <HourlyRainfallPanel hourlyForecast={this.props.hourlyForecast}/>}
-                    {(this.state.currentChart === 'uv_index') && <HourlyUvIndexPanel hourlyForecast={this.props.hourlyForecast}/>}
+                    {(this.state.currentChart === 'temperature') && <HourlyTemperatureChart hourlyForecast={this.props.hourlyForecast}/>}
+                    {(this.state.currentChart === 'rainfall') && <HourlyRainfallChart hourlyForecast={this.props.hourlyForecast}/>}
+                    {(this.state.currentChart === 'uv_index') && <HourlyUvIndexChart hourlyForecast={this.props.hourlyForecast}/>}
                 </ScrollView>
                 {(this.state.currentChart === 'uv_index') && <UvIndexLegend/>}
 

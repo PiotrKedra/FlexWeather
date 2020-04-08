@@ -50,11 +50,11 @@ const useAnimation = (isLegend) => {
 };
 
 const legendObjects = [
-    {range: '0-2 ', info: 'no protection required', color: COLORS.uvLow},
-    {range: '3-5 ', info: 'cover your body with sunglasses and clothes', color: COLORS.uvModerate},
-    {range: '6-7 ', info: 'additionally use 30 spf filter', color: COLORS.uvHigh},
+    {range: '0-2  ', info: 'no protection required', color: COLORS.uvLow},
+    {range: '3-5  ', info: 'cover your body with sunglasses and clothes', color: COLORS.uvModerate},
+    {range: '6-7  ', info: 'additionally use 30 spf filter', color: COLORS.uvHigh},
     {range: '8-10', info: 'use 50 spf filter and stay in the shadows', color: COLORS.uvVeryHigh},
-    {range: '+11 ', info: 'does not occur on Earth', color: COLORS.uvExtreme},
+    {range: '+11  ', info: 'does not occur on Earth', color: COLORS.uvExtreme},
 ];
 
 function getLegendItem(){
