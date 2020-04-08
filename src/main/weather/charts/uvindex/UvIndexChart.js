@@ -4,56 +4,53 @@ import * as d3 from 'd3';
 
 import UV_COLORS from './UvColors';
 
-let SVG_WIDTH = 600;
-const SVG_HEIGHT = 240;
-const GRAPH_HEIGHT = 100;
-const START_Y_POSITION_OF_GRAPH = 60;
-
 const COLORS = {
     mainText: '#111',
     gridColor: 'rgba(81,81,81,0.3)',
 };
 
-
 class UvIndexChart extends React.PureComponent {
 
     render() {
-        SVG_WIDTH = 80 * this.props.data.length;
-
         const data = this.props.data;
+        const svgWidth = this.props.dimensions.svgWidth;
+        const svgHeight = this.props.dimensions.svgHeight;
+        const graphHeight = this.props.dimensions.graphHeight;
+        const initialYCordOfChart = this.props.dimensions.initialYCordOfChart;
+
         const minValue = d3.min(data, d => d.uvIndex);
         const maxValue = d3.max(data, d => d.uvIndex);
-        const xFunction = this.getFunctionX(data);
-        const yFunction = this.getFunctionY(minValue, maxValue);
+        const xFunction = this.getFunctionX(data, svgWidth);
+        const yFunction = this.getFunctionY(minValue, maxValue, graphHeight, initialYCordOfChart);
 
         return (
-            <Svg width={SVG_WIDTH} height={SVG_HEIGHT}>
-                <G y={SVG_HEIGHT}>
+            <Svg width={svgWidth} height={svgHeight}>
+                <G y={svgHeight}>
 
                     {/* grid lines */}
-                    {this.generateVerticalBeginLine()}
-                    {this.generateFullLengthLine(-START_Y_POSITION_OF_GRAPH - GRAPH_HEIGHT)}
-                    {this.generateFullLengthLine(-START_Y_POSITION_OF_GRAPH - GRAPH_HEIGHT / 2, 50)}
-                    {this.generateFullLengthLine(-START_Y_POSITION_OF_GRAPH)}
-                    {this.generateVerticalGridLines(data, xFunction)}
+                    {this.generateVerticalBeginLine(svgHeight)}
+                    {this.generateFullLengthLine(-initialYCordOfChart - graphHeight, svgWidth)}
+                    {this.generateFullLengthLine(-initialYCordOfChart - graphHeight / 2, svgWidth, 50)}
+                    {this.generateFullLengthLine(-initialYCordOfChart, svgWidth)}
+                    {this.generateVerticalGridLines(data, xFunction, graphHeight, initialYCordOfChart)}
 
                     {/* day date (day name) text */}
-                    {this.generateDateText(data)}
+                    {this.generateDateText(data, svgHeight)}
 
                     {/* data bars */}
-                    {this.generateDataBars(data, xFunction, yFunction, maxValue)}
+                    {this.generateDataBars(data, xFunction, yFunction, maxValue, initialYCordOfChart)}
 
                     {/* data values ( text for: hour, temperature, rainfall % ) */}
                     {this.generateTextForEachItem(data, 'uvIndex', xFunction, 0, -20, 14)}
-                    {this.generateTextForEachItem(data, 'time', xFunction, 0, SVG_HEIGHT*-1 + 40, 20)}
+                    {this.generateTextForEachItem(data, 'time', xFunction, 0, svgHeight*-1 + 40, 20)}
                 </G>
             </Svg>
         );
     }
 
-    getFunctionX(data) {
+    getFunctionX(data, svgWidth) {
         const xDomain = data.map(item => item.time);
-        const xRange = [0, SVG_WIDTH];
+        const xRange = [0, svgWidth];
         return d3
             .scalePoint()
             .domain(xDomain)
@@ -61,32 +58,32 @@ class UvIndexChart extends React.PureComponent {
             .padding(1);
     }
 
-    getFunctionY(minValue, maxValue) {
+    getFunctionY(minValue, maxValue, graphHeight, initialYCordOfChart) {
         const yDomain = [minValue, maxValue];
-        const yRange = [START_Y_POSITION_OF_GRAPH, START_Y_POSITION_OF_GRAPH + GRAPH_HEIGHT];
+        const yRange = [initialYCordOfChart, initialYCordOfChart + graphHeight];
         return d3
             .scaleLinear()
             .domain(yDomain)
             .range(yRange);
     }
 
-    generateVerticalBeginLine() {
+    generateVerticalBeginLine(svgHeight) {
         return <Line
             x1={10}
             y1={-20}
             x2={10}
-            y2={-SVG_HEIGHT}
+            y2={-svgHeight}
             stroke={COLORS.gridColor}
             strokeDasharray={[3, 3]}
             strokeWidth="0.5"
         />;
     }
 
-    generateFullLengthLine(y, xPadding = 0) {
+    generateFullLengthLine(y, svgWidth, xPadding = 0) {
         return <Line
             x1={10 + xPadding}
             y1={y}
-            x2={SVG_WIDTH - xPadding}
+            x2={svgWidth - xPadding}
             y2={y}
             stroke={COLORS.gridColor}
             strokeDasharray={[3, 3]}
@@ -94,14 +91,14 @@ class UvIndexChart extends React.PureComponent {
         />;
     }
 
-    generateVerticalGridLines(data, x) {
+    generateVerticalGridLines(data, x, graphHeight, initialYCordOfChart) {
         return (data.map(item => (
             <Line
                 key={item.timeObject.timestamp}
                 x1={x(item.time)}
-                y1={-START_Y_POSITION_OF_GRAPH + 10}
+                y1={-initialYCordOfChart + 10}
                 x2={x(item.time)}
-                y2={-START_Y_POSITION_OF_GRAPH - GRAPH_HEIGHT - 10}
+                y2={-initialYCordOfChart - graphHeight - 10}
                 stroke={COLORS.gridColor}
                 strokeDasharray={[3, 3]}
                 strokeWidth="0.5"
@@ -109,7 +106,7 @@ class UvIndexChart extends React.PureComponent {
         )))
     }
 
-    generateDataBars(data, x, y, maxValue) {
+    generateDataBars(data, x, y, maxValue, initialYCordOfChart) {
         if(maxValue===0) return null;
         return (data.map(item => (
             <Rect
@@ -118,7 +115,7 @@ class UvIndexChart extends React.PureComponent {
                 y={y(item.uvIndex)*-1}
                 rx={2.5}
                 width={5}
-                height={y(item.uvIndex) - START_Y_POSITION_OF_GRAPH}
+                height={y(item.uvIndex) - initialYCordOfChart}
                 fill={this.getUVIndexColor(item.uvIndex)}
                 opacity={0.8}
             />
@@ -138,11 +135,11 @@ class UvIndexChart extends React.PureComponent {
             return UV_COLORS.uvExtreme;
     }
 
-    generateDateText(data) {
+    generateDateText(data, svgHeight) {
         return <Text
             fontSize="20"
             x={13}
-            y={-SVG_HEIGHT}
+            y={-svgHeight}
             textAnchor="start"
             fill={COLORS.gridColor}
             fontFamily="Neucha-Regular"

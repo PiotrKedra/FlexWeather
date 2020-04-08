@@ -7,19 +7,28 @@ import UvIndexChart from "./uvindex/UvIndexChart";
 function HourlyTemperatureChart(props){
     let i = 0;
     return parseHourlyForecast(props.hourlyForecast).map(hourlyForecastPerDay =>
-        <TemperatureChart key={i++} data={hourlyForecastPerDay}/>)
+        <TemperatureChart key={i++}
+                          data={hourlyForecastPerDay}
+                          dimensions={getDimensions(hourlyForecastPerDay.length)}
+        />)
 }
 
 function HourlyRainfallChart(props){
     let i = 0;
     return parseHourlyForecast(props.hourlyForecast).map(hourlyForecastPerDay =>
-        <RainfallChart key={i++} data={hourlyForecastPerDay}/>)
+        <RainfallChart key={i++}
+                       data={hourlyForecastPerDay}
+                       dimensions={getDimensions(hourlyForecastPerDay.length)}
+        />)
 }
 
 function HourlyUvIndexChart(props){
     let i = 0;
     return parseHourlyForecast(props.hourlyForecast).map(hourlyForecastPerDay =>
-        <UvIndexChart key={i++} data={hourlyForecastPerDay}/>)
+        <UvIndexChart key={i++}
+                      data={hourlyForecastPerDay}
+                      dimensions={getDimensions(hourlyForecastPerDay.length)}
+        />)
 }
 
 //todo mb keep this in state instead of 'hourlyForecast'
@@ -41,6 +50,15 @@ function parseHourlyForecast(hourlyForecast) {
     });
     hourlyForecastByDailyDate.push(tmpArray);
     return hourlyForecastByDailyDate;
+}
+
+function getDimensions(elementLength, graphHeight=70) {
+    return {
+        svgWidth: 80 * elementLength,
+        svgHeight: 240,
+        graphHeight: graphHeight,
+        initialYCordOfChart: 60,
+    }
 }
 
 export {

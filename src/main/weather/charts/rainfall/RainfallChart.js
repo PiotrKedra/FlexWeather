@@ -5,15 +5,6 @@ import IMAGES from "../../../../resource/ImagePath";
 import mapDataToIcon from "../common/ForecastIconMapper";
 
 
-let SVG_WIDTH = 600;
-const SVG_HEIGHT = 240;
-const GRAPH_HEIGHT = 70;
-const START_Y_POSITION_OF_GRAPH = 60;
-const GRAPH_TRANSFORMATION = -1;
-
-const DEGREE_SIGN = '°';
-const GRADIENT_ID = 'grad';
-
 const COLORS = {
     mainText: '#111',
     pathBlue: '#5BC3CE',
@@ -21,49 +12,47 @@ const COLORS = {
     gradientLight: '#FFF'
 };
 
-
 class RainfallChart extends React.PureComponent {
 
-    render() {
-        SVG_WIDTH = 80 * this.props.data.length;
+    render = () => {
 
         const data = this.props.data;
         const minValue = d3.min(data, d => d.precipIntensity);
         const maxValue = d3.max(data, d => d.precipIntensity);
         console.log(data);
-        const xFunction = this.getFunctionX(data);
-        const yFunction = this.getFunctionY(minValue, maxValue);
+        const xFunction = this.getFunctionX(data, this.props.dimensions.svgWidth);
+        const yFunction = this.getFunctionY(minValue, maxValue, this.props.dimensions.graphHeight, this.props.dimensions.initialYCordOfChart);
 
         return (
-            <Svg width={SVG_WIDTH} height={SVG_HEIGHT}>
-                <G y={SVG_HEIGHT}>
+            <Svg width={this.props.dimensions.svgWidth} height={this.props.dimensions.svgHeight}>
+                <G y={this.props.dimensions.svgHeight}>
 
                     {/* grid lines */}
-                    {this.generateVerticalBeginLine()}
-                    {this.generateFullLengthLine(-START_Y_POSITION_OF_GRAPH - GRAPH_HEIGHT)}
-                    {this.generateFullLengthLine(-START_Y_POSITION_OF_GRAPH - GRAPH_HEIGHT / 2, 50)}
-                    {this.generateFullLengthLine(-START_Y_POSITION_OF_GRAPH)}
-                    {this.generateVerticalGridLines(data, xFunction)}
+                    {this.generateVerticalBeginLine(this.props.dimensions.svgHeight)}
+                    {this.generateFullLengthLine(-this.props.dimensions.initialYCordOfChart - this.props.dimensions.graphHeight, this.props.dimensions.svgWidth)}
+                    {this.generateFullLengthLine(-this.props.dimensions.initialYCordOfChart - this.props.dimensions.graphHeight / 2, this.props.dimensions.svgWidth, 50)}
+                    {this.generateFullLengthLine(-this.props.dimensions.initialYCordOfChart, this.props.dimensions.svgWidth)}
+                    {this.generateVerticalGridLines(data, xFunction, this.props.dimensions.graphHeight, this.props.dimensions.initialYCordOfChart)}
 
                     {/* day date text */}
-                    {this.generateDateText(data)}
+                    {this.generateDateText(data, this.props.dimensions.svgHeight)}
 
                     {/* forecast images*/}
-                    {this.generateForecastImageForEach(data, xFunction)}
+                    {this.generateForecastImageForEach(data, xFunction, this.props.dimensions.graphHeight, this.props.dimensions.initialYCordOfChart)}
                     {this.generateRainfallImageForEach(data, xFunction)}
 
                     {/* data values ( text for: hour, temperature, rainfall % ) */}
                     {this.generateDegreeTextForEachItem(data, xFunction, yFunction)}
                     {this.generateTextForEachItem(data, 'precipProbability', xFunction, 8, -20, 14)}
-                    {this.generateTextForEachItem(data, 'time', xFunction, 0, (START_Y_POSITION_OF_GRAPH + GRAPH_HEIGHT) * GRAPH_TRANSFORMATION - 70, 20)}
+                    {this.generateTextForEachItem(data, 'time', xFunction, 0, (this.props.dimensions.initialYCordOfChart + this.props.dimensions.graphHeight) * -1 - 70, 20)}
                 </G>
             </Svg>
         );
-    }
+    };
 
-    getFunctionX(data) {
+    getFunctionX(data, svgWidth) {
         const xDomain = data.map(item => item.time);
-        const xRange = [0, SVG_WIDTH];
+        const xRange = [0, svgWidth];
         return d3
             .scalePoint()
             .domain(xDomain)
@@ -71,32 +60,32 @@ class RainfallChart extends React.PureComponent {
             .padding(1);
     }
 
-    getFunctionY(minValue, maxValue) {
+    getFunctionY(minValue, maxValue, graphHeight, initialYCordOfChart) {
         const yDomain = [minValue, maxValue];
-        const yRange = [START_Y_POSITION_OF_GRAPH, START_Y_POSITION_OF_GRAPH + GRAPH_HEIGHT];
+        const yRange = [initialYCordOfChart, initialYCordOfChart + graphHeight];
         return d3
             .scaleLinear()
             .domain(yDomain)
             .range(yRange);
     }
 
-    generateVerticalBeginLine() {
+    generateVerticalBeginLine(svgHeight) {
         return <Line
             x1={10}
             y1={-20}
             x2={10}
-            y2={-SVG_HEIGHT}
+            y2={-svgHeight}
             stroke={COLORS.gridColor}
             strokeDasharray={[3, 3]}
             strokeWidth="0.5"
         />;
     }
 
-    generateFullLengthLine(y, xPadding = 0) {
+    generateFullLengthLine(y, svgWidth, xPadding = 0 ) {
         return <Line
             x1={10 + xPadding}
             y1={y}
-            x2={SVG_WIDTH - xPadding}
+            x2={svgWidth - xPadding}
             y2={y}
             stroke={COLORS.gridColor}
             strokeDasharray={[3, 3]}
@@ -104,14 +93,14 @@ class RainfallChart extends React.PureComponent {
         />;
     }
 
-    generateVerticalGridLines(data, x) {
+    generateVerticalGridLines(data, x, graphHeight, initialYCordOfChart) {
         return (data.map(item => (
             <Line
                 key={item.timeObject.timestamp}
                 x1={x(item.time)}
-                y1={-START_Y_POSITION_OF_GRAPH + 10}
+                y1={-initialYCordOfChart + 10}
                 x2={x(item.time)}
-                y2={-START_Y_POSITION_OF_GRAPH - GRAPH_HEIGHT - 10}
+                y2={-initialYCordOfChart - graphHeight - 10}
                 stroke={COLORS.gridColor}
                 strokeDasharray={[3, 3]}
                 strokeWidth="0.5"
@@ -119,11 +108,11 @@ class RainfallChart extends React.PureComponent {
         )))
     }
 
-    generateForecastImageForEach(data, x) {
+    generateForecastImageForEach(data, x, graphHeight, initialYCordOfChart) {
         return (data.map(item => (<Image
                 key={item.timeObject.timestamp}
                 x={x(item.time) - 17}
-                y={(START_Y_POSITION_OF_GRAPH + GRAPH_HEIGHT) * GRAPH_TRANSFORMATION - 60}
+                y={(initialYCordOfChart + graphHeight) * -1 - 60}
                 width={35}
                 height={35}
                 preserveAspectRatio="xMidYMid slice"
@@ -148,11 +137,11 @@ class RainfallChart extends React.PureComponent {
         )))
     }
 
-    generateDateText(data) {
+    generateDateText(data, svgHeight) {
         return <Text
             fontSize="20"
             x={13}
-            y={-SVG_HEIGHT}
+            y={-svgHeight}
             textAnchor="start"
             fill={COLORS.gridColor}
             fontFamily="Neucha-Regular"
@@ -167,7 +156,7 @@ class RainfallChart extends React.PureComponent {
                 key={'degree' + item.timeObject.timestamp}
                 fontSize={16}
                 x={x(item.time)}
-                y={y(item.precipIntensity) * GRAPH_TRANSFORMATION - 6}
+                y={y(item.precipIntensity) * -1 - 6}
                 textAnchor="middle"
                 fill={COLORS.mainText}
                 fontFamily="Neucha-Regular">

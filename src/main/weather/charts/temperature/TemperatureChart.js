@@ -5,12 +5,6 @@ import IMAGES from "../../../../resource/ImagePath";
 import mapDataToIcon from "../common/ForecastIconMapper";
 
 
-let SVG_WIDTH = 600;
-const SVG_HEIGHT = 240;
-const GRAPH_HEIGHT = 70;
-const START_Y_POSITION_OF_GRAPH = 60;
-const GRAPH_TRANSFORMATION = -1;
-
 const DEGREE_SIGN = '°';
 const GRADIENT_ID = 'grad';
 
@@ -24,53 +18,51 @@ const COLORS = {
 
 class TemperatureChart extends React.PureComponent {
 
-  render() {
-    SVG_WIDTH = 80 * this.props.data.length;
-
+  render = () => {
     const data = this.props.data;
     const minValue = d3.min(data, d => d.temperature);
     const maxValue = d3.max(data, d => d.temperature);
-    const xFunction = this.getFunctionX(data);
-    const yFunction = this.getFunctionY(minValue, maxValue);
+    const xFunction = this.getFunctionX(data, this.props.dimensions.svgWidth);
+    const yFunction = this.getFunctionY(minValue, maxValue, this.props.dimensions.graphHeight, this.props.dimensions.initialYCordOfChart);
 
     return (
-      <Svg width={SVG_WIDTH} height={SVG_HEIGHT}>
-        <G y={SVG_HEIGHT}>
+      <Svg width={this.props.dimensions.svgWidth} height={this.props.dimensions.svgHeight}>
+        <G y={this.props.dimensions.svgHeight}>
           {this.getDefinitions()}
 
           {/* grid lines */}
-          {this.generateVerticalBeginLine()}
-          {this.generateFullLengthLine(-START_Y_POSITION_OF_GRAPH - GRAPH_HEIGHT)}
-          {this.generateFullLengthLine(-START_Y_POSITION_OF_GRAPH - GRAPH_HEIGHT / 2, 50)}
-          {this.generateFullLengthLine(-START_Y_POSITION_OF_GRAPH)}
-          {this.generateVerticalGridLines(data, xFunction)}
+          {this.generateVerticalBeginLine(this.props.dimensions.svgHeight)}
+          {this.generateFullLengthLine(-this.props.dimensions.initialYCordOfChart - this.props.dimensions.graphHeight, this.props.dimensions.svgWidth)}
+          {this.generateFullLengthLine(-this.props.dimensions.initialYCordOfChart - this.props.dimensions.graphHeight / 2, this.props.dimensions.svgWidth,50)}
+          {this.generateFullLengthLine(-this.props.dimensions.initialYCordOfChart, this.props.dimensions.svgWidth)}
+          {this.generateVerticalGridLines(data, xFunction, this.props.dimensions.graphHeight, this.props.dimensions.initialYCordOfChart)}
 
           {/* min & max values and data text*/}
-          {this.generateSingleText('MAX ' + maxValue + DEGREE_SIGN, 13, -START_Y_POSITION_OF_GRAPH - GRAPH_HEIGHT - 2)}
-          {this.generateSingleText('MIN ' + minValue + DEGREE_SIGN, 13, -START_Y_POSITION_OF_GRAPH - 2)}
-          {this.generateDateText(data)}
+          {this.generateSingleText('MAX ' + maxValue + DEGREE_SIGN, 13, -this.props.dimensions.initialYCordOfChart - this.props.dimensions.graphHeight - 2)}
+          {this.generateSingleText('MIN ' + minValue + DEGREE_SIGN, 13, -this.props.dimensions.initialYCordOfChart - 2)}
+          {this.generateDateText(data, this.props.dimensions.svgHeight)}
 
           {/* forecast images*/}
-          {this.generateForecastImageForEach(data, xFunction)}
+          {this.generateForecastImageForEach(data, xFunction, this.props.dimensions.graphHeight, this.props.dimensions.initialYCordOfChart)}
           {this.generateRainfallImageForEach(data, xFunction)}
 
           {/* temperature path */}
-          {this.generateGradientComponent(data, xFunction, yFunction)}
+          {this.generateGradientComponent(data, xFunction, yFunction, this.props.dimensions.initialYCordOfChart)}
           {this.generateLineComponents(data, xFunction, yFunction)}
           {this.generateDotForEach(data, xFunction, yFunction)}
 
           {/* data values ( text for: hour, temperature, rainfall % ) */}
           {this.generateDegreeTextForEachItem(data, xFunction, yFunction)}
           {this.generateTextForEachItem(data, 'precipProbability', xFunction, 8, -20, 14)}
-          {this.generateTextForEachItem(data, 'time', xFunction, 0, SVG_HEIGHT*-1 + 40, 20)}
+          {this.generateTextForEachItem(data, 'time', xFunction, 0, this.props.dimensions.svgHeight*-1 + 40, 20)}
         </G>
       </Svg>
     );
-  }
+  };
 
-  getFunctionX(data) {
+  getFunctionX(data, svgWidth) {
     const xDomain = data.map(item => item.time);
-    const xRange = [0, SVG_WIDTH];
+    const xRange = [0, svgWidth];
     return d3
         .scalePoint()
         .domain(xDomain)
@@ -78,9 +70,9 @@ class TemperatureChart extends React.PureComponent {
         .padding(1);
   }
 
-  getFunctionY(minValue, maxValue) {
+  getFunctionY(minValue, maxValue, graphHeight, initialYCordOfChart) {
     const yDomain = [minValue, maxValue];
-    const yRange = [START_Y_POSITION_OF_GRAPH, START_Y_POSITION_OF_GRAPH + GRAPH_HEIGHT];
+    const yRange = [initialYCordOfChart, initialYCordOfChart + graphHeight];
     return d3
         .scaleLinear()
         .domain(yDomain)
@@ -96,23 +88,23 @@ class TemperatureChart extends React.PureComponent {
     </Defs>;
   }
 
-  generateVerticalBeginLine() {
+  generateVerticalBeginLine(svgHeight) {
     return <Line
         x1={10}
         y1={-20}
         x2={10}
-        y2={-SVG_HEIGHT}
+        y2={-svgHeight}
         stroke={COLORS.gridColor}
         strokeDasharray={[3, 3]}
         strokeWidth="0.5"
     />;
   }
 
-  generateFullLengthLine(y, xPadding = 0) {
+  generateFullLengthLine(y, svgWidth, xPadding = 0) {
     return <Line
         x1={10 + xPadding}
         y1={y}
-        x2={SVG_WIDTH - xPadding}
+        x2={svgWidth - xPadding}
         y2={y}
         stroke={COLORS.gridColor}
         strokeDasharray={[3, 3]}
@@ -120,14 +112,14 @@ class TemperatureChart extends React.PureComponent {
     />;
   }
 
-  generateVerticalGridLines(data, x) {
+  generateVerticalGridLines(data, x, graphHeight, initialYCordOfChart) {
     return (data.map(item => (
         <Line
             key={item.timeObject.timestamp}
             x1={x(item.time)}
-            y1={-START_Y_POSITION_OF_GRAPH + 10}
+            y1={-initialYCordOfChart + 10}
             x2={x(item.time)}
-            y2={-START_Y_POSITION_OF_GRAPH - GRAPH_HEIGHT - 10}
+            y2={-initialYCordOfChart - graphHeight - 10}
             stroke={COLORS.gridColor}
             strokeDasharray={[3, 3]}
             strokeWidth="0.5"
@@ -135,11 +127,11 @@ class TemperatureChart extends React.PureComponent {
     )))
   }
 
-  generateForecastImageForEach(data, x) {
+  generateForecastImageForEach(data, x, graphHeight, initialYCordOfChart) {
     return (data.map(item => (<Image
             key={item.timeObject.timestamp}
             x={x(item.time) - 17}
-            y={(START_Y_POSITION_OF_GRAPH + GRAPH_HEIGHT) * GRAPH_TRANSFORMATION - 60}
+            y={(initialYCordOfChart + graphHeight) *-1 - 60}
             width={35}
             height={35}
             preserveAspectRatio="xMidYMid slice"
@@ -164,13 +156,13 @@ class TemperatureChart extends React.PureComponent {
     )))
   }
 
-  generateGradientComponent(data, x, y){
+  generateGradientComponent(data, x, y, initialYCordOfChart){
     let polygonPoints = "";
     for (let item of data) {
       polygonPoints += Math.ceil(x(item.time)) + ',' + -Math.ceil(y(item.temperature)) + ' ';
     }
-    polygonPoints +=  Math.ceil(x(data[data.length - 1].time)) + ',' + -START_Y_POSITION_OF_GRAPH +  ' '
-        + Math.ceil(x(data[0].time)) + ',' + -START_Y_POSITION_OF_GRAPH;
+    polygonPoints +=  Math.ceil(x(data[data.length - 1].time)) + ',' + -initialYCordOfChart +  ' '
+        + Math.ceil(x(data[0].time)) + ',' + -initialYCordOfChart;
     return (
         <Polygon
             points={polygonPoints}
@@ -190,9 +182,9 @@ class TemperatureChart extends React.PureComponent {
           <Line
               key={data[i].timeObject.timestamp}
               x1={x1}
-              y1={y1 * GRAPH_TRANSFORMATION}
+              y1={y1 * -1}
               x2={x2}
-              y2={y2 * GRAPH_TRANSFORMATION}
+              y2={y2 * -1}
               stroke={COLORS.pathBlue}
               strokeWidth="4"
           />
@@ -207,7 +199,7 @@ class TemperatureChart extends React.PureComponent {
           <Circle
               key={item.timeObject.timestamp}
               cx={x(item.time)}
-              cy={y(item.temperature) * GRAPH_TRANSFORMATION}
+              cy={y(item.temperature) * -1}
               r="2"
               fill={COLORS.pathBlue}
           />
@@ -226,11 +218,11 @@ class TemperatureChart extends React.PureComponent {
     </Text>;
   }
 
-  generateDateText(data) {
+  generateDateText(data, svgHeight) {
     return <Text
         fontSize="20"
         x={13}
-        y={-SVG_HEIGHT}
+        y={-svgHeight}
         textAnchor="start"
         fill={COLORS.gridColor}
         fontFamily="Neucha-Regular"
@@ -245,7 +237,7 @@ class TemperatureChart extends React.PureComponent {
             key={'degree' + item.timeObject.timestamp}
             fontSize={16}
             x={x(item.time)}
-            y={y(item.temperature) * GRAPH_TRANSFORMATION - 6}
+            y={y(item.temperature) * -1 - 6}
             textAnchor="middle"
             fill={COLORS.mainText}
             fontFamily="Neucha-Regular">
