@@ -1,19 +1,19 @@
-import React from 'react';
+import React, {Suspense} from 'react';
 import {View, ScrollView, FlatList, TouchableOpacity, Image} from 'react-native';
 import Text from "../../components/CustomText";
 import { connect } from 'react-redux';
 import Info from "./common/Info";
 import UvIndexLegend from "./uvindex/UvIndexLegend";
-import {HourlyTemperatureChart, HourlyRainfallChart, HourlyUvIndexChart} from "./HourlyChartService";
 
 
-class HourlyForecastPanel extends React.PureComponent {
+class HourlyForecastPanel extends React.Component {
 
     state = {
         currentChart: 'temperature',
     };
 
     render() {
+        const LazyLargeComponent = React.lazy(() => import("./HourlyChartService"));
         return (
             <View
                 style={{
@@ -44,13 +44,10 @@ class HourlyForecastPanel extends React.PureComponent {
                         <Text style={{fontSize: 20}}>pressure</Text>
                     </TouchableOpacity>
                 </ScrollView>
-                <ScrollView horizontal={true}>
-                    {(this.state.currentChart === 'temperature') && <HourlyTemperatureChart hourlyForecast={this.props.hourlyForecast}/>}
-                    {(this.state.currentChart === 'rainfall') && <HourlyRainfallChart hourlyForecast={this.props.hourlyForecast}/>}
-                    {(this.state.currentChart === 'uv_index') && <HourlyUvIndexChart hourlyForecast={this.props.hourlyForecast}/>}
-                </ScrollView>
+                <Suspense fallback={<Text>LOADING...</Text>}>
+                    <LazyLargeComponent currentChart={this.state.currentChart} hourlyForecast={this.props.hourlyForecast}/>
+                </Suspense>
                 {(this.state.currentChart === 'uv_index') && <UvIndexLegend/>}
-
                 <Info/>
             </View>
         )

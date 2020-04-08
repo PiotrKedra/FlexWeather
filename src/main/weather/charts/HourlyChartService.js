@@ -3,15 +3,28 @@ import React from "react";
 import TemperatureChart from "./temperature/TemperatureChart";
 import RainfallChart from "./rainfall/RainfallChart";
 import UvIndexChart from "./uvindex/UvIndexChart";
+import {ScrollView} from "react-native";
 
-function HourlyTemperatureChart(props){
+
+const Lazy = (props) => {
+    return  (
+        <ScrollView horizontal={true}>
+            {(props.currentChart === 'temperature') && <HourlyTemperatureChart hourlyForecast={props.hourlyForecast}/>}
+            {(props.currentChart === 'rainfall') && <HourlyRainfallChart hourlyForecast={props.hourlyForecast}/>}
+            {(props.currentChart === 'uv_index') && <HourlyUvIndexChart hourlyForecast={props.hourlyForecast}/>}
+        </ScrollView>
+    )
+};
+
+
+const HourlyTemperatureChart = (props) => {
     let i = 0;
     return parseHourlyForecast(props.hourlyForecast).map(hourlyForecastPerDay =>
         <TemperatureChart key={i++}
                           data={hourlyForecastPerDay}
                           dimensions={getDimensions(hourlyForecastPerDay.length)}
         />)
-}
+};
 
 function HourlyRainfallChart(props){
     let i = 0;
@@ -60,6 +73,8 @@ function getDimensions(elementLength, graphHeight=70) {
         initialYCordOfChart: 60,
     }
 }
+
+export default Lazy;
 
 export {
     HourlyTemperatureChart,
