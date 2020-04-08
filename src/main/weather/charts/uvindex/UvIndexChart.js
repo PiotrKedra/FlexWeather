@@ -2,12 +2,7 @@ import React from 'react';
 import {Svg, G, Line, Text, Rect} from 'react-native-svg';
 import * as d3 from 'd3';
 
-import UV_COLORS from './UvColors';
-
-const COLORS = {
-    mainText: '#111',
-    gridColor: 'rgba(81,81,81,0.3)',
-};
+import COLORS, {UV_COLORS} from "../common/ChartColors";
 
 class UvIndexChart extends React.PureComponent {
 
@@ -151,7 +146,7 @@ class UvIndexChart extends React.PureComponent {
     generateTextForEachItem(data, itemKey, xFunction, xShift, y, fontSize) {
         return (data.map(item => (
             <Text
-                key={itemKey + item.timeObject.timestamp}
+                key={item.timeObject.timestamp}
                 fontSize={fontSize}
                 x={xFunction(item.time) + xShift}
                 y={y}

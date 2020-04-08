@@ -3,23 +3,15 @@ import {Svg, G, Line, Circle, Text, Image, Polygon, Defs, LinearGradient, Stop} 
 import * as d3 from 'd3';
 import IMAGES from "../../../../resource/ImagePath";
 import mapDataToIcon from "../common/ForecastIconMapper";
+import COLORS from "../common/ChartColors";
 
-
-const COLORS = {
-    mainText: '#111',
-    pathBlue: '#5BC3CE',
-    gridColor: 'rgba(81,81,81,0.3)',
-    gradientLight: '#FFF'
-};
 
 class RainfallChart extends React.PureComponent {
 
     render = () => {
-
         const data = this.props.data;
         const minValue = d3.min(data, d => d.precipIntensity);
         const maxValue = d3.max(data, d => d.precipIntensity);
-        console.log(data);
         const xFunction = this.getFunctionX(data, this.props.dimensions.svgWidth);
         const yFunction = this.getFunctionY(minValue, maxValue, this.props.dimensions.graphHeight, this.props.dimensions.initialYCordOfChart);
 

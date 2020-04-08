@@ -3,18 +3,10 @@ import {Svg, G, Line, Circle, Text, Image, Polygon, Defs, LinearGradient, Stop} 
 import * as d3 from 'd3';
 import IMAGES from "../../../../resource/ImagePath";
 import mapDataToIcon from "../common/ForecastIconMapper";
-
+import COLORS from "../common/ChartColors";
 
 const DEGREE_SIGN = '°';
 const GRADIENT_ID = 'grad';
-
-const COLORS = {
-  mainText: '#111',
-  pathBlue: '#5BC3CE',
-  gridColor: 'rgba(81,81,81,0.3)',
-  gradientLight: '#FFF'
-};
-
 
 class TemperatureChart extends React.PureComponent {
 
