@@ -4,16 +4,17 @@ import Text from "../../components/CustomText";
 import { connect } from 'react-redux';
 import Info from "./common/Info";
 import UvIndexLegend from "./uvindex/UvIndexLegend";
+import ChartLoading from "./common/ChartLoading";
 
 
-class HourlyForecastPanel extends React.Component {
+class HourlyForecastPanel extends React.PureComponent {
 
     state = {
         currentChart: 'temperature',
     };
 
     render() {
-        const LazyLargeComponent = React.lazy(() => import("./HourlyChartService"));
+        const ChartView = React.lazy(() => import("./HourlyChartService"));
         return (
             <View
                 style={{
@@ -44,8 +45,8 @@ class HourlyForecastPanel extends React.Component {
                         <Text style={{fontSize: 20}}>pressure</Text>
                     </TouchableOpacity>
                 </ScrollView>
-                <Suspense fallback={<Text>LOADING...</Text>}>
-                    <LazyLargeComponent currentChart={this.state.currentChart} hourlyForecast={this.props.hourlyForecast}/>
+                <Suspense fallback={<ChartLoading/>}>
+                    <ChartView currentChart={this.state.currentChart} hourlyForecast={this.props.hourlyForecast}/>
                 </Suspense>
                 {(this.state.currentChart === 'uv_index') && <UvIndexLegend/>}
                 <Info/>

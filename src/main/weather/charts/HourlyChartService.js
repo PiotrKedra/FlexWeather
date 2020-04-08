@@ -6,7 +6,7 @@ import UvIndexChart from "./uvindex/UvIndexChart";
 import {ScrollView} from "react-native";
 
 
-const Lazy = (props) => {
+const ChartView = (props) => {
     return  (
         <ScrollView horizontal={true}>
             {(props.currentChart === 'temperature') && <HourlyTemperatureChart hourlyForecast={props.hourlyForecast}/>}
@@ -15,7 +15,6 @@ const Lazy = (props) => {
         </ScrollView>
     )
 };
-
 
 const HourlyTemperatureChart = (props) => {
     let i = 0;
@@ -74,10 +73,4 @@ function getDimensions(elementLength, graphHeight=70) {
     }
 }
 
-export default Lazy;
-
-export {
-    HourlyTemperatureChart,
-    HourlyRainfallChart,
-    HourlyUvIndexChart,
-};
+export default ChartView;

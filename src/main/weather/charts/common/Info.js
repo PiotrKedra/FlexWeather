@@ -1,5 +1,5 @@
 import React from 'react';
-import {Image, TouchableOpacity, View, Animated} from 'react-native';
+import {Image, TouchableOpacity, Animated} from 'react-native';
 import Text from '../../../components/CustomText';
 
 class Info extends React.Component {
