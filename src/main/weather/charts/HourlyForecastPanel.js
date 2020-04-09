@@ -2,9 +2,9 @@ import React, {Suspense} from 'react';
 import {View, ScrollView, FlatList, TouchableOpacity, Image} from 'react-native';
 import Text from "../../components/CustomText";
 import { connect } from 'react-redux';
-import Info from "./common/Info";
-import UvIndexLegend from "./uvindex/UvIndexLegend";
-import ChartLoading from "./common/ChartLoading";
+import Info from "./info/Info";
+import UvIndexLegend from "./info/UvIndexLegend";
+import ChartLoading from "./utility/ChartLoading";
 
 
 class HourlyForecastPanel extends React.PureComponent {

@@ -2,7 +2,7 @@ import React from 'react';
 import {Image, TouchableOpacity, Animated} from 'react-native';
 import Text from '../../../components/CustomText';
 
-class Info extends React.Component {
+class Info extends React.PureComponent {
 
     state = {
         showInfo: false,

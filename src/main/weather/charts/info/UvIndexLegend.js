@@ -3,7 +3,7 @@ import {TouchableOpacity, View, Image, Animated, StyleSheet} from "react-native"
 
 import CustomText from "../../../components/CustomText";
 import {DETAIL_ICONS} from "../../../../resource/ImagePath";
-import {UV_COLORS} from "../common/ChartColors";
+import {UV_COLORS} from "../utility/ChartColors";
 
 const UvIndexLegend = () => {
     const [isLegend, setIsLegend] = useState(false);

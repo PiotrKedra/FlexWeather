@@ -1,9 +1,9 @@
 import React from "react";
 import {ScrollView} from "react-native";
 
-import TemperatureChart from "./temperature/TemperatureChart";
-import RainfallChart from "./rainfall/RainfallChart";
-import UvIndexChart from "./uvindex/UvIndexChart";
+import TemperatureChart from "./svgcharts/TemperatureChart";
+import RainfallChart from "./svgcharts/RainfallChart";
+import UvIndexChart from "./svgcharts/UvIndexChart";
 
 const ChartView = (props) => {
     return  (
@@ -38,7 +38,7 @@ function HourlyUvIndexChart(props){
     return parseHourlyForecast(props.hourlyForecast).map(hourlyForecastPerDay =>
         <UvIndexChart key={i++}
                       data={hourlyForecastPerDay}
-                      dimensions={getDimensions(hourlyForecastPerDay.length)}
+                      dimensions={getDimensions(hourlyForecastPerDay.length, 100)}
         />)
 }
 

@@ -16,7 +16,7 @@ import Header from './menu/Header';
 import FooterMenu from './menu/FooterMenu';
 import RootWeatherPanel from './weather/rootpanel/RootWeatherPanel';
 import DayPickerList from './components/DayPickerList';
-import HourlyForecastInfo from './weather/charts/common/HourlyForecastInfo'
+import HourlyForecastInfo from './weather/charts/info/HourlyForecastInfo'
 import DetailsPanel from "./weather/detailpanel/DetailPanel";
 import HourlyForecastPanel from "./weather/charts/HourlyForecastPanel";
 
