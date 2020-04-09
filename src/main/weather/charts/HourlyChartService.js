@@ -1,10 +1,9 @@
 import React from "react";
+import {ScrollView} from "react-native";
 
 import TemperatureChart from "./temperature/TemperatureChart";
 import RainfallChart from "./rainfall/RainfallChart";
 import UvIndexChart from "./uvindex/UvIndexChart";
-import {ScrollView} from "react-native";
-
 
 const ChartView = (props) => {
     return  (

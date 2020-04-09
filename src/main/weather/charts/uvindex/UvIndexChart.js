@@ -4,7 +4,7 @@ import * as d3 from 'd3';
 
 import COLORS, {UV_COLORS} from "../common/ChartColors";
 
-const UvIndexChart2 = (props) => {
+const UvIndexChart = (props) => {
     const data = props.data;
     const svgWidth = props.dimensions.svgWidth;
     const svgHeight = props.dimensions.svgHeight;
@@ -156,4 +156,4 @@ function generateTextForEachItem(data, itemKey, xFunction, xShift, y, fontSize) 
     )))
 }
 
-export default UvIndexChart2;
+export default UvIndexChart;
