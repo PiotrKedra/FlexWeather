@@ -7,6 +7,7 @@ const WindChart = () => {
     return (
         <View>
             <CustomText>
+                last day last day
                 Filip
             </CustomText>
         </View>
