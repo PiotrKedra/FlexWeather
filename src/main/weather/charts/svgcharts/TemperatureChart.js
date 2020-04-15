@@ -50,7 +50,7 @@ const TemperatureChart = (props) => {
 
                 {/* data values ( text for: hour, temperature, rainfall % ) */}
                 {generateDegreeTextForEachItem(data, xFunction, yFunction)}
-                {generateTextForEachItem(data, 'precipProbability', xFunction, 8, -20, 14)}
+                {generateTextForEachItem(data, 'precipProbability', xFunction, 8, -20, 14, '%')}
                 {generateTextForEachItem(data, 'time', xFunction, 0, svgHeight*-1 + 40, 20)}
             </G>
         </Svg>

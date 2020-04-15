@@ -102,7 +102,7 @@ function generateDateText(data, svgHeight) {
     </Text>;
 }
 
-function generateTextForEachItem(data, itemKey, xFunction, xShift, y, fontSize, color=COLORS.mainText) {
+function generateTextForEachItem(data, itemKey, xFunction, xShift, y, fontSize, sufix='',color=COLORS.mainText) {
     return (data.map(item => (
         <Text
             key={itemKey + item.timeObject.timestamp}
@@ -112,7 +112,7 @@ function generateTextForEachItem(data, itemKey, xFunction, xShift, y, fontSize, 
             textAnchor="middle"
             fill={color}
             fontFamily="Neucha-Regular">
-            {item[itemKey]}
+            {item[itemKey] + sufix}
         </Text>
     )))
 }

@@ -49,7 +49,7 @@ const RainfallChart = (props) => {
 
                 {/* data values ( text for: hour, temperature, rainfall % ) */}
                 {generateDegreeTextForEachItem(data, xFunction, yFunction)}
-                {generateTextForEachItem(data, 'humidity', xFunction, 0, -20, 14, COLORS.gray)}
+                {generateTextForEachItem(data, 'humidity', xFunction, 0, -20, 14, '%', COLORS.gray)}
                 {generateTextForEachItem(data, 'time', xFunction, 0, (initialYCordOfChart + graphHeight) * -1 - 70, 20)}
             </G>
         </Svg>
