@@ -2,7 +2,8 @@ const COLORS = {
     mainText: '#111',
     pathBlue: '#5BC3CE',
     gridColor: 'rgba(81,81,81,0.3)',
-    gradientLight: '#FFF'
+    gradientLight: '#FFF',
+    gray: 'rgb(101,101,101)'
 };
 
 const UV_COLORS = {
