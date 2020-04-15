@@ -13,3 +13,5 @@ const WindChart = () => {
         </View>
     )
 };
+
+export default WindChart;

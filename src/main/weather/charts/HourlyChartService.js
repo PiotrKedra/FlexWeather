@@ -2,6 +2,7 @@ import React from "react";
 import {ScrollView} from "react-native";
 
 import TemperatureChart from "./svgcharts/TemperatureChart";
+import WindChart from "./svgcharts/WindChart";
 import RainfallChart from "./svgcharts/RainfallChart";
 import UvIndexChart from "./svgcharts/UvIndexChart";
 
@@ -9,6 +10,7 @@ const ChartView = (props) => {
     return  (
         <ScrollView horizontal={true}>
             {(props.currentChart === 'temperature') && <HourlyTemperatureChart hourlyForecast={props.hourlyForecast}/>}
+            {(props.currentChart === 'wind') && <HourlyWindChart hourlyForecast={props.hourlyForecast}/>}
             {(props.currentChart === 'rainfall') && <HourlyRainfallChart hourlyForecast={props.hourlyForecast}/>}
             {(props.currentChart === 'uv_index') && <HourlyUvIndexChart hourlyForecast={props.hourlyForecast}/>}
         </ScrollView>
@@ -23,6 +25,15 @@ const HourlyTemperatureChart = (props) => {
                           dimensions={getDimensions(hourlyForecastPerDay.length)}
         />)
 };
+
+function HourlyWindChart(props){
+    let i = 0;
+    return parseHourlyForecast(props.hourlyForecast).map(hourlyForecastPerDay =>
+        <WindChart key={i++}
+                       data={hourlyForecastPerDay}
+                       dimensions={getDimensions(hourlyForecastPerDay.length)}
+        />)
+}
 
 function HourlyRainfallChart(props){
     let i = 0;

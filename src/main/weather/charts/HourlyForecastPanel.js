@@ -34,6 +34,10 @@ class HourlyForecastPanel extends React.PureComponent {
                         <Text style={{fontSize: 20}}>temperature</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={{backgroundColor: 'rgba(240,240,240,1)', borderRadius: 15, elevation: 1, justifyContent: 'center', alignContent: 'center', marginRight: 20, paddingHorizontal: 15, paddingVertical: 5}}
+                                      onPress={() => this.setState({currentChart: 'wind'})}>
+                        <Text style={{fontSize: 20}}>wind</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={{backgroundColor: 'rgba(240,240,240,1)', borderRadius: 15, elevation: 1, justifyContent: 'center', alignContent: 'center', marginRight: 20, paddingHorizontal: 15, paddingVertical: 5}}
                                       onPress={() => this.setState({currentChart: 'rainfall'})}>
                         <Text style={{fontSize: 20}}>rainfall</Text>
                     </TouchableOpacity>
