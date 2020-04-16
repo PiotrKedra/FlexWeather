@@ -31,7 +31,7 @@ function HourlyWindChart(props){
     return parseHourlyForecast(props.hourlyForecast).map(hourlyForecastPerDay =>
         <WindChart key={i++}
                        data={hourlyForecastPerDay}
-                       dimensions={getDimensions(hourlyForecastPerDay.length)}
+                       dimensions={getDimensions(hourlyForecastPerDay.length, )}
         />)
 }
 

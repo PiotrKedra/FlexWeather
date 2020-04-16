@@ -39,7 +39,7 @@ function getHourlyForecast(hourly) {
             dewPoint: item.dewPoint,
             humidity: (item.humidity*100).toFixed(),
             pressure: item.pressure,
-            windSpeed: item.windSpeed,
+            windSpeed: item.windSpeed.toFixed(1),
             windGust: item.windGust,
             windBearing: item.windBearing,
             cloudCover: item.cloudCover,
