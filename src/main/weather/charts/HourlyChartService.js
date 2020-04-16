@@ -31,7 +31,7 @@ function HourlyWindChart(props){
     return parseHourlyForecast(props.hourlyForecast).map(hourlyForecastPerDay =>
         <WindChart key={i++}
                        data={hourlyForecastPerDay}
-                       dimensions={getDimensions(hourlyForecastPerDay.length, )}
+                       dimensions={getDimensions(hourlyForecastPerDay.length, 80, 30)}
         />)
 }
 
@@ -74,12 +74,12 @@ function parseHourlyForecast(hourlyForecast) {
     return hourlyForecastByDailyDate;
 }
 
-function getDimensions(elementLength, graphHeight=70) {
+function getDimensions(elementLength, graphHeight=70, initialYCordOfChart=80) {
     return {
         svgWidth: 80 * elementLength,
         svgHeight: 240,
         graphHeight: graphHeight,
-        initialYCordOfChart: 60,
+        initialYCordOfChart: initialYCordOfChart,
     }
 }
 

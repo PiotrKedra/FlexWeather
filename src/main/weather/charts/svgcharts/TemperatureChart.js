@@ -9,7 +9,7 @@ import {
     getGrid,
     generateForecastImageForEach,
     generateDateText,
-    generateTextForEachItem,
+    generateTextForEachItem, generateDegreeTextForEachItem,
 } from "./utility/ChartDrawService";
 
 const DEGREE_SIGN = '°';
@@ -49,7 +49,7 @@ const TemperatureChart = (props) => {
                 {generateDotForEach(data, xFunction, yFunction)}
 
                 {/* data values ( text for: hour, temperature, rainfall % ) */}
-                {generateDegreeTextForEachItem(data, xFunction, yFunction)}
+                {generateDegreeTextForEachItem(data, xFunction, yFunction, 'temperature', DEGREE_SIGN)}
                 {generateTextForEachItem(data, 'precipProbability', xFunction, 8, -20, 14, '%')}
                 {generateTextForEachItem(data, 'time', xFunction, 0, svgHeight*-1 + 40, 20)}
             </G>
@@ -141,21 +141,6 @@ function generateSingleText(textValue, x, y) {
           fontFamily="Neucha-Regular">
         {textValue}
       </Text>;
-}
-
-function generateDegreeTextForEachItem(data, x, y) {
-  return (data.map(item => (
-      <Text
-          key={'degree' + item.timeObject.timestamp}
-          fontSize={16}
-          x={x(item.time)}
-          y={y(item.temperature) * -1 - 6}
-          textAnchor="middle"
-          fill={COLORS.mainText}
-          fontFamily="Neucha-Regular">
-        {item.temperature + DEGREE_SIGN}
-      </Text>
-  )))
 }
 
 export default TemperatureChart;

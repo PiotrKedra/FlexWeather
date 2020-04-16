@@ -117,6 +117,21 @@ function generateTextForEachItem(data, itemKey, xFunction, xShift, y, fontSize, 
     )))
 }
 
+function generateDegreeTextForEachItem(data, x, y, key, sufix) {
+    return (data.map(item => (
+        <Text
+            key={item.time}
+            fontSize={16}
+            x={x(item.time)}
+            y={y(item[key]) * -1 - 6}
+            textAnchor="middle"
+            fill={COLORS.mainText}
+            fontFamily="Neucha-Regular">
+            {item[key] + sufix}
+        </Text>
+    )))
+}
+
 export {
     getFunctionX,
     getFunctionY,
@@ -124,4 +139,5 @@ export {
     generateForecastImageForEach,
     generateDateText,
     generateTextForEachItem,
+    generateDegreeTextForEachItem
 }

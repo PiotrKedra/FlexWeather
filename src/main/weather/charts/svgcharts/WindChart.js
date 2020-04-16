@@ -11,7 +11,8 @@ import {
     getFunctionY,
     getGrid,
     generateDateText,
-    generateTextForEachItem
+    generateTextForEachItem,
+    generateDegreeTextForEachItem,
 } from "./utility/ChartDrawService";
 
 const WindChart = (props) => {
@@ -33,14 +34,11 @@ const WindChart = (props) => {
                 {getGrid(svgWidth, svgHeight, graphHeight, initialYCordOfChart, xFunction, data)}
                 {generateDateText(data, svgHeight)}
 
-                {data.map(item => (
-                    getG(item, xFunction)
-                ))}
-
+                {getWindDirectionArrowsForEach(data, xFunction)}
                 {generateDataBars(data, xFunction, yFunction, maxValue, initialYCordOfChart)}
 
+                {generateDegreeTextForEachItem(data, xFunction, yFunction, 'windSpeed', 'm/s')}
                 {generateTextForEachItem(data, 'time', xFunction, 0, svgHeight * -1 + 40, 20)}
-                {generateTextForEachItem(data, 'windSpeed', xFunction, 0, -30, 16, 'm/s')}
             </G>
         </Svg>
     )
@@ -50,21 +48,45 @@ function generateDataBars(data, x, y, maxValue, initialYCordOfChart) {
     if(maxValue===0) return null;
     return (data.map(item => (
         <Rect
-            key={'bar' + item.time}
-            x={x(item.time) - 2.5}
+            key={item.time}
+            x={x(item.time) - 3}
             y={y(item.windSpeed)*-1}
-            rx={2.5}
-            width={5}
+            rx={3}
+            width={6}
             height={y(item.windSpeed) - initialYCordOfChart}
-            fill="black"
+            fill="#3EA435"
             opacity={0.8}
         />
     )))
 }
 
-const width = 24;
-const height = 30;
-const r = 5;
+function getWindDirectionArrowsForEach(data, xFunction) {
+    return data.map(item => (
+            getWindArrow(item, xFunction)
+        ));
+}
+
+const WIND_ARROW_WIDTH = 24;
+const WIND_ARROW_HEIGHT = 30;
+const WIND_ARROW_R = 5;
+
+function getWindArrow(item, xFunction) {
+    const x = xFunction(item.time) - WIND_ARROW_WIDTH/2;
+    const y = 180;
+    const points = x + ',' + -y + ' ' +
+        (x+WIND_ARROW_WIDTH/2) + ',' + -(y-WIND_ARROW_R) + ' ' +
+        (x+WIND_ARROW_WIDTH) + ',' + -y + ' ' +
+        (x+WIND_ARROW_WIDTH/2) + ',' + -(y-WIND_ARROW_HEIGHT);
+    return <Polygon points={points}
+                    key={item.time}
+                    fill="#3EA435"
+                    transform={{
+                        rotation: item.windBearing,
+                        originX: x + WIND_ARROW_WIDTH/2,
+                        originY: -(y - WIND_ARROW_HEIGHT/3)
+                    }}
+    />
+}
 
 function getWindDirectionString(windBearing) {
     if(windBearing < 23)
@@ -85,24 +107,6 @@ function getWindDirectionString(windBearing) {
         return 'NW';
     else
         return 'N';
-}
-
-function getG(item, xFunction) {
-    const x = xFunction(item.time) - width/2;
-    const y = 180;
-    const points = x + ',' + -y + ' ' +
-        (x+width/2) + ',' + -(y-r) + ' ' +
-        (x+width) + ',' + -y + ' ' +
-        (x+width/2) + ',' + -(y-height);
-    return <Polygon points={points}
-                    key={item.time}
-                    fill="green"
-                    transform={{
-                        rotation: item.windBearing,
-                        originX: x + width/2,
-                        originY: -(y - height/3)
-                    }}
-        />
 }
 
 export default WindChart;
