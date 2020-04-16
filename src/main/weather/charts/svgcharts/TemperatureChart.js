@@ -9,7 +9,7 @@ import {
     getGrid,
     generateForecastImageForEach,
     generateDateText,
-    generateTextForEachItem, generateDegreeTextForEachItem,
+    generateTextForEachItem, getDataTextForEachItemAboveBars,
 } from "./utility/ChartDrawService";
 
 const DEGREE_SIGN = '°';
@@ -49,7 +49,7 @@ const TemperatureChart = (props) => {
                 {generateDotForEach(data, xFunction, yFunction)}
 
                 {/* data values ( text for: hour, temperature, rainfall % ) */}
-                {generateDegreeTextForEachItem(data, xFunction, yFunction, 'temperature', DEGREE_SIGN)}
+                {getDataTextForEachItemAboveBars(data, xFunction, yFunction, 'temperature', DEGREE_SIGN)}
                 {generateTextForEachItem(data, 'precipProbability', xFunction, 8, -20, 14, '%')}
                 {generateTextForEachItem(data, 'time', xFunction, 0, svgHeight*-1 + 40, 20)}
             </G>

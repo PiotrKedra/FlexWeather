@@ -46,7 +46,7 @@ class HourlyForecastPanel extends React.PureComponent {
                         <Text style={{fontSize: 20}}>uv index</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={{backgroundColor: 'rgba(240,240,240,1)', borderRadius: 15, elevation: 1, justifyContent: 'center', alignContent: 'center', marginRight: 20, paddingHorizontal: 15, paddingVertical: 5}}>
-                        <Text style={{fontSize: 20}}>pressure</Text>
+                        <Text style={{fontSize: 20}}>humidity</Text>
                     </TouchableOpacity>
                 </ScrollView>
                 <Suspense fallback={<ChartLoading/>}>

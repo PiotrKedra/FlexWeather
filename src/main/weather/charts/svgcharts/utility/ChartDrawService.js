@@ -117,7 +117,7 @@ function generateTextForEachItem(data, itemKey, xFunction, xShift, y, fontSize, 
     )))
 }
 
-function generateDegreeTextForEachItem(data, x, y, key, sufix) {
+function getDataTextForEachItemAboveBars(data, x, y, key, sufix) {
     return (data.map(item => (
         <Text
             key={item.time}
@@ -139,5 +139,5 @@ export {
     generateForecastImageForEach,
     generateDateText,
     generateTextForEachItem,
-    generateDegreeTextForEachItem
+    getDataTextForEachItemAboveBars
 }

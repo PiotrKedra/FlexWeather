@@ -3,7 +3,8 @@ const COLORS = {
     pathBlue: '#5BC3CE',
     gridColor: 'rgba(81,81,81,0.3)',
     gradientLight: '#FFF',
-    gray: 'rgb(101,101,101)'
+    gray: 'rgb(101,101,101)',
+    green: '#3EA435',
 };
 
 const UV_COLORS = {

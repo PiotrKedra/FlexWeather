@@ -1,8 +1,10 @@
 import React from "react";
 import {
-    Circle,
-    G, Polygon, Rect,
-    Svg
+    G,
+    Polygon,
+    Rect,
+    Svg,
+    Text
 } from "react-native-svg";
 import * as d3 from "d3";
 
@@ -12,8 +14,9 @@ import {
     getGrid,
     generateDateText,
     generateTextForEachItem,
-    generateDegreeTextForEachItem,
+    getDataTextForEachItemAboveBars,
 } from "./utility/ChartDrawService";
+import COLORS from "../utility/ChartColors";
 
 const WindChart = (props) => {
 
@@ -23,8 +26,8 @@ const WindChart = (props) => {
     const graphHeight = props.dimensions.graphHeight;
     const initialYCordOfChart = props.dimensions.initialYCordOfChart;
 
-    const minValue = 0;//d3.min(data, d => d.windSpeed);
-    const maxValue = 15;//d3.max(data, d => d.windSpeed);
+    const minValue = 0;
+    const maxValue = getMaxValue(data);
     const xFunction = getFunctionX(data, svgWidth);
     const yFunction = getFunctionY(minValue, maxValue, graphHeight, initialYCordOfChart);
 
@@ -37,12 +40,19 @@ const WindChart = (props) => {
                 {getWindDirectionArrowsForEach(data, xFunction)}
                 {generateDataBars(data, xFunction, yFunction, maxValue, initialYCordOfChart)}
 
-                {generateDegreeTextForEachItem(data, xFunction, yFunction, 'windSpeed', 'm/s')}
+                {getWindBearingStringForEach(data, xFunction)}
+                {getDataTextForEachItemAboveBars(data, xFunction, yFunction, 'windSpeed', 'm/s')}
                 {generateTextForEachItem(data, 'time', xFunction, 0, svgHeight * -1 + 40, 20)}
             </G>
         </Svg>
     )
 };
+
+function getMaxValue(data){
+    const max = d3.max(data, d => d.windSpeed);
+    const defaultMax = 15;
+    return (max > defaultMax) ? max : defaultMax;
+}
 
 function generateDataBars(data, x, y, maxValue, initialYCordOfChart) {
     if(maxValue===0) return null;
@@ -54,8 +64,7 @@ function generateDataBars(data, x, y, maxValue, initialYCordOfChart) {
             rx={3}
             width={6}
             height={y(item.windSpeed) - initialYCordOfChart}
-            fill="#3EA435"
-            opacity={0.8}
+            fill={COLORS.green}
         />
     )))
 }
@@ -67,9 +76,9 @@ function getWindDirectionArrowsForEach(data, xFunction) {
 }
 
 const WIND_ARROW_WIDTH = 24;
+
 const WIND_ARROW_HEIGHT = 30;
 const WIND_ARROW_R = 5;
-
 function getWindArrow(item, xFunction) {
     const x = xFunction(item.time) - WIND_ARROW_WIDTH/2;
     const y = 180;
@@ -79,13 +88,29 @@ function getWindArrow(item, xFunction) {
         (x+WIND_ARROW_WIDTH/2) + ',' + -(y-WIND_ARROW_HEIGHT);
     return <Polygon points={points}
                     key={item.time}
-                    fill="#3EA435"
+                    fill={COLORS.green}
+                    opacity={0.8}
                     transform={{
                         rotation: item.windBearing,
                         originX: x + WIND_ARROW_WIDTH/2,
                         originY: -(y - WIND_ARROW_HEIGHT/3)
                     }}
     />
+}
+
+function getWindBearingStringForEach(data, xFunction) {
+    return data.map(item => (
+        <Text
+            key={item.time}
+            fontSize="20"
+            x={xFunction(item.time)}
+            y={-130}
+            textAnchor="middle"
+            fill={COLORS.gray}
+            fontFamily="Neucha-Regular">
+            {getWindDirectionString(item.windBearing)}
+        </Text>
+    ))
 }
 
 function getWindDirectionString(windBearing) {

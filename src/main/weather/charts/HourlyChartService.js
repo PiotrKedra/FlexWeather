@@ -74,7 +74,7 @@ function parseHourlyForecast(hourlyForecast) {
     return hourlyForecastByDailyDate;
 }
 
-function getDimensions(elementLength, graphHeight=70, initialYCordOfChart=80) {
+function getDimensions(elementLength, graphHeight=70, initialYCordOfChart=60) {
     return {
         svgWidth: 80 * elementLength,
         svgHeight: 240,
