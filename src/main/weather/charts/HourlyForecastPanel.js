@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'rgba(240,240,240,1)',
     },
     chartSelected: {
-        backgroundColor: 'rgba(200,30,0.2)',
+        backgroundColor: 'rgba(200,30,30,0.2)',
     },
     buttonText: {
         fontSize: 20
