@@ -5,7 +5,6 @@ import {
 } from "react-native";
 import React from "react";
 
-
 const GeneralStatusBar = () => {
     return (
         <View style={styles.statusBar}>
