@@ -8,7 +8,7 @@ import React from "react";
 const GeneralStatusBar = () => {
     return (
         <View style={styles.statusBar}>
-            <StatusBar translucent backgroundColor={'rgba(0,0,0,0.3)'}/>
+            <StatusBar translucent backgroundColor={'rgba(0,0,0,0.2)'}/>
         </View>
     )
 };
