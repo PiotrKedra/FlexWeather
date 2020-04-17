@@ -6,19 +6,17 @@ import {
   StatusBar,
   ScrollView,
   Animated,
-  FlatList,
-  TouchableOpacity
 } from 'react-native';
 import { connect } from 'react-redux';
 
 import Text from '../main/components/CustomText';
 import Header from './menu/Header';
-import FooterMenu from './menu/FooterMenu';
 import RootWeatherPanel from './weather/rootpanel/RootWeatherPanel';
 import DayPickerList from './components/DayPickerList';
 import HourlyForecastInfo from './weather/charts/info/HourlyForecastInfo'
 import DetailsPanel from "./weather/detailpanel/DetailPanel";
 import HourlyForecastPanel from "./weather/charts/HourlyForecastPanel";
+import GeneralStatusBar from "./components/GeneralStatusBar";
 
 class MainPage extends React.Component {
   state = {
@@ -71,13 +69,14 @@ class MainPage extends React.Component {
     };
 
     this.shouldDisplayHourlyCharts();
-
     return (
       <View style={{ flex: 1 }}>
+
         <ImageBackground
           style={styles.imageBackground}
           source={require('../../assets/images/background.jpg')}
         >
+          <GeneralStatusBar/>
           <Header isScrool={this.state.scroll} />
           <ScrollView
             contentContainerStyle={{ alignItems: 'center' }}
@@ -148,6 +147,5 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     paddingHorizontal: '5%',
-    marginVertical: 8,
   },
 });

@@ -1,15 +1,21 @@
 import React from 'react';
-import {Image, StyleSheet, TouchableOpacity, Animated} from "react-native";
+import {Image, StyleSheet, TouchableOpacity, Animated, Dimensions} from "react-native";
 
 import CustomText from "../components/CustomText";
 
+const HEADER_WIDTH_CLOSE = 75;
+const HEADER_WIDTH_OPEN = Dimensions.get('window').width * 0.99;
+const HEADER_HEIGHT_CLOSE = 100;
+const HEADER_HEIGHT_OPEN = 80;
+
 class Header extends React.Component {
+
 
     constructor(props) {
         super(props);
         this.state = {
-            width: new Animated.Value(75),
-            height: new Animated.Value(90),
+            width: new Animated.Value(HEADER_WIDTH_CLOSE),
+            height: new Animated.Value(HEADER_HEIGHT_CLOSE),
             locationOpacity: new Animated.Value(0)
         }
     }
@@ -24,11 +30,11 @@ class Header extends React.Component {
         if(this.props.isScrool === false) {
             Animated.parallel([
                 Animated.timing(this.state.width, {
-                    toValue: 75,
+                    toValue: HEADER_WIDTH_CLOSE,
                     duration: 300
                 }),
                 Animated.timing(this.state.height, {
-                    toValue: 90,
+                    toValue: HEADER_HEIGHT_CLOSE,
                     duration: 300
                 }),
                 Animated.timing(this.state.locationOpacity, {
@@ -39,11 +45,11 @@ class Header extends React.Component {
         } else {
             Animated.parallel([
                 Animated.timing(this.state.width, {
-                    toValue: 355,
+                    toValue: HEADER_WIDTH_OPEN,
                     duration: 500
                 }),
                 Animated.timing(this.state.height, {
-                    toValue: 70,
+                    toValue: HEADER_HEIGHT_OPEN,
                     duration: 400
                 }),
                 Animated.timing(this.state.locationOpacity, {
@@ -66,7 +72,7 @@ class Header extends React.Component {
         return (
             <Animated.View style={[styles.headerOnScroll, animationStyle]}>
                 <TouchableOpacity style={styles.burgerMenuOnScroll}>
-                    <Image style={{height: 33, width: 33}} source={require('../../../assets/images/menu.png')}/>
+                    <Image style={{height: 25, width: 25}} source={require('../../../assets/images/menu.png')}/>
                 </TouchableOpacity>
                 <Animated.View style={locationStyle}>
                     <CustomText style={{fontSize: 30}}>Zabierzów</CustomText>
@@ -91,6 +97,7 @@ const styles = StyleSheet.create({
         position: 'absolute',
         top: 0,
         right: 0,
+        paddingTop: 20,
     },
     burgerMenuOnScroll:{
         width: 70,
