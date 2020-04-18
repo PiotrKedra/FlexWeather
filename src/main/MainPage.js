@@ -17,6 +17,7 @@ import HourlyForecastInfo from './weather/charts/info/HourlyForecastInfo'
 import DetailsPanel from "./weather/detailpanel/DetailPanel";
 import HourlyForecastPanel from "./weather/charts/HourlyForecastPanel";
 import GeneralStatusBar from "./components/GeneralStatusBar";
+import PoweredBy from "./components/PoweredBy";
 
 class MainPage extends React.Component {
   state = {
@@ -104,7 +105,7 @@ class MainPage extends React.Component {
             {this.shouldDisplayHourlyCharts() ? <HourlyForecastPanel /> : <HourlyForecastInfo/>
             }
             <DetailsPanel/>
-            <View style={{height: 100}}/>
+            <PoweredBy/>
           </ScrollView>
           {/*<FooterMenu />*/}
         </ImageBackground>
