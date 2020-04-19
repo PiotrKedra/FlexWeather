@@ -1,5 +1,6 @@
 import React from 'react';
-import {Image, StyleSheet, TouchableOpacity, Animated, Dimensions} from "react-native";
+import {Image, StyleSheet, Animated, Dimensions, View} from "react-native";
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 import CustomText from "../components/CustomText";
 
@@ -16,8 +17,36 @@ class Header extends React.Component {
         this.state = {
             width: new Animated.Value(HEADER_WIDTH_CLOSE),
             height: new Animated.Value(HEADER_HEIGHT_CLOSE),
-            locationOpacity: new Animated.Value(0)
+            locationOpacity: new Animated.Value(0),
+            menu: false
         }
+    }
+
+    showMenu(){
+        if(this.state.menu === false) {
+            Animated.parallel([
+                Animated.timing(this.state.width, {
+                    toValue: Dimensions.get('window').width * 0.8,
+                    duration: 300
+                }),
+                Animated.timing(this.state.height, {
+                    toValue: Dimensions.get('window').height * 0.8,
+                    duration: 300
+                }),
+            ]).start();
+        } else {
+            Animated.parallel([
+                Animated.timing(this.state.width, {
+                    toValue: HEADER_WIDTH_CLOSE,
+                    duration: 300
+                }),
+                Animated.timing(this.state.height, {
+                    toValue: HEADER_HEIGHT_CLOSE,
+                    duration: 300
+                }),
+            ]).start();
+        }
+        this.setState({menu: !this.state.menu});
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
@@ -27,6 +56,7 @@ class Header extends React.Component {
     }
 
     updateHeader() {
+        this.setState({menu: false});
         if(this.props.isScrool === false) {
             Animated.parallel([
                 Animated.timing(this.state.width, {
@@ -71,12 +101,14 @@ class Header extends React.Component {
         };
         return (
             <Animated.View style={[styles.headerOnScroll, animationStyle]}>
-                <TouchableOpacity style={styles.burgerMenuOnScroll}>
+                {!this.state.menu && <View><TouchableOpacity style={styles.burgerMenuOnScroll} onPress={() => this.showMenu()}>
                     <Image style={{height: 25, width: 25}} source={require('../../../assets/images/menu.png')}/>
                 </TouchableOpacity>
-                <Animated.View style={locationStyle}>
-                    <CustomText style={{fontSize: 30}}>Zabierzów</CustomText>
-                </Animated.View>
+                {/*<Animated.View style={locationStyle}>*/}
+                {/*    <CustomText style={{fontSize: 30}}>Zabierzów</CustomText>*/}
+                {/*</Animated.View>*/}
+                </View>    }
+                {this.state.menu && <View style={{width: 100, height: 300, backgroundColor: 'red'}}></View>}
             </Animated.View>
         )
     }
@@ -104,6 +136,7 @@ const styles = StyleSheet.create({
         height: 70,
         justifyContent: 'center',
         alignItems: 'center',
+        borderWidth: 1,
     },
     leftSmallMenu: {
         flexDirection: 'row',

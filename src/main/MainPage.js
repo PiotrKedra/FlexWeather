@@ -78,7 +78,6 @@ class MainPage extends React.Component {
           source={require('../../assets/images/background.jpg')}
         >
           <GeneralStatusBar/>
-          <Header isScrool={this.state.scroll} />
           <ScrollView
             contentContainerStyle={{ alignItems: 'center' }}
             onScroll={this.onScrollNotTopMinimizeHeader}
@@ -107,6 +106,8 @@ class MainPage extends React.Component {
             <DetailsPanel/>
             <PoweredBy/>
           </ScrollView>
+          <Header isScrool={this.state.scroll} />
+
           {/*<FooterMenu />*/}
         </ImageBackground>
       </View>
