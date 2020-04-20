@@ -106,7 +106,7 @@ class MainPage extends React.Component {
             <DetailsPanel/>
             <PoweredBy/>
           </ScrollView>
-          <Header isScrool={this.state.scroll} />
+          <Header isScroll={this.state.scroll} />
 
           {/*<FooterMenu />*/}
         </ImageBackground>
