@@ -2,13 +2,17 @@ import React from 'react';
 import {Image, StyleSheet, Animated, Dimensions, View, TouchableOpacity as TO} from "react-native";
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
+
+const WINDOW_WIDTH = Dimensions.get('window').width;
+const WINDOW_HEIGHT = Dimensions.get('window').height;
+
 const HEADER_WIDTH_CLOSE = 75;
-const HEADER_WIDTH_OPEN = Dimensions.get('window').width * 0.99;
+const HEADER_WIDTH_OPEN = WINDOW_WIDTH * 0.99;
 const HEADER_HEIGHT_CLOSE = 100;
 const HEADER_HEIGHT_OPEN = 80;
 
-const HEADER_WIDTH_MENU_OPEN = Dimensions.get('window').width * 0.8;
-const HEADER_HEIGHT_MENU_OPEN = Dimensions.get('window').height * 0.8;
+const HEADER_WIDTH_MENU_OPEN = WINDOW_WIDTH * 0.8;
+const HEADER_HEIGHT_MENU_OPEN = WINDOW_HEIGHT * 0.8;
 
 class Header extends React.PureComponent {
 
@@ -109,8 +113,8 @@ const styles = StyleSheet.create({
         position: 'absolute',
         top: 0,
         right: 0,
-        width: Dimensions.get('window').width,
-        height: Dimensions.get('window').height,
+        width: WINDOW_WIDTH,
+        height: WINDOW_HEIGHT,
         backgroundColor: 'rgba(1,1,1,0.3)'
     },
     header:{
