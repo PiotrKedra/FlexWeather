@@ -1,6 +1,7 @@
 import React from 'react';
 import {Image, StyleSheet, Animated, Dimensions, View, TouchableOpacity as TO} from "react-native";
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import Menu from "./Menu";
 
 
 const WINDOW_WIDTH = Dimensions.get('window').width;
@@ -95,7 +96,7 @@ class Header extends React.PureComponent {
                     {/*    <CustomText style={{fontSize: 30}}>Zabierzów</CustomText>*/}
                     {/*</Animated.View>*/}
                     </View>    }
-                    {this.state.menu && <View style={{width: 100, height: 300, backgroundColor: 'red'}}></View>}
+                    {this.state.menu && <Menu/>}
                 </Animated.View>
 
             </View>
