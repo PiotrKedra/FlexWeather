@@ -1,7 +1,7 @@
 import React from "react";
 import {View} from "react-native";
 import MenuLocationComponent from "./MenuLocationComponent";
-import MenuList from "./MenuLIst";
+import MenuList from "./MenuList";
 
 
 const Menu = () => {
