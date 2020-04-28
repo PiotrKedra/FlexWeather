@@ -57,11 +57,11 @@ class Header extends React.PureComponent {
         Animated.parallel([
             Animated.timing(this.state.width, {
                 toValue: menu ? this.getWidthOnMenuClosing(isScroll) : HEADER_WIDTH_MENU_OPEN,
-                duration: 300
+                duration: 400
             }),
             Animated.timing(this.state.height, {
                 toValue: menu ? this.getHeightOnMenuClosing(isScroll) : HEADER_HEIGHT_MENU_OPEN,
-                duration: 300
+                duration: 400
             }),
         ]).start();
         this.setState({menu: !this.state.menu});
