@@ -3,7 +3,7 @@ import {ScrollView, TouchableOpacity, StyleSheet} from "react-native";
 import CustomText from "../../components/CustomText";
 import MenuListItem from "./MenuListItem";
 
-const WeatherViewItem = () => {
+const WeatherViewSetting = () => {
     const [isWeatherView, setIsWeatherView] = useState(false);
 
     return (
@@ -48,4 +48,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default WeatherViewItem;
+export default WeatherViewSetting;
