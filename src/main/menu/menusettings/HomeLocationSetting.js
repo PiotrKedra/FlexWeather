@@ -43,11 +43,11 @@ const styles = StyleSheet.create({
         paddingHorizontal: 10,
         fontSize: 23,
         color: '#222',
-        backgroundColor: 'rgba(250,250,250,0.3)'
+        backgroundColor: 'rgba(250,250,250,0.3)',
+        marginRight: 10
     },
     editButton: {
         flex: 1,
-        marginLeft: 10,
     },
     editImage: {
         width: 30,

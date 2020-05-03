@@ -1,8 +1,9 @@
 import React, {useState} from "react";
 import {Image, TouchableOpacity, View, ScrollView, StyleSheet, Animated} from "react-native";
 import CustomText from "../components/CustomText";
-import WeatherViewSetting from "./menuitems/WeatherViewSetting";
-import HomeLocationItem from "./menuitems/HomeLocationSetting";
+import WeatherViewSetting from "./menusettings/WeatherViewSetting";
+import HomeLocationItem from "./menusettings/HomeLocationSetting";
+import NotificationsSettings from "./menusettings/NotificatinosSettings";
 
 
 
@@ -13,13 +14,7 @@ const MenuList = () => {
         <ScrollView>
             <WeatherViewSetting/>
             <HomeLocationItem/>
-            <View style={styles.menuEle}>
-                <TouchableOpacity style={styles.menuEleText} onPress={() => setIsNotification(!isNotification)}>
-                    <Image style={{height: 30, width: 30}} source={require('../../../assets/images/icons/notification.png')}/>
-                    <CustomText style={{fontSize: 25, marginHorizontal: 10}}>Notification</CustomText>
-                </TouchableOpacity>
-                {isNotification ? (<View style={{marginTop: 10, borderBottomWidth: 1}}><CustomText style={{fontSize: 23, marginLeft: 40, color: '#222'}}>Zabierzów</CustomText></View>): null}
-            </View>
+            <NotificationsSettings/>
             <View style={styles.menuEle}>
                 <TouchableOpacity style={styles.menuEleText} onPress={() => setIsNotification(!isNotification)}>
                     <Image style={{height: 30, width: 30}} source={require('../../../assets/images/icons/language.png')}/>
