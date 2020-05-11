@@ -11,6 +11,52 @@ class WeatherApp extends React.Component {
     isRootForecastLoaded: false,
   };
 
+  async doShit(position){
+    const latitude = position.coords.latitude;
+    const longitude = position.coords.longitude;
+
+    const url = 'http://photon.komoot.de/reverse?lon=' + longitude + '&lat=' + latitude + '&lang=en';
+    const response = await fetch(url);
+    const locationDetails = await response.json();
+    const location = {
+      longitude: longitude,
+      latitude: latitude,
+      city: locationDetails.features[0].properties.city,
+      country: locationDetails.features[0].properties.country,
+    };
+
+    this.props.setActiveLocation(location);
+    this.props.fontLoaded();
+    this.loadInitialForecast(latitude, longitude)
+  }
+
+  async loadInitialForecast(latitude, longitude){
+    let rootForecast = await fetchRootForecast(latitude, longitude);
+    let entity = {
+      rootForecastPerDay: rootForecast.rootForecast,
+      currentTimestamp: rootForecast.currentTimestamp,
+      days: rootForecast.days,
+      hourlyForecast: rootForecast.hourlyForecast,
+      navigation: this.props.navigation,
+    };
+    this.props.loadInitialForecast(entity);
+    this.setState({isRootForecastLoaded: true});
+  }
+
+  loadForecastWithinLocationInStorage(){
+    console.log("location in storage");
+    if(this.props.activeLocation) {
+      console.log('active location');
+      this.props.loadInitialForecast(this.props.activeLocation.latitude, this.props.activeLocation.longitude);
+    }
+    if(this.props.homeLocation) {
+      console.log('home location');
+      this.props.loadInitialForecast(this.props.homeLocation.latitude, this.props.homeLocation.longitude);
+      this.props.setActiveLocation(this.props.homeLocation);
+    }
+    console.log('should redirect to search location window, because no location was found')
+  }
+
   async componentDidMount() {
     try {
       const granted = await PermissionsAndroid.request(
@@ -21,47 +67,21 @@ class WeatherApp extends React.Component {
       );
       if (granted === PermissionsAndroid.RESULTS.GRANTED) {
         //To Check, If Permission is granted
-        console.log('granted biach');
         await Geolocation.getCurrentPosition(
-            (position) => {
-              console.log(position)
-            },
-            (error) => alert(error.message),
+            (position) => this.doShit(position),
+            (error) =>
+                //if location is disabled, but permission is granted
+                this.loadForecastWithinLocationInStorage(),
             {enableHighAccuracy: false, timeout: 15000, maximumAge: 10000}
-        )
+        );
+
       } else {
-        alert("Permission Denied");
+        this.loadForecastWithinLocationInStorage();
       }
     } catch (err) {
-      alert("err",err);
+      alert("err2",err);
       console.warn(err)
     }
-    // if(granted) {
-    //   await Geolocation.getCurrentPosition(
-    //       (position) => {
-    //         console.log(position);
-    //       },
-    //       (error) => {
-    //         // See error code charts below.
-    //         console.log('error');
-    //         console.log(error.code, error.message);
-    //       },
-    //       {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000}
-    //   );
-    // }
-    console.log('dupa');
-    let rootForecast = await fetchRootForecast(50.1102653, 19.7615527);
-    console.log(rootForecast.currentTimestamp);
-    let entity = {
-      rootForecastPerDay: rootForecast.rootForecast,
-      currentTimestamp: rootForecast.currentTimestamp,
-      days: rootForecast.days,
-      hourlyForecast: rootForecast.hourlyForecast,
-      navigation: this.props.navigation,
-    };
-    this.props.fontLoaded();
-    this.props.loadInitialForecast(entity);
-    this.setState({isRootForecastLoaded: true});
   }
 
   render() {
@@ -76,11 +96,16 @@ class WeatherApp extends React.Component {
 }
 
 function mapStateToProps(state) {
-  return {};
+  return {
+    activeLocation: state.activeLocation,
+    homeLocation: state.homeLocation,
+
+  };
 }
 
 function mapDispatcherToProps(dispatch) {
   return {
+    setActiveLocation: activeLocation => dispatch({type: 'ACTIVE_LOCATION', payload: activeLocation}),
     loadInitialForecast: rootForecast => dispatch({type: 'ROOT_FORECAST', payload: rootForecast}),
     fontLoaded: () => dispatch({type: 'FONT_LOADED'}),
   };

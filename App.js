@@ -10,14 +10,14 @@ import LocationSearch from './src/main/location/LocationSearch';
 
 const initialState = {
   fontLoaded: false,
-  activeLocation: {
-    city: 'Zabierzów',
-    country: 'Polska',
-  },
 };
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
+    case 'ACTIVE_LOCATION':
+      return Object.assign({}, state, {
+        activeLocation: action.payload
+      });
     case 'ROOT_FORECAST':
       console.log('ROOT_FORECAST');
       return Object.assign({}, state, {
