@@ -5,7 +5,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 import {createStore} from 'redux';
 import {Provider} from 'react-redux';
 
-import WeatherApp from './src/main/WeatherApp';
+import InitLoader from './src/main/InitLoader';
 import LocationSearch from './src/main/location/LocationSearch';
 
 const initialState = {
@@ -58,8 +58,8 @@ export default function App() {
       <NavigationContainer>
         <Stack.Navigator>
           <Stack.Screen
-            name="WeatherApp"
-            component={WeatherApp}
+            name="InitLoader"
+            component={InitLoader}
             options={{
               headerShown: false,
             }}

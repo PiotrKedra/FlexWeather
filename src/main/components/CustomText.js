@@ -8,7 +8,7 @@ class CustomText extends React.PureComponent {
     if (this.props.fontLoaded === true) {
       style = [{ fontFamily: 'Neucha-Regular' }, this.props.style || {}];
     } else {
-      style = this.props.style;
+      style = [{ fontFamily: 'Neucha-Regular' }, this.props.style || {}];
     }
     return (
       <Text x={this.props.x} style={style}>
