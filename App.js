@@ -21,7 +21,7 @@ const reducer = (state = initialState, action) => {
     case 'ROOT_FORECAST':
       console.log('ROOT_FORECAST');
       return Object.assign({}, state, {
-        rootForecastPerDay: action.payload.rootForecastPerDay,
+        rootForecastPerDay: action.payload.rootForecast,
         currentTimestamp: action.payload.currentTimestamp,
         hourlyForecast: action.payload.hourlyForecast,
         days: action.payload.days,

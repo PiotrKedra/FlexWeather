@@ -1,18 +1,21 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Text, View, PermissionsAndroid } from 'react-native';
+import { View, PermissionsAndroid } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 
 import MainPage from './MainPage';
 import fetchRootForecast from './weather/api/ForecastApi';
 import Geolocation from '@react-native-community/geolocation';
 import getLocationDetails from "./location/LocationApi";
+import CustomText from "./components/CustomText";
+import LottieView from "lottie-react-native";
 
 const ACTIVE_LOCATION_STORAGE = '@active_location';
 
 class InitLoader extends React.Component {
   state = {
-    isRootForecastLoaded: false,
+    isInitialForecastLoaded: false,
+    loadingState: 'Getting position...'
   };
 
   async componentDidMount() {
@@ -44,6 +47,7 @@ class InitLoader extends React.Component {
     const longitude = position.coords.longitude;
     const location = await getLocationDetails(longitude, latitude);
     this.saveLocation(location);
+    this.setState({loadingState: 'Loading forecast...'});
     this.loadInitialForecast(latitude, longitude)
   }
 
@@ -69,21 +73,27 @@ class InitLoader extends React.Component {
         const location = JSON.parse(value);
         this.loadInitialForecast(location.latitude, location.longitude);
         this.props.setActiveLocation(location);
+        return;
       }
     } catch(e) {
       console.log(e);
-      //todo add location search modal or sth
     }
+    console.log('need to show location search modal')
+    //todo add location search modal or sth
   }
 
   render() {
-    return this.state.isRootForecastLoaded ? (
-      <MainPage />
-    ) : (
-      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-        <Text style={{fontSize: 25}}>Data not loaded</Text>
-      </View>
-    );
+    return this.state.isInitialForecastLoaded ?
+        (<MainPage />)
+        :
+        (<View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+          <LottieView
+              style={{height: 200}}
+              source={require('../../assets/lottie/loading')}
+              autoPlay
+              loop/>
+          <CustomText style={{fontSize: 25}}>{this.state.loadingState}</CustomText>
+        </View>);
   }
 }
 
