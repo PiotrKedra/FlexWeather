@@ -2,8 +2,17 @@ import React from "react";
 import {Image, TextInput, TouchableOpacity, View, StyleSheet} from "react-native";
 
 import CustomText from "../components/CustomText";
+import searchForLocations from "../location/LocationAutocompleteApi";
+
+async function searchForLocation(query, lon, lat, changeText){
+    changeText(query);
+    if(query.length >= 3) {
+        console.log( await searchForLocations(query, lat, lon));
+    }
+}
 
 const MenuLocationComponent = () => {
+    const [value, changeText] = React.useState('');
     return (
         <View style={styles.mainView}>
             <View style={styles.currentLocationLabel}>
@@ -26,6 +35,8 @@ const MenuLocationComponent = () => {
                     <TextInput
                         style={styles.locationSearchViewTextInput}
                         placeholder="Search location"
+                        onChangeText={text => searchForLocation(text, 50.1102653, 19.7615527, changeText)}
+                        value={value}
                     />
                     <TouchableOpacity style={styles.locationSearchCancelButton}>
                         <Image

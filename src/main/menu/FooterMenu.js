@@ -18,7 +18,6 @@ class FooterMenu extends React.Component{
         this.setState({visible: visible});
     };
 
-
     changeMapVisible = () => {
         if(this.state.mapVisible){
             this.setState({mapVisible: false});
