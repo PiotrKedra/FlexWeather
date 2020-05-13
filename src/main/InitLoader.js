@@ -107,7 +107,6 @@ function mapDispatcherToProps(dispatch) {
   return {
     setActiveLocation: activeLocation => dispatch({type: 'ACTIVE_LOCATION', payload: activeLocation}),
     setInitialForecast: (rootForecast, location) => dispatch({type: 'ROOT_FORECAST', payload: {forecast: rootForecast, location: location}}),
-    fontLoaded: () => dispatch({type: 'FONT_LOADED'}),
   };
 }
 

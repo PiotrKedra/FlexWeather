@@ -22,7 +22,6 @@ const reducer = (state = initialState, action) => {
         activeLocation: action.payload
       });
     case 'ROOT_FORECAST':
-      console.log('ROOT_FORECAST');
       try {
         AsyncStorage.setItem(ACTIVE_LOCATION_STORAGE, JSON.stringify(action.payload.location));
       } catch (e) {
@@ -38,19 +37,6 @@ const reducer = (state = initialState, action) => {
     case 'CURRENT_TIMESTAMP':
       return Object.assign({}, state, {
         currentTimestamp: action.payload,
-      });
-    case 'FORECAST_IN_NEW_LOCATION':
-
-      return Object.assign({}, state, {
-        activeLocation: action.payload.location,
-        rootForecastPerDay: action.payload.forecast.rootForecast,
-        currentTimestamp: action.payload.forecast.currentTimestamp,
-        hourlyForecast: action.payload.forecast.hourlyForecast,
-        days: action.payload.forecast.days,
-      });
-    case 'FONT_LOADED':
-      return Object.assign({}, state, {
-        fontLoaded: true,
       });
   }
   return state;
