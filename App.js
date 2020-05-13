@@ -6,7 +6,10 @@ import {createStore} from 'redux';
 import {Provider} from 'react-redux';
 
 import InitLoader from './src/main/InitLoader';
-import LocationSearch from './src/main/location/LocationSearch';
+import AsyncStorage from "@react-native-community/async-storage";
+
+
+const ACTIVE_LOCATION_STORAGE = '@active_location';
 
 const initialState = {
   fontLoaded: false,
@@ -20,19 +23,24 @@ const reducer = (state = initialState, action) => {
       });
     case 'ROOT_FORECAST':
       console.log('ROOT_FORECAST');
+      try {
+        AsyncStorage.setItem(ACTIVE_LOCATION_STORAGE, JSON.stringify(action.payload.location));
+      } catch (e) {
+        console.log(e);
+      }
       return Object.assign({}, state, {
-        rootForecastPerDay: action.payload.rootForecast,
-        currentTimestamp: action.payload.currentTimestamp,
-        hourlyForecast: action.payload.hourlyForecast,
-        days: action.payload.days,
-        navigation: action.payload.navigation,
+        activeLocation: action.payload.location,
+        rootForecastPerDay: action.payload.forecast.rootForecast,
+        currentTimestamp: action.payload.forecast.currentTimestamp,
+        hourlyForecast: action.payload.forecast.hourlyForecast,
+        days: action.payload.forecast.days,
       });
     case 'CURRENT_TIMESTAMP':
       return Object.assign({}, state, {
         currentTimestamp: action.payload,
       });
     case 'FORECAST_IN_NEW_LOCATION':
-      console.log('FORECAST_IN_NEW_LOCATION');
+
       return Object.assign({}, state, {
         activeLocation: action.payload.location,
         rootForecastPerDay: action.payload.forecast.rootForecast,
@@ -64,7 +72,6 @@ export default function App() {
               headerShown: false,
             }}
           />
-          <Stack.Screen name="LocationSearch" component={LocationSearch} />
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>

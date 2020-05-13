@@ -51,7 +51,7 @@ class Header extends React.PureComponent {
         ]).start();
     }
 
-    showOrHideMenu(){
+    showOrHideMenu = () => {
         const menu = this.state.menu;
         const isScroll = this.props.isScroll;
         Animated.parallel([
@@ -65,7 +65,7 @@ class Header extends React.PureComponent {
             }),
         ]).start();
         this.setState({menu: !this.state.menu});
-    }
+    };
 
     getWidthOnMenuClosing(isScroll) {
         return isScroll ? HEADER_WIDTH_OPEN : HEADER_WIDTH_CLOSE
@@ -96,7 +96,7 @@ class Header extends React.PureComponent {
                     {/*    <CustomText style={{fontSize: 30}}>Zabierzów</CustomText>*/}
                     {/*</Animated.View>*/}
                     </View>    }
-                    {this.state.menu && <Menu/>}
+                    {this.state.menu && <Menu closeMenu={this.showOrHideMenu}/>}
                 </Animated.View>
 
             </View>

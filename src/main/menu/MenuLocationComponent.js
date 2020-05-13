@@ -1,18 +1,13 @@
 import React from "react";
-import {Image, TextInput, TouchableOpacity, View, StyleSheet} from "react-native";
+import {Image, TextInput, TouchableOpacity, View, StyleSheet, ScrollView} from "react-native";
 
 import CustomText from "../components/CustomText";
 import searchForLocations from "../location/LocationAutocompleteApi";
+import LocationSearchComponent from "../location/LocationSearchComponent";
 
-async function searchForLocation(query, lon, lat, changeText){
-    changeText(query);
-    if(query.length >= 3) {
-        console.log( await searchForLocations(query, lat, lon));
-    }
-}
 
-const MenuLocationComponent = () => {
-    const [value, changeText] = React.useState('');
+
+const MenuLocationComponent = (props) => {
     return (
         <View style={styles.mainView}>
             <View style={styles.currentLocationLabel}>
@@ -26,26 +21,7 @@ const MenuLocationComponent = () => {
             <CustomText style={styles.currentLocationText}>
                 Zabierzów, Poland
             </CustomText>
-            <View style={styles.locationSearchView}>
-                <View style={styles.locationSearchViewInner}>
-                    <Image
-                        style={styles.locationSearchViewSearchImage}
-                        source={require('../../../assets/images/icons/search.png')}
-                    />
-                    <TextInput
-                        style={styles.locationSearchViewTextInput}
-                        placeholder="Search location"
-                        onChangeText={text => searchForLocation(text, 50.1102653, 19.7615527, changeText)}
-                        value={value}
-                    />
-                    <TouchableOpacity style={styles.locationSearchCancelButton}>
-                        <Image
-                            style={styles.locationSearchCancelImage}
-                            source={require('../../../assets/images/icons/cancel.png')}
-                        />
-                    </TouchableOpacity>
-                </View>
-            </View>
+            <LocationSearchComponent closeMenu={props.closeMenu}/>
         </View>
 
     )
@@ -78,6 +54,9 @@ const styles = StyleSheet.create({
     locationSearchView: {
         flexDirection: 'row',
         marginTop: 10,
+
+        backgroundColor: 'red',
+        padding: 5,
     },
     locationSearchViewInner: {
         backgroundColor: 'rgba(250,250,250,0.4)',

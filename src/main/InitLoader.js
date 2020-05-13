@@ -35,20 +35,20 @@ class InitLoader extends React.Component {
               this.loadForecastUsingLocationInStorage();},
             {enableHighAccuracy: false, timeout: 15000, maximumAge: 10000}
         );
-      } else this.loadForecastUsingLocationInStorage();
+        return;
+      }
     } catch (err) {
       console.log(err);
-      this.loadForecastUsingLocationInStorage();
     }
+    this.loadForecastUsingLocationInStorage()
   }
 
   async loadForecastWithGivenLocation(position){
     const latitude = position.coords.latitude;
     const longitude = position.coords.longitude;
     const location = await getLocationDetails(longitude, latitude);
-    this.saveLocation(location);
     this.setState({loadingState: 'Loading forecast...'});
-    this.loadInitialForecast(latitude, longitude)
+    this.loadInitialForecast(location)
   }
 
   saveLocation(location) {
@@ -60,9 +60,9 @@ class InitLoader extends React.Component {
     }
   }
 
-  async loadInitialForecast(latitude, longitude){
-    let initialForecast = await fetchRootForecast(latitude, longitude);
-    this.props.setInitialForecast(initialForecast);
+  async loadInitialForecast(location){
+    let initialForecast = await fetchRootForecast(location.latitude, location.longitude);
+    this.props.setInitialForecast(initialForecast, location);
     this.setState({isInitialForecastLoaded: true});
   }
 
@@ -71,8 +71,7 @@ class InitLoader extends React.Component {
       const value = await AsyncStorage.getItem(ACTIVE_LOCATION_STORAGE);
       if(value !== null) {
         const location = JSON.parse(value);
-        this.loadInitialForecast(location.latitude, location.longitude);
-        this.props.setActiveLocation(location);
+        this.loadInitialForecast(location);
         return;
       }
     } catch(e) {
@@ -107,7 +106,7 @@ function mapStateToProps(state) {
 function mapDispatcherToProps(dispatch) {
   return {
     setActiveLocation: activeLocation => dispatch({type: 'ACTIVE_LOCATION', payload: activeLocation}),
-    setInitialForecast: rootForecast => dispatch({type: 'ROOT_FORECAST', payload: rootForecast}),
+    setInitialForecast: (rootForecast, location) => dispatch({type: 'ROOT_FORECAST', payload: {forecast: rootForecast, location: location}}),
     fontLoaded: () => dispatch({type: 'FONT_LOADED'}),
   };
 }

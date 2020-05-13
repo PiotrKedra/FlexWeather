@@ -4,11 +4,12 @@ import MenuLocationComponent from "./MenuLocationComponent";
 import MenuList from "./MenuList";
 
 
-const Menu = () => {
+const Menu = (props) => {
 
+    console.log(props);
     return (
         <View style={{width: '100%', height: '100%', }}>
-            <MenuLocationComponent/>
+            <MenuLocationComponent closeMenu={props.closeMenu}/>
             <MenuList/>
         </View>
     )
