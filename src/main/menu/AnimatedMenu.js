@@ -15,7 +15,7 @@ const HEADER_HEIGHT_OPEN = 80;
 const HEADER_WIDTH_MENU_OPEN = WINDOW_WIDTH * 0.8;
 const HEADER_HEIGHT_MENU_OPEN = WINDOW_HEIGHT * 0.8;
 
-class Header extends React.PureComponent {
+class AnimatedMenu extends React.PureComponent {
 
     constructor(props) {
         super(props);
@@ -147,4 +147,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default Header;
+export default AnimatedMenu;

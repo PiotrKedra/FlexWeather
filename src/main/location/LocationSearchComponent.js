@@ -1,5 +1,5 @@
 import React from "react";
-import {Image, ScrollView, StyleSheet, TextInput, TouchableOpacity, View} from "react-native";
+import {Image, ScrollView, StyleSheet, TextInput, TouchableOpacity, View, Keyboard, Animated } from "react-native";
 import searchForLocations from "./LocationAutocompleteApi";
 import CustomText from "../components/CustomText";
 import {connect} from "react-redux";
@@ -10,7 +10,10 @@ class LocationSearchComponent extends React.Component {
 
     state = {
         locationInput: '',
-        suggestedLocations: []
+        suggestedLocations: [],
+        onFocus: false,
+        animatedPadding: new Animated.Value(0),
+        animatedHeight: new Animated.Value(0),
     };
 
     async searchForLocation(query, lon, lat){
@@ -37,10 +40,45 @@ class LocationSearchComponent extends React.Component {
         this.props.setForecastInNewLocation(location, forecast);
     };
 
+    animate() {
+        const onFocus = this.state.onFocus;
+        Animated.timing(this.state.animatedPadding, {
+            toValue: onFocus ? 0 : 4,
+            duration: 500
+        }).start();
+        Animated.timing(this.state.animatedHeight, {
+            toValue: onFocus ? 0 : 200,
+            duration: 500
+        }).start();
+        if(onFocus){
+            this.clear()
+        }
+        this.setState({onFocus: !onFocus});
+    }
+
+    onEndEditing(){
+        if(this.state.locationInput.length === 0)
+            this.setState({onFocus: false})
+    }
+
+    clear(){
+        Keyboard.dismiss();
+        this.setState({
+            locationInput: '',
+            suggestedLocations: [],
+        })
+    }
+
     render() {
+
+        let s1 = {};
+        if(this.state.onFocus)
+            s1 = {backgroundColor: 'rgba(240,0,0,0.2)', padding: this.state.animatedPadding};
+        else
+            s1 = {padding: this.state.animatedPadding};
         return (
             <View>
-                <View style={styles.locationSearchView}>
+                <Animated.View style={[styles.locationSearchView, s1]}>
                     <View style={styles.locationSearchViewInner}>
                         <Image
                             style={styles.locationSearchViewSearchImage}
@@ -51,9 +89,11 @@ class LocationSearchComponent extends React.Component {
                             placeholder="Search location"
                             onChangeText={text => this.searchForLocation(text, 50.1102653, 19.7615527)}
                             value={this.state.locationInput}
+                            onFocus={() => this.animate()}
+                            onEndEditing={() => this.onEndEditing()}
                         />
                         <TouchableOpacity style={styles.locationSearchCancelButton}
-                                          onPress={() => this.setState({locationInput: ''})}>
+                                          onPress={() => this.animate()}>
                             <Image
                                 style={styles.locationSearchCancelImage}
                                 source={require('../../../assets/images/icons/cancel.png')}
@@ -61,10 +101,10 @@ class LocationSearchComponent extends React.Component {
                         </TouchableOpacity>
                     </View>
 
-                </View>
+                </Animated.View>
 
-                {this.state.locationInput.length >= 3 &&
-                <ScrollView style={{backgroundColor: 'rgba(240,0,0,0.2)', width: '100%', height: 200}}>
+                {this.state.onFocus &&
+                <Animated.ScrollView style={{backgroundColor: 'rgba(240,0,0,0.2)', width: '100%', height: this.state.animatedHeight}}>
                     {
                         this.state.suggestedLocations.map(item => (
                             <TouchableOpacity key={item.properties.osm_id}
@@ -79,7 +119,7 @@ class LocationSearchComponent extends React.Component {
                             </TouchableOpacity>
                         ))
                     }
-                </ScrollView>
+                </Animated.ScrollView>
                 }
             </View>
         )
@@ -87,6 +127,12 @@ class LocationSearchComponent extends React.Component {
 }
 
 const styles = StyleSheet.create({
+    locationSearchView: {
+        flexDirection: 'row',
+        marginTop: 10,
+        borderTopRightRadius: 10,
+        borderTopLeftRadius: 10,
+    },
     mainView: {
         paddingTop: 20,
         borderBottomWidth: 1,
@@ -106,14 +152,6 @@ const styles = StyleSheet.create({
     },
     currentLocationText: {
         fontSize: 30
-    },
-    locationSearchView: {
-        flexDirection: 'row',
-        marginTop: 10,
-        borderTopRightRadius: 10,
-        borderTopLeftRadius: 10,
-        backgroundColor: 'rgba(240,0,0,0.2)',
-        padding: 5,
     },
     locationSearchViewInner: {
         backgroundColor: 'rgba(250,250,250,0.4)',

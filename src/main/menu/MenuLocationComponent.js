@@ -2,7 +2,6 @@ import React from "react";
 import {Image, TextInput, TouchableOpacity, View, StyleSheet, ScrollView} from "react-native";
 
 import CustomText from "../components/CustomText";
-import searchForLocations from "../location/LocationAutocompleteApi";
 import LocationSearchComponent from "../location/LocationSearchComponent";
 
 

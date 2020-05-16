@@ -10,7 +10,7 @@ import {
 import { connect } from 'react-redux';
 
 import Text from '../main/components/CustomText';
-import Header from './menu/Header';
+import AnimatedMenu from './menu/AnimatedMenu';
 import RootWeatherPanel from './weather/rootpanel/RootWeatherPanel';
 import DayPickerList from './components/DayPickerList';
 import HourlyForecastInfo from './weather/charts/info/HourlyForecastInfo'
@@ -106,7 +106,7 @@ class MainPage extends React.Component {
             <DetailsPanel/>
             <PoweredBy/>
           </ScrollView>
-          <Header isScroll={this.state.scroll} />
+          <AnimatedMenu isScroll={this.state.scroll} />
 
           {/*<FooterMenu />*/}
         </ImageBackground>
