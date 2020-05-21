@@ -44,11 +44,11 @@ class LocationSearchComponent extends React.Component {
         const onFocus = this.state.onFocus;
         Animated.timing(this.state.animatedPadding, {
             toValue: onFocus ? 0 : 4,
-            duration: 500
+            duration: 200
         }).start();
         Animated.timing(this.state.animatedHeight, {
             toValue: onFocus ? 0 : 200,
-            duration: 500
+            duration: 300
         }).start();
         if(onFocus){
             this.clear()
