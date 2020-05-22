@@ -55,15 +55,6 @@ class InitLoader extends React.Component {
     this.loadInitialForecast(location)
   }
 
-  saveLocation(location) {
-    this.props.setActiveLocation(location);
-    try {
-      AsyncStorage.setItem(ACTIVE_LOCATION_STORAGE, JSON.stringify(location));
-    } catch (e) {
-      console.log(e);
-    }
-  }
-
   async loadInitialForecast(location){
     let initialForecast = await fetchRootForecast(location.latitude, location.longitude);
     this.props.setInitialForecast(initialForecast, location);
