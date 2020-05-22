@@ -1,5 +1,5 @@
 import React from 'react';
-import { connect } from 'react-redux';
+import {connect, Provider} from 'react-redux';
 import { View, PermissionsAndroid } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 
@@ -9,13 +9,17 @@ import Geolocation from '@react-native-community/geolocation';
 import getLocationDetails from "./location/LocationApi";
 import CustomText from "./components/CustomText";
 import LottieView from "lottie-react-native";
+import GeneralStatusBar from "./components/GeneralStatusBar";
+import LocationSearchComponent from "./location/LocationSearchComponent";
 
 const ACTIVE_LOCATION_STORAGE = '@active_location';
 
 class InitLoader extends React.Component {
   state = {
     isInitialForecastLoaded: false,
-    loadingState: 'Getting position...'
+    isSearchLocationWindow: false,
+    loadingState: 'Getting position...',
+
   };
 
   async componentDidMount() {
@@ -77,8 +81,8 @@ class InitLoader extends React.Component {
     } catch(e) {
       console.log(e);
     }
-    console.log('need to show location search modal')
-    //todo add location search modal or sth
+    console.log('need to show location search modal');
+    this.setState({isSearchLocationWindow: true, loadingState: 'dupa'})
   }
 
   render() {
@@ -86,12 +90,14 @@ class InitLoader extends React.Component {
         (<MainPage />)
         :
         (<View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+          <GeneralStatusBar/>
           <LottieView
               style={{height: 200}}
               source={require('../../assets/lottie/loading')}
               autoPlay
               loop/>
           <CustomText style={{fontSize: 25}}>{this.state.loadingState}</CustomText>
+          {this.state.isSearchLocationWindow && <View style={{position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', backgroundColor: 'red'}}><LocationSearchComponent/></View>}
         </View>);
   }
 }
