@@ -10,7 +10,7 @@ import getLocationDetails from "./location/LocationApi";
 import CustomText from "./components/CustomText";
 import LottieView from "lottie-react-native";
 import GeneralStatusBar from "./components/GeneralStatusBar";
-import LocationSearchComponent from "./location/LocationSearchComponent";
+import InitLocationSearchComponent from "./location/InitLocationSearchComponent";
 
 const ACTIVE_LOCATION_STORAGE = '@active_location';
 
@@ -88,7 +88,11 @@ class InitLoader extends React.Component {
               autoPlay
               loop/>
           <CustomText style={{fontSize: 25}}>{this.state.loadingState}</CustomText>
-          {this.state.isSearchLocationWindow && <View style={{position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', backgroundColor: 'red'}}><LocationSearchComponent/></View>}
+          {this.state.isSearchLocationWindow &&
+          <View style={{position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', backgroundColor: 'white', paddingTop: 20}}>
+            <CustomText style={{fontSize: 25, marginHorizontal: 10, marginTop: 25}}>Tell us your location</CustomText>
+            <InitLocationSearchComponent/>
+          </View>}
         </View>);
   }
 }
