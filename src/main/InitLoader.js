@@ -72,9 +72,19 @@ class InitLoader extends React.Component {
     } catch(e) {
       console.log(e);
     }
-    console.log('need to show location search modal');
-    this.setState({isSearchLocationWindow: true, loadingState: 'dupa'})
+    this.setState({isSearchLocationWindow: true})
   }
+
+  loadForecastFromSearchComponent = async (location) => {
+    const locationEntity = {
+      longitude: location.geometry.coordinates[0],
+      latitude: location.geometry.coordinates[1],
+      city: location.properties.name,
+      country: location.properties.country,
+    };
+    this.setState({isSearchLocationWindow: false, loadingState: 'Loading forecast...'});
+    this.loadInitialForecast(locationEntity)
+  };
 
   render() {
     return this.state.isInitialForecastLoaded ?
@@ -90,8 +100,8 @@ class InitLoader extends React.Component {
           <CustomText style={{fontSize: 25}}>{this.state.loadingState}</CustomText>
           {this.state.isSearchLocationWindow &&
           <View style={{position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', backgroundColor: 'white', paddingTop: 20}}>
-            <CustomText style={{fontSize: 25, marginHorizontal: 10, marginTop: 25}}>Tell us your location</CustomText>
-            <InitLocationSearchComponent/>
+            <CustomText style={{fontSize: 25, marginHorizontal: 10, marginTop: 20}}>Tell us your location</CustomText>
+            <InitLocationSearchComponent loadForecast={this.loadForecastFromSearchComponent}/>
           </View>}
         </View>);
   }

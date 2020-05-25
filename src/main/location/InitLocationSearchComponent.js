@@ -1,15 +1,58 @@
 import React, {useState} from "react";
-import {Animated, Image, StyleSheet, TextInput, TouchableOpacity, View, ScrollView} from "react-native";
-import searchForLocations, {searchForLocationsByQuery} from "./LocationAutocompleteApi";
+import {Image, StyleSheet, TextInput, TouchableOpacity, View, ScrollView} from "react-native";
 import CustomText from "../components/CustomText";
 
-function animate() {
+const InitLocationSearchComponent = ({loadForecast}) => {
 
-}
+    const [locationInput, changeLocationInput] = useState("");
+    const [locations, changeLocations] = useState([]);
 
-function onEndEditing(){
+    return (
+        <View style={styles.mainView}>
+            <View style={styles.overflowView}>
+                <View style={styles.locationSearchViewInner}>
+                    <Image
+                        style={styles.locationSearchViewSearchImage}
+                        source={require('../../../assets/images/icons/search2.png')}
+                    />
+                    <TextInput
+                        style={styles.locationSearchViewTextInput}
+                        placeholder="Search location"
+                        onChangeText={text => searchForLocation(text, changeLocationInput, changeLocations)}
+                        value={locationInput}
+                    />
+                    <TouchableOpacity style={styles.locationSearchCancelButton}
+                                      onPress={() => {changeLocationInput(""); changeLocations([])}}
+                    >
+                        <Image
+                            style={styles.locationSearchCancelImage}
+                            source={require('../../../assets/images/icons/cancel.png')}
+                        />
+                    </TouchableOpacity>
+                </View>
+            </View>
 
-}
+            <ScrollView style={styles.scrollView}>
+                {
+                    locations.map(item => (
+                        <TouchableOpacity key={item.properties.osm_id}
+                                          style={styles.locationItem}
+                                          onPress={() => loadForecast(item)}
+                        >
+                            <Image
+                                style={styles.locationItemImage}
+                                source={require('../../../assets/images/icons/location-marker.png')}
+                            />
+                            <CustomText style={styles.locationItemText}>
+                                {item.properties.name}, {item.properties.country}
+                            </CustomText>
+                        </TouchableOpacity>
+                    ))
+                }
+            </ScrollView>
+        </View>
+    )
+};
 
 async function searchForLocation(query, changeLocationInput, changeLocations){
     changeLocationInput(query);
@@ -19,99 +62,35 @@ async function searchForLocation(query, changeLocationInput, changeLocations){
     }
 }
 
-const InitLocationSearchComponent = () => {
-
-    const [locationInput, changeLocationInput] = useState("");
-    const [locations, changeLocations] = useState([]);
-
-    return (
-        <View style={{marginTop: 10, marginVertical: 10}}>
-            <View style={styles.locationSearchViewInner}>
-                <Image
-                    style={styles.locationSearchViewSearchImage}
-                    source={require('../../../assets/images/icons/search.png')}
-                />
-                <TextInput
-                    style={styles.locationSearchViewTextInput}
-                    placeholder="Search location"
-                    onChangeText={text => searchForLocation(text, changeLocationInput, changeLocations)}
-                    value={locationInput}
-                    onFocus={() => animate()}
-                    onEndEditing={() => onEndEditing()}
-                />
-                <TouchableOpacity style={styles.locationSearchCancelButton}
-                                  onPress={() => animate()}>
-                    <Image
-                        style={styles.locationSearchCancelImage}
-                        source={require('../../../assets/images/icons/cancel.png')}
-                    />
-                </TouchableOpacity>
-            </View>
-
-            <ScrollView style={{width: '100%', height: '100%'}}>
-                {
-                    locations.map(item => (
-                        <TouchableOpacity key={item.properties.osm_id}
-                                          style={{padding: 10, flexDirection: 'row'}}
-                                          onPress={() => console.log(item)}
-                        >
-                            <Image
-                                style={{width: 20, height: 20, marginHorizontal: 5, flex: 1}}
-                                source={require('../../../assets/images/icons/location-marker.png')}
-                            />
-                            <CustomText style={{fontSize: 18, flex: 9, marginHorizontal: 3}}>{item.properties.name}, {item.properties.country}</CustomText>
-                        </TouchableOpacity>
-                    ))
-                }
-            </ScrollView>
-        </View>
-    )
-};
-
 const styles = StyleSheet.create({
-    locationSearchView: {
-        flexDirection: 'row',
-        marginTop: 10,
-        borderTopRightRadius: 10,
-        borderTopLeftRadius: 10,
-    },
     mainView: {
-        paddingTop: 20,
-        borderBottomWidth: 1,
-        paddingHorizontal: 20,
-        paddingBottom: 15
+        marginTop: 10,
+        marginVertical: 10
     },
-    currentLocationLabel: {
-        flexDirection: 'row'
-    },
-    currentLocationImage: {
-        height: 20,
-        width: 20
-    },
-    currentLocationLabelText: {
-        fontSize: 15,
-        marginHorizontal: 7
-    },
-    currentLocationText: {
-        fontSize: 30
+    overflowView: {
+        overflow: 'hidden',
+        paddingBottom: 1
     },
     locationSearchViewInner: {
         flexDirection: 'row',
         alignItems: 'center',
-        borderBottomWidth: 1
+        borderBottomWidth: 1,
+        backgroundColor: 'white',
+        elevation: 1,
     },
     locationSearchViewSearchImage: {
-        height: 30,
-        width: 30,
-        marginLeft: 8,
-        flex: 1
+        height: 20,
+        width: 20,
+        marginLeft: 10,
+        marginRight: 5,
     },
     locationSearchViewTextInput: {
-        backgroundColor: 'red',
+        backgroundColor: 'rgba(1,1,1,0.1)',
         fontFamily: 'Neucha-Regular',
         fontSize: 20,
         marginHorizontal: 3,
         paddingVertical: 0,
+        marginVertical: 5,
         flex: 8,
         borderRadius: 3
     },
@@ -119,8 +98,27 @@ const styles = StyleSheet.create({
         flex: 1
     },
     locationSearchCancelImage: {
+        marginLeft: 5,
         height: 15,
-        width: 15
+        width: 15,
+    },
+    scrollView: {
+        width: '100%',
+        height: '100%'
+    },
+    locationItem: {
+        padding: 10,
+        flexDirection: 'row'
+    },
+    locationItemImage: {
+        width: 20,
+        height: 20,
+        marginHorizontal: 1
+    },
+    locationItemText: {
+        fontSize: 18,
+        flex: 9,
+        marginHorizontal: 8
     },
 });
 
