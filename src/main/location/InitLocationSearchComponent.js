@@ -1,6 +1,7 @@
 import React, {useState} from "react";
 import {Image, StyleSheet, TextInput, TouchableOpacity, View, ScrollView} from "react-native";
 import CustomText from "../components/CustomText";
+import {searchForLocationsByQuery} from "./LocationAutocompleteApi";
 
 const InitLocationSearchComponent = ({loadForecast}) => {
 

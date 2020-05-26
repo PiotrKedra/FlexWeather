@@ -1,5 +1,6 @@
 import React from 'react';
 import {Image, TouchableOpacity, View, Animated, StyleSheet} from 'react-native';
+import AsyncStorage from "@react-native-community/async-storage";
 
 import Text from '../../components/CustomText';
 import IMAGES from "../../../resource/ImagePath";
@@ -9,7 +10,18 @@ class LastUpdateInfo extends React.Component {
     state = {
         showInfo: false,
         infoHeight: new Animated.Value(25),
+        dateUpdate: '00:00',
     };
+
+    async componentDidMount() {
+        try {
+            const lastUpdate = await AsyncStorage.getItem('@forecast_update_date');
+            const date = new Date(JSON.parse(lastUpdate));
+            this.setState({dateUpdate: date.getHours() + ':' + date.getMinutes()})
+        } catch (e) {
+            console.log(e);
+        }
+    }
 
     showOrHideInfo = () => {
         const showInfo = this.state.showInfo;
@@ -45,7 +57,7 @@ class LastUpdateInfo extends React.Component {
                 {this.state.showInfo ?
                     <View style={styles.infoView}>
                         <Text style={styles.infoText}>
-                            Last forecast update was at 15:00.
+                            Last forecast update was at {this.state.dateUpdate}.
                         </Text>
                         <TouchableOpacity style={styles.touchableRefresh}>
                             <Text style={styles.refreshText}>

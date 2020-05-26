@@ -9,7 +9,11 @@ import InitLoader from './src/main/InitLoader';
 import AsyncStorage from "@react-native-community/async-storage";
 
 
+const IS_STORAGE = '@is_storage';
+const LAST_FORECAST_UPDATE_STORAGE = "@forecast_update_date";
 const ACTIVE_LOCATION_STORAGE = '@active_location';
+const LAST_FORECAST_STORAGE = '@last_forecast';
+
 
 const initialState = {
   fontLoaded: false,
@@ -22,10 +26,15 @@ const reducer = (state = initialState, action) => {
         activeLocation: action.payload
       });
     case 'ROOT_FORECAST':
-      try {
-        AsyncStorage.setItem(ACTIVE_LOCATION_STORAGE, JSON.stringify(action.payload.location));
-      } catch (e) {
-        console.log(e);
+      if(action.payload.saveToStorage) {
+        try {
+          AsyncStorage.setItem(IS_STORAGE, JSON.stringify(true));
+          AsyncStorage.setItem(LAST_FORECAST_UPDATE_STORAGE, JSON.stringify(new Date()));
+          AsyncStorage.setItem(ACTIVE_LOCATION_STORAGE, JSON.stringify(action.payload.location));
+          AsyncStorage.setItem(LAST_FORECAST_STORAGE, JSON.stringify(action.payload.forecast));
+        } catch (e) {
+          console.log(e);
+        }
       }
       return Object.assign({}, state, {
         activeLocation: action.payload.location,
