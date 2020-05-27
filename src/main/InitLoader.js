@@ -44,7 +44,7 @@ class InitLoader extends React.Component {
   };
 
   componentDidMount = async () => {
-    //const unsubscribe = NetInfo.addEventListener(this.internetConnectionListener);
+    const unsubscribe = NetInfo.addEventListener(this.internetConnectionListener);
     try{
       const isStorage = await AsyncStorage.getItem('@is_storage');
       if(isStorage === null){
