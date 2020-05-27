@@ -189,7 +189,7 @@ function mapStateToProps(state){
 
 function mapDispatcherToProps(dispatch) {
     return {
-        setForecastInNewLocation: (location, forecast) => dispatch({ type: 'ROOT_FORECAST', payload: { location: location, forecast: forecast}})
+        setForecastInNewLocation: (location, forecast) => dispatch({ type: 'ROOT_FORECAST', payload: { location: location, forecast: forecast, saveToStorage: true}})
     }
 }
 

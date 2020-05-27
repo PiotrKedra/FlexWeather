@@ -72,7 +72,6 @@ class MainPage extends React.Component {
     this.shouldDisplayHourlyCharts();
     return (
       <View style={{ flex: 1 }}>
-
         <ImageBackground
           style={styles.imageBackground}
           source={require('../../assets/images/background.jpg')}
