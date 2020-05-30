@@ -1,0 +1,138 @@
+import React from 'react';
+import {View, StyleSheet, TouchableOpacity, ScrollView, Image} from 'react-native';
+
+import Text from '../../../components/CustomText'
+import DailyGeneralChart from "./svgcharts/DailyGeneralChart";
+
+class DailyForecastPanel extends React.PureComponent{
+
+    state = {
+        currentChart: 'general',
+    };
+
+    render() {
+
+
+        return (
+            <View style={styles.mainView}>
+                <Text style={styles.title}>
+                    Today forecast
+                </Text>
+                <Text style={{fontSize: 18, color: '#777', paddingLeft: '5%'}}>
+                    Details
+                </Text>
+                <View style={{flexDirection: 'row', paddingLeft: '5%', marginVertical: 20}}>
+                    <View style={{flex: 1, flexDirection: 'row'}}>
+                        <Image style={{width: 45, height: 45}} source={require('../../../../../assets/images/details/temperature.png')}/>
+                        <View style={{paddingLeft: 10}}>
+                            <Text style={{fontSize: 20}}>15°/3°</Text>
+                            <Text style={{fontSize: 17, color: '#666'}}>temperature</Text>
+                        </View>
+                    </View>
+                    <View style={{flex: 1, flexDirection: 'row'}}>
+                        <Image style={{width: 45, height: 45}} source={require('../../../../../assets/images/details/sensed-temperature.png')}/>
+                        <View style={{paddingLeft: 10, flexShrink: 1}}>
+                            <Text style={{fontSize: 20}}>12°</Text>
+                            <Text style={{fontSize: 17, color: '#666'}}>sensed temperature</Text>
+                        </View>
+                    </View>
+                </View>
+                <View style={{flexDirection: 'row', paddingLeft: '5%', marginBottom: 20}}>
+                    <View style={{flex: 1, flexDirection: 'row'}}>
+                        <Image style={{width: 45, height: 45}} source={require('../../../../../assets/images/details/rainfall.png')}/>
+                        <View style={{paddingLeft: 10}}>
+                            <Text style={{fontSize: 20}}>95%</Text>
+                            <Text style={{fontSize: 17, color: '#666'}}>rainfall</Text>
+                        </View>
+                    </View>
+                    <View style={{flex: 1, flexDirection: 'row'}}>
+                        <Image style={{width: 45, height: 45}} source={require('../../../../../assets/images/details/wind-speed.png')}/>
+                        <View style={{paddingLeft: 10}}>
+                            <Text style={{fontSize: 20}}>10 m/s</Text>
+                            <Text style={{fontSize: 17, color: '#666'}}>wind speed</Text>
+                        </View>
+                    </View>
+                </View>
+                <Text style={styles.title}>
+                    Daily forecast
+                </Text>
+                <ScrollView style={styles.selectionView}
+                            horizontal={true}>
+                    <TouchableOpacity style={[styles.chartSelectionButton, (this.state.currentChart==='general') ? styles.chartSelected : styles.chartNotSelected]}
+                                      onPress={() => this.setState({currentChart: 'general'})}>
+                        <Text style={styles.buttonText}>
+                            general
+                        </Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={[styles.chartSelectionButton, (this.state.currentChart==='wind') ? styles.chartSelected : styles.chartNotSelected]}
+                                      onPress={() => this.setState({currentChart: 'wind'})}>
+                        <Text style={styles.buttonText}>
+                            wind
+                        </Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={[styles.chartSelectionButton, (this.state.currentChart==='rainfall') ? styles.chartSelected : styles.chartNotSelected]}
+                                      onPress={() => this.setState({currentChart: 'rainfall'})}>
+                        <Text style={styles.buttonText}>
+                            rainfall
+                        </Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={[styles.chartSelectionButton, (this.state.currentChart==='uv_index') ? styles.chartSelected : styles.chartNotSelected]}
+                                      onPress={() => this.setState({currentChart: 'uv_index'})}>
+                        <Text style={styles.buttonText}>
+                            uv index
+                        </Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={[styles.chartSelectionButton, (this.state.currentChart==='humidity') ? styles.chartSelected : styles.chartNotSelected]}>
+                        <Text style={styles.buttonText}>
+                            humidity
+                        </Text>
+                    </TouchableOpacity>
+                </ScrollView>
+                <ScrollView horizontal={true}>
+                    <DailyGeneralChart/>
+                </ScrollView>
+            </View>
+        )
+    }
+}
+
+const styles = StyleSheet.create({
+    mainView: {
+        marginTop: 10,
+        width: '95%',
+        backgroundColor: '#EEE',
+        borderRadius: 20,
+    },
+    title: {
+        fontSize: 30,
+        paddingLeft: '5%',
+        color: 'rgb(33,33,33)',
+        marginTop: 10,
+    },
+    selectionView: {
+        paddingLeft: '5%',
+        borderBottomWidth: 1,
+        borderColor: 'rgba(66,66,66,0.5)',
+        paddingVertical: 10,
+    },
+    chartSelectionButton: {
+        borderRadius: 15,
+        elevation: 1,
+        justifyContent: 'center',
+        alignContent: 'center',
+        marginRight: 20,
+        paddingHorizontal: 15,
+        paddingVertical: 5,
+    },
+    chartNotSelected: {
+        backgroundColor: 'rgba(240,240,240,1)',
+    },
+    chartSelected: {
+        backgroundColor: 'rgba(200,30,30,0.2)',
+    },
+    buttonText: {
+        fontSize: 20
+    },
+});
+
+export default DailyForecastPanel;

@@ -6,6 +6,7 @@ import {
   StatusBar,
   ScrollView,
   Animated,
+  Image,
 } from 'react-native';
 import { connect } from 'react-redux';
 
@@ -18,12 +19,14 @@ import DetailsPanel from "./weather/detailpanel/DetailPanel";
 import HourlyForecastPanel from "./weather/charts/HourlyForecastPanel";
 import GeneralStatusBar from "./components/GeneralStatusBar";
 import PoweredBy from "./components/PoweredBy";
+import WeekViewComponent from "./WeekViewComponent";
 
 class MainPage extends React.Component {
   state = {
     scroll: false,
     fontLoaded: false,
     locationOpacity: new Animated.Value(1),
+    isWeakView: true,
   };
 
   onScrollNotTopMinimizeHeader = event => {
@@ -43,6 +46,10 @@ class MainPage extends React.Component {
       this.setState({ scroll: false });
     }
   };
+
+  getTodayForecast() {
+    return (this.props.forecast)
+  }
 
   getCurrentForecast = () => {
     if (this.props.currentTimestamp !== 0) {
@@ -86,23 +93,25 @@ class MainPage extends React.Component {
               <View
                 style={{
                   flex: 1,
-                  justifyContent: 'flex-start',
-                  alignItems: 'flex-start'
+                  alignItems: 'center',
+                  flexDirection: 'row',
+                  paddingTop: 10
                 }}
               >
-                <Text style={{ fontSize: 25 }}>
-                  {this.props.activeLocation.country}
-                </Text>
-                <Text style={{ fontSize: 50 }}>
+                <Image style={{width: 26, height: 26, marginBottom: 2, marginRight: 5}} source={require('../../assets/images/icons/location-marker.png')}/>
+                <Text style={{fontSize: 30}}>
                   {this.props.activeLocation.city}
                 </Text>
               </View>
             </Animated.View>
-            <DayPickerList />
-            <RootWeatherPanel forecast={this.getCurrentForecast()} />
-            {this.shouldDisplayHourlyCharts() ? <HourlyForecastPanel /> : <HourlyForecastInfo/>
+            {this.state.isWeakView ? <WeekViewComponent todayForecast={this.getTodayForecast()}/> :
+                <React.Fragment>
+                  <DayPickerList/>
+                  <RootWeatherPanel forecast={this.getCurrentForecast()} />
+                  {this.shouldDisplayHourlyCharts() ? <HourlyForecastPanel /> : <HourlyForecastInfo/>}
+                  <DetailsPanel/>
+                </React.Fragment>
             }
-            <DetailsPanel/>
             <PoweredBy/>
           </ScrollView>
           <AnimatedMenu isScroll={this.state.scroll} />
@@ -147,6 +156,6 @@ const styles = StyleSheet.create({
   locationView: {
     flex: 1,
     flexDirection: 'row',
-    paddingHorizontal: '5%',
+    paddingHorizontal: '4%',
   },
 });
