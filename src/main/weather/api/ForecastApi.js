@@ -5,10 +5,14 @@ export default fetchRootForecast;
 
 async function fetchRootForecast(lat, lng){
     try {
+        let response2 = await fetch('http://api.openweathermap.org/data/2.5/onecall?lat='+ lat + '&lon='+lng+'&appid=299a842c62583504c69d7d27b25e5d96&units=metric');
         let response = await fetch('https://api.darksky.net/forecast/' + TOKEN + '/' + lat + ',' + lng + '?units=si');
+
+        let responseJson2 = await response2.json();
         let responseJson = await response.json();
 
-        let forecastPerDay = parseToForecastPerDay(responseJson);
+        //let forecastPerDay = responseJson.daily.data;
+        let forecastPerDay = responseJson2.daily;
 
         let hourlyForecast = getHourlyForecast(responseJson.hourly);
 
@@ -47,43 +51,6 @@ function getHourlyForecast(hourly) {
             visibility: item.visibility,
             ozone: item.ozone
     }))
-}
-
-function parseToForecastPerDay(forecast){
-    let dailyForecastArray = forecast.daily.data;
-
-    let forecastArray = [];
-    for(let dayForecast of dailyForecastArray){
-        let dailyForecast = {
-            temperature: parseNumber((dayForecast.temperatureMin + dayForecast.temperatureMax)/2),
-            temperatureMin: parseNumber(dayForecast.temperatureMin),
-            temperatureMax: parseNumber(dayForecast.temperatureMax),
-            apparentTemperatureMin: parseNumber(dayForecast.apparentTemperatureMin),
-            apparentTemperatureMax: parseNumber(dayForecast.apparentTemperatureMax),
-            icon: dayForecast.icon,
-            summary: dayForecast.summary,
-            timestamp: dayForecast.time,
-            sunriseTime: dayForecast.sunriseTime,
-            sunsetTime: dayForecast.sunsetTime,
-            moonPhase: dayForecast.moonPhase,
-            precipIntensity: dayForecast.precipIntensity,
-            precipProbability: parseNumber(dayForecast.precipProbability) + '%',
-            dewPoint: dayForecast.dewPoint,
-            humidity: parseNumber(dayForecast.humidity*100),
-            pressure: dayForecast.pressure,
-            windSpeed: dayForecast.windSpeed,
-            windGust: dayForecast.windGust,
-            windBearing: dayForecast.windBearing,
-            cloudCover: parseNumber(dayForecast.cloudCover*100),
-            uvIndex: dayForecast.uvIndex,
-            visibility: parseNumber(dayForecast.visibility),
-            ozone: dayForecast.ozone,
-
-        };
-        forecastArray.push(dailyForecast);
-    }
-    forecastArray[0].temperature = parseNumber(forecast.currently.temperature);
-    return forecastArray;
 }
 
 function parseNumber(number){

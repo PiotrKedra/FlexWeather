@@ -6,13 +6,15 @@ import mapDataToIcon from "../../utility/ForecastIconMapper";
 
 const DailyGeneralChart = ({forecast}) => {
 
-    const minValue = d3.min(forecast, i => parseInt(i.temperatureMax));
-    const maxValue = d3.max(forecast, i => parseInt(i.temperatureMax));
+    console.log(forecast);
+
+    const minValue = d3.min(forecast, i => parseInt(i.temp.max));
+    const maxValue = d3.max(forecast, i => parseInt(i.temp.max));
     const functionX = getFunctionX(forecast, 500);
     const functionY = getFunctionY(minValue, maxValue, 40, 160);
 
-    const minValueMin = d3.min(forecast, i => parseInt(i.temperatureMin));
-    const maxValueMin = d3.max(forecast, i => parseInt(i.temperatureMin));
+    const minValueMin = d3.min(forecast, i => parseInt(i.temp.min));
+    const maxValueMin = d3.max(forecast, i => parseInt(i.temp.max));
     const functionMinY = getFunctionY(minValueMin, maxValueMin, 40, 100);
 
     return (
@@ -30,8 +32,8 @@ const DailyGeneralChart = ({forecast}) => {
 
                 {generateLineComponentsMin(forecast, functionX, functionMinY)}
 
-                {getDataTextForEachItemAboveBars(forecast, functionX, functionY, 'temperatureMax', '°')}
-                {getDataTextForEachItemAboveBars(forecast, functionX, functionMinY, 'temperatureMin', '°')}
+                {getDataTextForEachItemAboveBars(forecast, functionX, functionY, 'max', '°')}
+                {getDataTextForEachItemAboveBars(forecast, functionX, functionMinY, 'min', '°')}
                 {generateDotForEachMin(forecast, functionX, functionMinY)}
                 <Line
                     x1={10}
@@ -64,14 +66,14 @@ function getDay(timestamp){
 function generateTextForEachItem(data, xFunction) {
     return (data.map(item => (
         <Text
-            key={item.timestamp}
+            key={item.dt}
             fontSize={20}
-            x={xFunction(item.timestamp)}
+            x={xFunction(item.dt)}
             y={-290}
             textAnchor="middle"
             fill={COLORS.mainText}
             fontFamily="Neucha-Regular">
-            {getDay(item.timestamp)}
+            {getDay(item.dt)}
         </Text>
     )))
 }
@@ -79,10 +81,10 @@ function generateTextForEachItem(data, xFunction) {
 function generateVerticalGridLines(data, x) {
     return (data.map(item => (
         <Line
-            key={item.timestamp}
-            x1={x(item.timestamp)}
+            key={item.dt}
+            x1={x(item.dt)}
             y1={-220}
-            x2={x(item.timestamp)}
+            x2={x(item.dt)}
             y2={-80}
             stroke={COLORS.gridColor}
             strokeDasharray={[3, 3]}
@@ -94,37 +96,37 @@ function generateVerticalGridLines(data, x) {
 function getDataTextForEachItemAboveBars(data, x, y, key, sufix) {
     return (data.map(item => (
         <Text
-            key={item.timestamp}
+            key={item.dt}
             fontSize={16}
-            x={x(item.timestamp)}
-            y={y(item[key]) * -1 - 6}
+            x={x(item.dt)}
+            y={y(item.temp[key]) * -1 - 6}
             textAnchor="middle"
             fill={COLORS.mainText}
             fontFamily="Neucha-Regular">
-            {item[key] + sufix}
+            {Math.round(item.temp[key]) + sufix}
         </Text>
     )))
 }
 
 function generateForecastImageForEach(data, x, position) {
     return (data.map(item => (<Image
-            key={item.timestamp}
-            x={x(item.timestamp) - 17}
+            key={item.dt}
+            x={x(item.dt) - 17}
             y={position}
             width={35}
             height={35}
             preserveAspectRatio="xMidYMid slice"
             opacity="0.8"
-            href={mapDataToIcon(item.icon)}
+            href={mapDataToIcon(item.icon)} // TODO
         />)
     ))
 }
 function generateDotForEachMin(data, x, y) {
     return (data.map(item => (
         <Circle
-            key={item.timestamp}
-            cx={x(item.timestamp)}
-            cy={y(item.temperatureMin) * -1}
+            key={item.dt}
+            cx={x(item.dt)}
+            cy={y(item.temp.min) * -1}
             r="2"
             fill={COLORS.pathDarkBlue}
         />
@@ -134,13 +136,13 @@ function generateDotForEachMin(data, x, y) {
 function generateLineComponentsMin(data, x, y) {
     let lineArray = [];
     for (let i = 0; i < data.length - 1; i++) {
-        const x1 = x(data[i].timestamp);
-        const y1 = y(data[i].temperatureMin);
-        const x2 = x(data[i + 1].timestamp);
-        const y2 = y(data[i + 1].temperatureMin);
+        const x1 = x(data[i].dt);
+        const y1 = y(data[i].temp.min);
+        const x2 = x(data[i + 1].dt);
+        const y2 = y(data[i + 1].temp.min);
         const lineComponent = (
             <Line
-                key={data[i].timestamp}
+                key={data[i].dt}
                 x1={x1}
                 y1={y1 * -1}
                 x2={x2}
@@ -156,9 +158,9 @@ function generateLineComponentsMin(data, x, y) {
 function generateDotForEach(data, x, y) {
     return (data.map(item => (
         <Circle
-            key={item.timestamp}
-            cx={x(item.timestamp)}
-            cy={y(item.temperatureMax) * -1}
+            key={item.dt}
+            cx={x(item.dt)}
+            cy={y(item.temp.max) * -1}
             r="2"
             fill={COLORS.pathBlue}
         />
@@ -168,13 +170,13 @@ function generateDotForEach(data, x, y) {
 function generateLineComponents(data, x, y) {
     let lineArray = [];
     for (let i = 0; i < data.length - 1; i++) {
-        const x1 = x(data[i].timestamp);
-        const y1 = y(data[i].temperatureMax);
-        const x2 = x(data[i + 1].timestamp);
-        const y2 = y(data[i + 1].temperatureMax);
+        const x1 = x(data[i].dt);
+        const y1 = y(data[i].temp.max);
+        const x2 = x(data[i + 1].dt);
+        const y2 = y(data[i + 1].temp.max);
         const lineComponent = (
             <Line
-                key={data[i].timestamp}
+                key={data[i].dt}
                 x1={x1}
                 y1={y1 * -1}
                 x2={x2}
@@ -189,7 +191,7 @@ function generateLineComponents(data, x, y) {
 }
 
 function getFunctionX(data, svgWidth) {
-    const xDomain = data.map(item => item.timestamp);
+    const xDomain = data.map(item => item.dt);
     const xRange = [0, svgWidth];
     return d3
         .scalePoint()
