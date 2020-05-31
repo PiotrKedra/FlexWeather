@@ -20,6 +20,7 @@ async function fetchRootForecast(lat, lng){
         let days = getDateObjectsList(dayForecastArray);
 
         return {
+            current: responseJson2.current,
             rootForecast: forecastPerDay,
             currentTimestamp: forecastPerDay[0].timestamp,
             days: days,

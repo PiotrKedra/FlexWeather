@@ -3,21 +3,22 @@ import {View, Image} from 'react-native';
 import HourlyForecastPanel from "./weather/charts/HourlyForecastPanel";
 import DailyForecastPanel from "./weather/charts/daily/DailyForecastPanel";
 import CustomText from "./components/CustomText";
+import TodayDetailPanel from "./weather/detailpanel/TodayDetailPanel";
 
 class WeekViewComponent extends React.PureComponent{
 
 
     render() {
-        const today = this.props.todayForecast[0];
-        console.log(today);
+        const currentForecast = this.props.currentForecast;
         return (
             <React.Fragment>
                 <View style={{marginHorizontal: '5%', width: '90%', marginTop: 60}}>
-                    <CustomText style={{fontSize: 60}}>{today.temperature}°</CustomText>
-                    <CustomText style={{fontSize: 20}}>Apparent temperature {today.apparentTemperatureMax}°</CustomText>
+                    <CustomText style={{fontSize: 60}}>{Math.round(currentForecast.temp)}°</CustomText>
+                    <CustomText style={{fontSize: 20}}>{currentForecast.weather[0].description}</CustomText>
                 </View>
-                <DailyForecastPanel forecast={this.props.todayForecast}/>
+                <DailyForecastPanel currentForecast={currentForecast} forecast={this.props.todayForecast}/>
                 <HourlyForecastPanel/>
+                <TodayDetailPanel forecast={currentForecast}/>
             </React.Fragment>
         )
     }

@@ -104,7 +104,7 @@ class MainPage extends React.Component {
                 </Text>
               </View>
             </Animated.View>
-            {this.state.isWeakView ? <WeekViewComponent todayForecast={this.getTodayForecast()}/> :
+            {this.state.isWeakView ? <WeekViewComponent currentForecast={this.props.currentForecast} todayForecast={this.getTodayForecast()}/> :
                 <React.Fragment>
                   <DayPickerList/>
                   <RootWeatherPanel forecast={this.getCurrentForecast()} />
@@ -132,6 +132,7 @@ class MainPage extends React.Component {
 
 function mapStateToProps(state) {
   return {
+    currentForecast: state.currentForecast,
     activeLocation: state.activeLocation,
     days: state.days,
     forecast: state.rootForecastPerDay,

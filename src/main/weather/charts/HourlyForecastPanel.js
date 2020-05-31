@@ -20,6 +20,9 @@ class HourlyForecastPanel extends React.PureComponent {
                 <Text style={styles.title}>
                     Hourly forecast
                 </Text>
+                <Text style={{fontSize: 18, color: '#777', paddingLeft: '5%'}}>
+                    For next 48 hours
+                </Text>
                 <ScrollView style={styles.selectionView}
                             horizontal={true}>
                     <TouchableOpacity style={[styles.chartSelectionButton, (this.state.currentChart==='temperature') ? styles.chartSelected : styles.chartNotSelected]}

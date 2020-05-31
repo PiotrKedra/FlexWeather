@@ -10,7 +10,7 @@ const DailyGeneralChart = ({forecast}) => {
 
     const minValue = d3.min(forecast, i => parseInt(i.temp.max));
     const maxValue = d3.max(forecast, i => parseInt(i.temp.max));
-    const functionX = getFunctionX(forecast, 500);
+    const functionX = getFunctionX(forecast, 600);
     const functionY = getFunctionY(minValue, maxValue, 40, 160);
 
     const minValueMin = d3.min(forecast, i => parseInt(i.temp.min));
@@ -18,7 +18,7 @@ const DailyGeneralChart = ({forecast}) => {
     const functionMinY = getFunctionY(minValueMin, maxValueMin, 40, 100);
 
     return (
-        <Svg width={500} height={340}>
+        <Svg width={600} height={340}>
             <G y={340}>
                 {generateLineComponents(forecast, functionX, functionY)}
                 {generateDotForEach(forecast, functionX, functionY)}
@@ -38,7 +38,7 @@ const DailyGeneralChart = ({forecast}) => {
                 <Line
                     x1={10}
                     y1={-150}
-                    x2={490}
+                    x2={590}
                     y2={-150}
                     stroke={COLORS.gridColor}
                     strokeDasharray={[3, 3]}
@@ -192,7 +192,7 @@ function generateLineComponents(data, x, y) {
 
 function getFunctionX(data, svgWidth) {
     const xDomain = data.map(item => item.dt);
-    const xRange = [0, svgWidth];
+    const xRange = [-20, svgWidth+20];
     return d3
         .scalePoint()
         .domain(xDomain)

@@ -37,6 +37,7 @@ const reducer = (state = initialState, action) => {
         }
       }
       return Object.assign({}, state, {
+        currentForecast: action.payload.forecast.current,
         activeLocation: action.payload.location,
         rootForecastPerDay: action.payload.forecast.rootForecast,
         currentTimestamp: action.payload.forecast.currentTimestamp,

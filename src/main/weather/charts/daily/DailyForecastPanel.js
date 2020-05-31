@@ -25,14 +25,14 @@ class DailyForecastPanel extends React.PureComponent{
                     <View style={{flex: 1, flexDirection: 'row'}}>
                         <Image style={{width: 45, height: 45}} source={require('../../../../../assets/images/details/temperature.png')}/>
                         <View style={{paddingLeft: 10}}>
-                            <Text style={{fontSize: 20}}>15°/3°</Text>
+                            <Text style={{fontSize: 20}}>{Math.round(this.props.forecast[0].temp.max)}°/{Math.round(this.props.forecast[0].temp.min)}°</Text>
                             <Text style={{fontSize: 17, color: '#666'}}>temperature</Text>
                         </View>
                     </View>
                     <View style={{flex: 1, flexDirection: 'row'}}>
                         <Image style={{width: 45, height: 45}} source={require('../../../../../assets/images/details/sensed-temperature.png')}/>
                         <View style={{paddingLeft: 10, flexShrink: 1}}>
-                            <Text style={{fontSize: 20}}>12°</Text>
+                            <Text style={{fontSize: 20}}>{Math.round(this.props.currentForecast.feels_like)}°</Text>
                             <Text style={{fontSize: 17, color: '#666'}}>sensed temperature</Text>
                         </View>
                     </View>
@@ -41,20 +41,23 @@ class DailyForecastPanel extends React.PureComponent{
                     <View style={{flex: 1, flexDirection: 'row'}}>
                         <Image style={{width: 45, height: 45}} source={require('../../../../../assets/images/details/rainfall.png')}/>
                         <View style={{paddingLeft: 10}}>
-                            <Text style={{fontSize: 20}}>95%</Text>
+                            <Text style={{fontSize: 20}}>{this.props.forecast[0].rain} mm</Text>
                             <Text style={{fontSize: 17, color: '#666'}}>rainfall</Text>
                         </View>
                     </View>
                     <View style={{flex: 1, flexDirection: 'row'}}>
                         <Image style={{width: 45, height: 45}} source={require('../../../../../assets/images/details/wind-speed.png')}/>
                         <View style={{paddingLeft: 10}}>
-                            <Text style={{fontSize: 20}}>10 m/s</Text>
+                            <Text style={{fontSize: 20}}>{this.props.currentForecast.wind_speed} m/s</Text>
                             <Text style={{fontSize: 17, color: '#666'}}>wind speed</Text>
                         </View>
                     </View>
                 </View>
                 <Text style={styles.title}>
                     Daily forecast
+                </Text>
+                <Text style={{fontSize: 18, color: '#777', paddingLeft: '5%'}}>
+                    For next 7 days
                 </Text>
                 <ScrollView style={styles.selectionView}
                             horizontal={true}>
