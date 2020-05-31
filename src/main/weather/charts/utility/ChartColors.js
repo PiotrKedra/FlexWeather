@@ -1,6 +1,7 @@
 const COLORS = {
     mainText: '#111',
     pathBlue: '#5BC3CE',
+    pathDarkBlue: '#23385c',
     gridColor: 'rgba(81,81,81,0.3)',
     gradientLight: '#FFF',
     gray: 'rgb(101,101,101)',

@@ -16,7 +16,7 @@ class WeekViewComponent extends React.PureComponent{
                     <CustomText style={{fontSize: 60}}>{today.temperature}°</CustomText>
                     <CustomText style={{fontSize: 20}}>Apparent temperature {today.apparentTemperatureMax}°</CustomText>
                 </View>
-                <DailyForecastPanel/>
+                <DailyForecastPanel forecast={this.props.todayForecast}/>
                 <HourlyForecastPanel/>
             </React.Fragment>
         )
