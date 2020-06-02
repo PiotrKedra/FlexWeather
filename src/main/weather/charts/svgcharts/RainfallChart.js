@@ -57,7 +57,8 @@ const RainfallChart = (props) => {
 };
 
 function getMaxValue(data) {
-    const defaultMaxValue = 10;
+    const defaultMaxValue = 1;
+    console.log(data);
     const maxValue = d3.max(data, d => d.precipIntensity);
     return (defaultMaxValue > maxValue) ? defaultMaxValue : maxValue;
 }
@@ -132,7 +133,7 @@ function generateDegreeTextForEachItem(data, x, y) {
             textAnchor="middle"
             fill={COLORS.mainText}
             fontFamily="Neucha-Regular">
-            {item.precipIntensity + 'mm'}
+            {Math.round(item.precipIntensity*100)/100 + 'mm'}
         </Text>
     )))
 }

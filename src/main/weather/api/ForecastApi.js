@@ -37,7 +37,7 @@ function getHourlyForecast(hourly) {
             timeObject: convertUnixTime(item.time),
             summary: item.summary,
             icon: item.icon,
-            precipIntensity: item.precipIntensity.toFixed(),
+            precipIntensity: item.precipIntensity,
             precipProbability: parseNumber(item.precipProbability*100),
             temperature: Math.round(item.temperature),
             apparentTemperature: Math.round(item.apparentTemperature),
