@@ -7,6 +7,21 @@ const IMAGES = {
 
 };
 
+const NEW_API = {
+    clearDay: require('../../assets/images/newapi/clear-day.png'),
+    fewClouds: require('../../assets/images/newapi/few-clouds.png'),
+    clouds: require('../../assets/images/newapi/clouds.png'),
+    brokenClouds: require('../../assets/images/newapi/broken-clouds.png'),
+    rain: require('../../assets/images/newapi/rain.png'),
+    sunRain: require('../../assets/images/newapi/sun-rain.png'),
+    thunderstorm: require('../../assets/images/newapi/thunderstorm.png'),
+    snow: require('../../assets/images/newapi/snow.png'),
+    fog: require('../../assets/images/newapi/fog.png'),
+    clearNight: require('../../assets/images/newapi/clear-night.png'),
+    fewCloudsNight: require('../../assets/images/newapi/few-clouds-night.png'),
+    nightRain: require('../../assets/images/newapi/night-rain.png'),
+};
+
 const FORECAST_ICONS = {
     clearDay: require('../../assets/images/forecast/clear-day.png'),
     clearNight: require('../../assets/images/forecast/clear-night.png'),
@@ -42,6 +57,6 @@ const DETAIL_ICONS = {
     uvIndex: require('../../assets/images/details/uv-index.png'),
 };
 
-export { FORECAST_ICONS, FORECAST_ART, DETAIL_ICONS, };
+export { FORECAST_ICONS, FORECAST_ART, DETAIL_ICONS, NEW_API};
 
 export default IMAGES;

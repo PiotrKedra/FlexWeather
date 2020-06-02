@@ -2,7 +2,7 @@ import React from 'react';
 import {Svg, G, Line, Circle, Image, Text} from "react-native-svg";
 import * as d3 from "d3";
 import COLORS from "../../utility/ChartColors";
-import mapDataToIcon from "../../utility/ForecastIconMapper";
+import {mapToDayIcon, mapToNightIcon} from "../../utility/ForecastIconMapper";
 
 const DailyGeneralChart = ({forecast}) => {
 
@@ -27,8 +27,8 @@ const DailyGeneralChart = ({forecast}) => {
 
                 {generateTextForEachItem(forecast, functionX)}
 
-                {generateForecastImageForEach(forecast, functionX, -280)}
-                {generateForecastImageForEach(forecast, functionX, -60)}
+                {generateForecastImageForEach(forecast, functionX, -280, mapToDayIcon)}
+                {generateForecastImageForEach(forecast, functionX, -60, mapToNightIcon)}
 
                 {generateLineComponentsMin(forecast, functionX, functionMinY)}
 
@@ -108,7 +108,7 @@ function getDataTextForEachItemAboveBars(data, x, y, key, sufix) {
     )))
 }
 
-function generateForecastImageForEach(data, x, position) {
+function generateForecastImageForEach(data, x, position, fun) {
     return (data.map(item => (<Image
             key={item.dt}
             x={x(item.dt) - 17}
@@ -117,10 +117,11 @@ function generateForecastImageForEach(data, x, position) {
             height={35}
             preserveAspectRatio="xMidYMid slice"
             opacity="0.8"
-            href={mapDataToIcon(item.icon)} // TODO
+            href={fun(item.weather[0].icon)}
         />)
     ))
 }
+
 function generateDotForEachMin(data, x, y) {
     return (data.map(item => (
         <Circle
