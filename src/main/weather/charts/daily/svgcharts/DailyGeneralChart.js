@@ -1,5 +1,5 @@
 import React from 'react';
-import {Svg, G, Line, Circle, Image, Text} from "react-native-svg";
+import {Svg, G, Line, Circle, Image, Text, Polygon, Defs, LinearGradient, Stop, Rect} from "react-native-svg";
 import * as d3 from "d3";
 import COLORS from "../../utility/ChartColors";
 import {mapToDayIcon, mapToNightIcon} from "../../utility/ForecastIconMapper";
@@ -11,26 +11,38 @@ const DailyGeneralChart = ({forecast}) => {
     const minValue = d3.min(forecast, i => parseInt(i.temp.max));
     const maxValue = d3.max(forecast, i => parseInt(i.temp.max));
     const functionX = getFunctionX(forecast, 600);
-    const functionY = getFunctionY(minValue, maxValue, 40, 160);
+    const functionY = getFunctionY(minValue, maxValue, 35, 160);
 
     const minValueMin = d3.min(forecast, i => parseInt(i.temp.min));
     const maxValueMin = d3.max(forecast, i => parseInt(i.temp.max));
-    const functionMinY = getFunctionY(minValueMin, maxValueMin, 40, 100);
+    const functionMinY = getFunctionY(minValueMin, maxValueMin, 35, 100);
+
+    forecast.forEach(i => console.log(i.rain));
+    const minValueRain = d3.min(forecast, i => parseFloat(i.rain));
+    let maxValueRain = d3.max(forecast, i => parseFloat(i.rain));
+    maxValueRain = maxValueRain < 20 ? 20 : maxValueRain;
+    const yRainFunction = getFunctionY(minValueRain, maxValueRain, 100, 0);
+
+    console.log('min: ' + minValueRain + ', max: ' + maxValueRain);
 
     return (
-        <Svg width={600} height={340}>
-            <G y={340}>
+        <Svg width={600} height={300}>
+            <G y={300}>
+                {getDefinitions()}
+                {generateGradientComponent(forecast, functionX, functionY)}
                 {generateLineComponents(forecast, functionX, functionY)}
                 {generateDotForEach(forecast, functionX, functionY)}
 
                 {generateVerticalGridLines(forecast, functionX)}
 
+                {getRainBars(forecast, functionX, yRainFunction, minValueRain, 100)}
                 {generateTextForEachItem(forecast, functionX)}
 
-                {generateForecastImageForEach(forecast, functionX, -280, mapToDayIcon)}
-                {generateForecastImageForEach(forecast, functionX, -60, mapToNightIcon)}
+                {generateForecastImageForEach(forecast, functionX, -260, mapToDayIcon)}
+                {generateForecastImageForEach(forecast, functionX, -75, mapToNightIcon)}
 
                 {generateLineComponentsMin(forecast, functionX, functionMinY)}
+
 
                 {getDataTextForEachItemAboveBars(forecast, functionX, functionY, 'max', '°')}
                 {getDataTextForEachItemAboveBars(forecast, functionX, functionMinY, 'min', '°')}
@@ -49,6 +61,48 @@ const DailyGeneralChart = ({forecast}) => {
     )
 
 };
+
+function getRainBars(data, x, y, minValue, initialYCordOfChart) {
+    if(minValue===0) return null;
+    return (data.map(item => (
+        <Rect
+            key={item.dt}
+            x={x(item.dt)-3}
+            y={-(150+y(item.rain)/2)}
+            rx={3}
+            width={6}
+            height={y(item.rain)}
+            fill="#2a4de2"
+            opacity={0.5}
+        />
+    )))
+}
+
+function getDefinitions() {
+    return <Defs>
+        <LinearGradient id={'GRADIENT_ID'} x1="0" y1="1" x2="0" y2="0">
+            <Stop offset="1" stopColor={COLORS.pathBlue} stopOpacity="0.3"/>
+            <Stop offset="0" stopColor={COLORS.gradientLight} stopOpacity="0"/>
+        </LinearGradient>
+    </Defs>;
+}
+
+function generateGradientComponent(data, x, y){
+    let polygonPoints = "";
+    for (let item of data) {
+        polygonPoints += Math.ceil(x(item.dt)) + ',' + -Math.ceil(y(item.temp.max)) + ' ';
+    }
+    polygonPoints +=  Math.ceil(x(data[data.length - 1].dt)) + ',' + -100 +  ' '
+        + Math.ceil(x(data[0].dt)) + ',' + -100;
+
+    console.log(polygonPoints);
+    return (
+        <Polygon
+            points={polygonPoints}
+            fill={'url(#' + 'GRADIENT_ID' + ')'}
+        />
+    )
+}
 
 function getDate(timestamp){
     const date = new Date(timestamp * 1000);
@@ -69,7 +123,7 @@ function generateTextForEachItem(data, xFunction) {
             key={item.dt}
             fontSize={20}
             x={xFunction(item.dt)}
-            y={-290}
+            y={-270}
             textAnchor="middle"
             fill={COLORS.mainText}
             fontFamily="Neucha-Regular">
