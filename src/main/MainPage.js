@@ -81,7 +81,8 @@ class MainPage extends React.Component {
       <View style={{ flex: 1 }}>
         <ImageBackground
           style={styles.imageBackground}
-          source={require('../../assets/images/background.jpg')}
+          source={require('../../assets/images/cloud-background.jpg')}
+          imageStyle={{resizeMode: 'repeat'}}
         >
           <GeneralStatusBar/>
           <ScrollView

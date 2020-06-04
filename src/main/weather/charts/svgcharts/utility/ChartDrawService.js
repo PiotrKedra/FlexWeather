@@ -83,7 +83,7 @@ function generateForecastImageForEach(data, x, graphHeight, initialYCordOfChart)
             width={35}
             height={35}
             preserveAspectRatio="xMidYMid slice"
-            opacity="1"
+            opacity="0.8"
             href={mapDataToIcon(item.icon)}
         />)
     ))
