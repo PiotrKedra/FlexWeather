@@ -3,6 +3,7 @@ import {View, StyleSheet, TouchableOpacity, ScrollView, Image} from 'react-nativ
 
 import Text from '../../../components/CustomText'
 import DailyGeneralChart from "./svgcharts/DailyGeneralChart";
+import {connect} from "react-redux";
 
 class DailyForecastPanel extends React.PureComponent{
 
@@ -61,31 +62,31 @@ class DailyForecastPanel extends React.PureComponent{
                 </Text>
                 <ScrollView style={styles.selectionView}
                             horizontal={true}>
-                    <TouchableOpacity style={[styles.chartSelectionButton, (this.state.currentChart==='general') ? styles.chartSelected : styles.chartNotSelected]}
+                    <TouchableOpacity style={[styles.chartSelectionButton, (this.state.currentChart==='general') ? {backgroundColor: this.props.theme.mainColor} : styles.chartNotSelected]}
                                       onPress={() => this.setState({currentChart: 'general'})}>
                         <Text style={styles.buttonText}>
                             general
                         </Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={[styles.chartSelectionButton, (this.state.currentChart==='wind') ? styles.chartSelected : styles.chartNotSelected]}
+                    <TouchableOpacity style={[styles.chartSelectionButton, (this.state.currentChart==='wind') ? {backgroundColor: this.props.theme.mainColor} : styles.chartNotSelected]}
                                       onPress={() => this.setState({currentChart: 'wind'})}>
                         <Text style={styles.buttonText}>
                             wind
                         </Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={[styles.chartSelectionButton, (this.state.currentChart==='rainfall') ? styles.chartSelected : styles.chartNotSelected]}
+                    <TouchableOpacity style={[styles.chartSelectionButton, (this.state.currentChart==='rainfall') ? {backgroundColor: this.props.theme.mainColor} : styles.chartNotSelected]}
                                       onPress={() => this.setState({currentChart: 'rainfall'})}>
                         <Text style={styles.buttonText}>
                             rainfall
                         </Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={[styles.chartSelectionButton, (this.state.currentChart==='uv_index') ? styles.chartSelected : styles.chartNotSelected]}
+                    <TouchableOpacity style={[styles.chartSelectionButton, (this.state.currentChart==='uv_index') ? {backgroundColor: this.props.theme.mainColor} : styles.chartNotSelected]}
                                       onPress={() => this.setState({currentChart: 'uv_index'})}>
                         <Text style={styles.buttonText}>
                             uv index
                         </Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={[styles.chartSelectionButton, (this.state.currentChart==='humidity') ? styles.chartSelected : styles.chartNotSelected]}>
+                    <TouchableOpacity style={[styles.chartSelectionButton, (this.state.currentChart==='humidity') ? {backgroundColor: this.props.theme.mainColor} : styles.chartNotSelected]}>
                         <Text style={styles.buttonText}>
                             humidity
                         </Text>
@@ -126,6 +127,7 @@ const styles = StyleSheet.create({
         marginRight: 20,
         paddingHorizontal: 15,
         paddingVertical: 5,
+        opacity: 0.8
     },
     chartNotSelected: {
         backgroundColor: 'rgba(240,240,240,1)',
@@ -138,4 +140,10 @@ const styles = StyleSheet.create({
     },
 });
 
-export default DailyForecastPanel;
+function mapStateToProps(state) {
+    return {
+        theme: state.theme
+    };
+}
+
+export default connect(mapStateToProps, {})(DailyForecastPanel);

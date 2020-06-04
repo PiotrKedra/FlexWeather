@@ -7,6 +7,14 @@ const IMAGES = {
 
 };
 
+const BACKGORUND = {
+    sun: require('../../assets/images/background/sun-background.jpg'),
+    cloud: require('../../assets/images/background/cloud-background.jpg'),
+    rain: require('../../assets/images/background/rain-background.jpg'),
+    snow: require('../../assets/images/background/snow-background.jpg'),
+    night: require('../../assets/images/background/night-background.jpg')
+};
+
 const NEW_API = {
     clearDay: require('../../assets/images/newapi/clear-day.png'),
     fewClouds: require('../../assets/images/newapi/few-clouds.png'),
@@ -57,6 +65,6 @@ const DETAIL_ICONS = {
     uvIndex: require('../../assets/images/details/uv-index.png'),
 };
 
-export { FORECAST_ICONS, FORECAST_ART, DETAIL_ICONS, NEW_API};
+export { BACKGORUND, FORECAST_ICONS, FORECAST_ART, DETAIL_ICONS, NEW_API};
 
 export default IMAGES;

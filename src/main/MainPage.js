@@ -81,7 +81,7 @@ class MainPage extends React.Component {
       <View style={{ flex: 1 }}>
         <ImageBackground
           style={styles.imageBackground}
-          source={require('../../assets/images/cloud-background.jpg')}
+          source={this.props.theme.background}
           imageStyle={{resizeMode: 'repeat'}}
         >
           <GeneralStatusBar/>
@@ -105,7 +105,10 @@ class MainPage extends React.Component {
                 </Text>
               </View>
             </Animated.View>
-            {this.state.isWeakView ? <WeekViewComponent currentForecast={this.props.currentForecast} todayForecast={this.getTodayForecast()}/> :
+            {this.state.isWeakView ? <WeekViewComponent currentForecast={this.props.currentForecast}
+                                                        todayForecast={this.getTodayForecast()}
+                                                        theme={this.props.theme}
+                /> :
                 <React.Fragment>
                   <DayPickerList/>
                   <RootWeatherPanel forecast={this.getCurrentForecast()} />
@@ -115,7 +118,7 @@ class MainPage extends React.Component {
             }
             <PoweredBy/>
           </ScrollView>
-          <AnimatedMenu isScroll={this.state.scroll} />
+          <AnimatedMenu isScroll={this.state.scroll} theme={this.props.theme}/>
 
           {/*<FooterMenu />*/}
         </ImageBackground>
@@ -138,6 +141,7 @@ function mapStateToProps(state) {
     days: state.days,
     forecast: state.rootForecastPerDay,
     currentTimestamp: state.currentTimestamp,
+    theme: state.theme
   };
 }
 

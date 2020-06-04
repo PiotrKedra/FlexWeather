@@ -13,8 +13,8 @@ class WeekViewComponent extends React.PureComponent{
         return (
             <React.Fragment>
                 <View style={{marginHorizontal: '5%', width: '90%', marginTop: 60}}>
-                    <CustomText style={{fontSize: 60}}>{Math.round(currentForecast.temp)}°</CustomText>
-                    <CustomText style={{fontSize: 20}}>{currentForecast.weather[0].description}</CustomText>
+                    <CustomText style={{fontSize: 60, color: this.props.theme.textColor}}>{Math.round(currentForecast.temp)}°</CustomText>
+                    <CustomText style={{fontSize: 20, color: this.props.theme.textColor}}>{this.props.theme.summary}</CustomText>
                 </View>
                 <DailyForecastPanel currentForecast={currentForecast} forecast={this.props.todayForecast}/>
                 <HourlyForecastPanel/>

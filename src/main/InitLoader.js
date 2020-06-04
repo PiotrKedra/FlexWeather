@@ -13,6 +13,7 @@ import LottieView from "lottie-react-native";
 import NoInternetConnectionComponent from "./components/NoInternetConnectionComponent";
 import AnimatedInitLocationSearchComponent from "./location/AnimatedInitLocationSearchComponent";
 import GeneralStatusBar from "./components/GeneralStatusBar";
+import getThemeEntity from "./theme/ThemeService";
 
 const ACTIVE_LOCATION_STORAGE = '@active_location';
 
@@ -147,7 +148,8 @@ class InitLoader extends React.Component {
 
   async loadInitialForecast(location){
     let initialForecast = await fetchRootForecast(location.latitude, location.longitude);
-    this.props.setInitialForecast(initialForecast, location);
+    const theme = getThemeEntity(initialForecast);
+    this.props.setInitialForecast(initialForecast, location, theme);
     this.setState({isInitialForecastLoaded: true});
   }
 
@@ -167,8 +169,9 @@ class InitLoader extends React.Component {
 
   async showForecastFromStorage() {
     const activeLocation = await AsyncStorage.getItem('@active_location');
-    const lastForecast = await AsyncStorage.getItem('@last_forecast');
-    this.props.setInitialForecast(JSON.parse(lastForecast), JSON.parse(activeLocation), false);
+    const lastForecast = JSON.parse(await AsyncStorage.getItem('@last_forecast'));
+    const theme = getThemeEntity(lastForecast);
+    this.props.setInitialForecast(lastForecast, JSON.parse(activeLocation), theme, false);
     this.setState({isInitialForecastLoaded: true});
   }
 
@@ -215,7 +218,7 @@ function mapStateToProps(state) {
 
 function mapDispatcherToProps(dispatch) {
   return {
-    setInitialForecast: (rootForecast, location, saveToStorage=true) => dispatch({type: 'ROOT_FORECAST', payload: {forecast: rootForecast, location: location, saveToStorage: saveToStorage}}),
+    setInitialForecast: (rootForecast, location, theme, saveToStorage=true) => dispatch({type: 'ROOT_FORECAST', payload: {forecast: rootForecast, location: location, theme: theme, saveToStorage: saveToStorage}}),
   };
 }
 
