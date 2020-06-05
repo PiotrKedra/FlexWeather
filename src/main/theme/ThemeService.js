@@ -60,7 +60,7 @@ function getSummary(description){
         case 'snow':
             return 'Outside the snow began to fall.';
         default:
-            return 'Hard to say. Few clouds?';
+            return 'Hard to say. Few clouds? (' + description + ')';
     }
 }
 

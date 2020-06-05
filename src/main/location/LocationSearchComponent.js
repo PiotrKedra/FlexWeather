@@ -1,5 +1,5 @@
 import React from "react";
-import {Image, ScrollView, StyleSheet, TextInput, TouchableOpacity, View, Keyboard, Animated } from "react-native";
+import {Image, StyleSheet, TextInput, TouchableOpacity, View, Keyboard, Animated } from "react-native";
 import searchForLocations from "./LocationAutocompleteApi";
 import CustomText from "../components/CustomText";
 import {connect} from "react-redux";
@@ -17,11 +17,13 @@ class LocationSearchComponent extends React.Component {
         animatedPadding: new Animated.Value(0),
         animatedHeight: new Animated.Value(0),
         homeLocation: '',
+        historyLocations: [],
         searching: false,
     };
 
     componentDidMount() {
         AsyncStorage.getItem('@home_location').then(e => this.setState({homeLocation: JSON.parse(e)}));
+        AsyncStorage.getItem('@history_locations').then(e => this.setState({historyLocations: e ? JSON.parse(e) : []}));
     }
 
     async searchForLocation(query, lon, lat){
@@ -32,28 +34,57 @@ class LocationSearchComponent extends React.Component {
         }
     }
 
-    activeHomeLocation = async () => {
+    activeHomeLocation = async (location) => {
         this.props.closeMenu();
-        const forecast = await fetchRootForecast(this.state.homeLocation.latitude, this.state.homeLocation.longitude);
-        const theme = getThemeEntity(forecast);
-        // need to wait until menu close, because of issue #27
-        await new Promise(resolve => setTimeout(resolve, 200));
-        this.props.setForecastInNewLocation(this.state.homeLocation, forecast, theme);
-    };
-
-    setActiveLocation = async (item) =>{
-        const location = {
-            city: item.properties.name,
-            country: item.properties.country,
-            latitude: item.geometry.coordinates[1],
-            longitude: item.geometry.coordinates[0],
-        };
         const forecast = await fetchRootForecast(location.latitude, location.longitude);
         const theme = getThemeEntity(forecast);
         // need to wait until menu close, because of issue #27
         await new Promise(resolve => setTimeout(resolve, 200));
         this.props.setForecastInNewLocation(location, forecast, theme);
     };
+
+    setActiveLocation = async (item) =>{
+        this.props.closeMenu();
+        const location = {
+            city: item.properties.name,
+            country: item.properties.country,
+            latitude: item.geometry.coordinates[1],
+            longitude: item.geometry.coordinates[0],
+        };
+        this.addToHistory(location);
+        const forecast = await fetchRootForecast(location.latitude, location.longitude);
+        const theme = getThemeEntity(forecast);
+        // need to wait until menu close, because of issue #27
+        await new Promise(resolve => setTimeout(resolve, 200));
+        this.props.setForecastInNewLocation(location, forecast, theme);
+    };
+
+    addToHistory(location) {
+        let history = this.state.historyLocations;
+        history.push(location);
+        try {
+            AsyncStorage.setItem('@history_locations', JSON.stringify(this.removeDuplicates(history)));
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
+    removeDuplicates(array) {
+        let result = [];
+        for(let i=0; i< array.length; ++i){
+            if(!this.contains(array[i], result)){
+                result.push(array[i]);
+            }
+        }
+        return result;
+    }
+
+    contains(ele, array){
+        for(let i=0; i< array.length;++i){
+            if(array[i].city === ele.city) return true;
+        }
+        return false;
+    }
 
     animate() {
         const onFocus = this.state.onFocus;
@@ -93,7 +124,7 @@ class LocationSearchComponent extends React.Component {
                                       borderTopWidth: 1,
                                       borderColor: 'rgba(0,0,0,0.1)'
                                   }}
-                                  onPress={() => this.activeHomeLocation()}
+                                  onPress={() => this.activeHomeLocation(this.state.homeLocation)}
                 >
                     <Image
                         style={{width: 20, height: 20, marginHorizontal: 5, flex: 1}}
@@ -105,26 +136,49 @@ class LocationSearchComponent extends React.Component {
                         marginHorizontal: 3
                     }}>{this.state.homeLocation.city}, {this.state.homeLocation.country}</CustomText>
                 </TouchableOpacity>
+                {this.state.historyLocations.map(l => this.getLocationItem(l))}
                 {this.state.searching &&
                     <View style={{flexDirection: 'row', alignItems: 'center'}}>
                         <Image
                             style={{width: 23, height: 23, marginLeft: 10, marginRight: 7}}
                             source={require('../../../assets/images/icons/location-marker.png')}
                         />
-                        <View style={{
-                            width: '50%',
-                            height: 10,
-                            backgroundColor: '#ccc',
-                            opacity: 0.7,
-                            borderRadius: 15
-                        }}/>
+                        <CustomText style={{
+                            fontSize: 18,
+                        }}>. . . </CustomText>
                     </View>
                 }
             </React.Fragment>
         )
     }
 
+    getLocationItem(location){
+        return (
+            <TouchableOpacity key={location.latitude + location.longitude}
+                              style={{
+                                padding: 5,
+                                flexDirection: 'row',
+                                borderTopWidth: 1,
+                                borderColor: 'rgba(0,0,0,0.1)'
+                              }}
+                              onPress={() => this.activeHomeLocation(location)}
+            >
+                <Image
+                    style={{width: 20, height: 20, marginHorizontal: 5, flex: 1}}
+                    source={require('../../../assets/images/icons/location-marker.png')}
+                />
+                <CustomText style={{
+                    fontSize: 18,
+                    flex: 9,
+                    marginHorizontal: 3
+                }}>{location.city}, {location.country}</CustomText>
+            </TouchableOpacity>
+        )
+    }
+
     render() {
+
+        console.log(this.state.historyLocations);
 
         let s1 = {};
         if(this.state.onFocus)
@@ -250,14 +304,10 @@ const styles = StyleSheet.create({
     },
 });
 
-function mapStateToProps(state){
-    return {}
-}
-
 function mapDispatcherToProps(dispatch) {
     return {
         setForecastInNewLocation: (location, forecast, theme) => dispatch({ type: 'ROOT_FORECAST', payload: { location: location, forecast: forecast, theme: theme, saveToStorage: true}})
     }
 }
 
-export default connect(mapStateToProps, mapDispatcherToProps)(LocationSearchComponent);
+export default connect(null, mapDispatcherToProps)(LocationSearchComponent);
