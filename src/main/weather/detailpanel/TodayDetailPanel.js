@@ -2,11 +2,12 @@ import React from 'react';
 import {Image, StyleSheet, View} from "react-native";
 
 import Text from '../../components/CustomText';
+import {connect} from "react-redux";
 
-const TodayDetailPanel = ({forecast}) => {
+const TodayDetailPanel = ({forecast, theme}) => {
 
     return (
-        <View style={styles.tab}>
+        <View style={[styles.tab, {backgroundColor: theme.panelColor}]}>
             <Text style={styles.mainTitleText}>Precise forecast</Text>
             <Text style={styles.descriptionText}>
                 More details
@@ -142,6 +143,12 @@ const styles = StyleSheet.create({
     },
 });
 
-export default TodayDetailPanel;
+function mapStateToProps(state) {
+    return {
+        theme: state.theme
+    }
+}
+
+export default connect(mapStateToProps)(TodayDetailPanel);
 
 

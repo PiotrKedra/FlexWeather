@@ -6,8 +6,6 @@ import {mapToDayIcon, mapToNightIcon} from "../../utility/ForecastIconMapper";
 
 const DailyGeneralChart = ({forecast}) => {
 
-    console.log(forecast);
-
     const minValue = d3.min(forecast, i => parseInt(i.temp.max));
     const maxValue = d3.max(forecast, i => parseInt(i.temp.max));
     const functionX = getFunctionX(forecast, 600);
@@ -17,13 +15,11 @@ const DailyGeneralChart = ({forecast}) => {
     const maxValueMin = d3.max(forecast, i => parseInt(i.temp.max));
     const functionMinY = getFunctionY(minValueMin, maxValueMin, 35, 100);
 
-    forecast.forEach(i => console.log(i.rain));
-    const minValueRain = d3.min(forecast, i => parseFloat(i.rain));
+    let minValueRain = d3.min(forecast, i => parseFloat(i.rain));
+    minValueRain = minValueRain ? minValueRain : 0;
     let maxValueRain = d3.max(forecast, i => parseFloat(i.rain));
-    maxValueRain = maxValueRain < 20 ? 20 : maxValueRain;
+    maxValueRain = maxValueRain < 20 || maxValueRain === undefined ? 20 : maxValueRain;
     const yRainFunction = getFunctionY(minValueRain, maxValueRain, 100, 0);
-
-    console.log('min: ' + minValueRain + ', max: ' + maxValueRain);
 
     return (
         <Svg width={600} height={300}>
@@ -94,8 +90,6 @@ function generateGradientComponent(data, x, y){
     }
     polygonPoints +=  Math.ceil(x(data[data.length - 1].dt)) + ',' + -100 +  ' '
         + Math.ceil(x(data[0].dt)) + ',' + -100;
-
-    console.log(polygonPoints);
     return (
         <Polygon
             points={polygonPoints}

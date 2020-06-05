@@ -46,26 +46,6 @@ class MainPage extends React.Component {
     return (this.props.forecast)
   }
 
-  getCurrentForecast = () => {
-    if (this.props.currentTimestamp !== 0) {
-      let forecast = this.props.forecast;
-
-      for (let daily of forecast) {
-        if (daily.timestamp === this.props.currentTimestamp) {
-          return daily;
-        }
-      }
-    }
-    return {
-      temperature: 1,
-      temperatureMin: 0,
-      temperatureMax: 0,
-      icon: 'clear',
-      summary: 'error',
-      timestamp: 0,
-    };
-  };
-
   render = () => {
     let locationStyle = {
       opacity: this.state.locationOpacity,
@@ -94,8 +74,8 @@ class MainPage extends React.Component {
                   paddingTop: 10
                 }}
               >
-                <Image style={{width: 26, height: 26, marginBottom: 2, marginRight: 5}} source={require('../../assets/images/icons/location-marker.png')}/>
-                <Text style={{fontSize: 30}}>
+                <Image style={{width: 26, height: 26, marginBottom: 2, marginRight: 5, tintColor: this.props.theme.textColor}} source={require('../../assets/images/icons/location-marker.png')}/>
+                <Text style={{fontSize: 30, color: this.props.theme.textColor}}>
                   {this.props.activeLocation.city}
                 </Text>
               </View>
@@ -105,13 +85,11 @@ class MainPage extends React.Component {
                                theme={this.props.theme}
             />
             <View style={{flexDirection: 'row', marginHorizontal: '4%', marginVertical: 5}}>
-              <PoweredBy/>
-              <RefreshInfo/>
+              <PoweredBy theme={this.props.theme}/>
+              <RefreshInfo theme={this.props.theme}/>
             </View>
           </ScrollView>
           <AnimatedMenu isScroll={this.state.scroll} theme={this.props.theme}/>
-
-          {/*<FooterMenu />*/}
         </ImageBackground>
       </View>
     );

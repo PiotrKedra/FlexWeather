@@ -2,10 +2,10 @@ import React from "react";
 import {View, StyleSheet} from "react-native";
 import CustomText from "./CustomText";
 
-const PoweredBy = () => {
+const PoweredBy = ({theme}) => {
     return (
         <View style={styles.view}>
-            <CustomText style={styles.text}>
+            <CustomText style={[styles.text, {color: theme.textColor}]}>
                 Powered by OpenWeatherMap
             </CustomText>
         </View>

@@ -27,7 +27,7 @@ class RefreshInfo extends React.PureComponent{
 
         return (
             <View style={{flex: 1, alignItems: 'flex-end'}}>
-                <CustomText style={{fontSize: 13}}>
+                <CustomText style={{fontSize: 13, color: this.props.theme.textColor}}>
                     Last update {this.state.dateUpdate}
                 </CustomText>
             </View>

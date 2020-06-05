@@ -16,7 +16,7 @@ class HourlyForecastPanel extends React.PureComponent {
     render() {
         const ChartView = React.lazy(() => import("./HourlyChartService"));
         return (
-            <View style={styles.mainView}>
+            <View style={[styles.mainView, {backgroundColor: this.props.theme.panelColor}]}>
                 <Text style={styles.title}>
                     Hourly forecast
                 </Text>

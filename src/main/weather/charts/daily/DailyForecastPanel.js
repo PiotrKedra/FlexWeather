@@ -12,10 +12,8 @@ class DailyForecastPanel extends React.PureComponent{
     };
 
     render() {
-
-
         return (
-            <View style={styles.mainView}>
+            <View style={[styles.mainView, {backgroundColor: this.props.theme.panelColor}]}>
                 <Text style={styles.title}>
                     Today forecast
                 </Text>
@@ -104,7 +102,6 @@ const styles = StyleSheet.create({
     mainView: {
         marginTop: 10,
         width: '95%',
-        backgroundColor: '#EEE',
         borderRadius: 20,
     },
     title: {
