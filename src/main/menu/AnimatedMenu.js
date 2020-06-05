@@ -83,8 +83,6 @@ class AnimatedMenu extends React.PureComponent {
         let locationStyle = {
             opacity: this.state.locationOpacity
         };
-
-        console.log(this.props.theme);
         return (
             <View style={styles.mainView}>
                 <TO style={this.state.menu ? styles.outsideTouchableView : null}
