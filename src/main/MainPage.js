@@ -20,6 +20,7 @@ import HourlyForecastPanel from "./weather/charts/HourlyForecastPanel";
 import GeneralStatusBar from "./components/GeneralStatusBar";
 import PoweredBy from "./components/PoweredBy";
 import WeekViewComponent from "./WeekViewComponent";
+import RefreshInfo from "./components/RefreshInfo";
 
 class MainPage extends React.Component {
   state = {
@@ -116,7 +117,10 @@ class MainPage extends React.Component {
                   <DetailsPanel/>
                 </React.Fragment>
             }
-            <PoweredBy/>
+            <View style={{flexDirection: 'row', marginHorizontal: '4%', marginVertical: 5}}>
+              <PoweredBy/>
+              <RefreshInfo/>
+            </View>
           </ScrollView>
           <AnimatedMenu isScroll={this.state.scroll} theme={this.props.theme}/>
 

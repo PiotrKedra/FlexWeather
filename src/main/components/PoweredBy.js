@@ -6,7 +6,7 @@ const PoweredBy = () => {
     return (
         <View style={styles.view}>
             <CustomText style={styles.text}>
-                Powered by Dark Sky
+                Powered by OpenWeatherMap
             </CustomText>
         </View>
     )
@@ -15,11 +15,10 @@ const PoweredBy = () => {
 const styles = StyleSheet.create({
     view: {
         alignItems: 'flex-start',
-        width: '95%'
+        flex: 1,
     },
     text: {
-        fontSize: 17,
-        margin: 10
+        fontSize: 13,
     }
 });
 
