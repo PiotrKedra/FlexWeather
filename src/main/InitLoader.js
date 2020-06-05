@@ -16,6 +16,7 @@ import GeneralStatusBar from "./components/GeneralStatusBar";
 import getThemeEntity from "./theme/ThemeService";
 
 const ACTIVE_LOCATION_STORAGE = '@active_location';
+const HOME_LOCATION_STORAGE = '@home_location';
 
 class InitLoader extends React.Component {
 
@@ -83,7 +84,7 @@ class InitLoader extends React.Component {
       );
       if (granted === PermissionsAndroid.RESULTS.GRANTED) {
         await Geolocation.getCurrentPosition(
-            (position) => this.loadForecastWithGivenLocation(position),
+            (position) => this.loadForecastWithGivenLocation(position, true),
             (error) => this.setState({isSearchLocationWindow: true}),
             {enableHighAccuracy: false, timeout: 15000, maximumAge: 10000}
         );
@@ -138,12 +139,21 @@ class InitLoader extends React.Component {
     this.loadForecastUsingLocationInStorage();
   }
 
-  async loadForecastWithGivenLocation(position){
+  async loadForecastWithGivenLocation(position, saveHomeLocation=false){
     const latitude = position.coords.latitude;
     const longitude = position.coords.longitude;
     const location = await getLocationDetails(longitude, latitude);
+    if(saveHomeLocation) this.saveHomeLocation(location);
     this.setState({loadingState: 'Loading forecast...'});
     this.loadInitialForecast(location)
+  }
+
+  saveHomeLocation(location){
+      try {
+          AsyncStorage.setItem(HOME_LOCATION_STORAGE, JSON.stringify(location));
+      } catch (e) {
+          console.log(e);
+      }
   }
 
   async loadInitialForecast(location){
@@ -182,6 +192,7 @@ class InitLoader extends React.Component {
       city: location.properties.name,
       country: location.properties.country,
     };
+    this.saveHomeLocation(locationEntity);
     this.setState({isSearchLocationWindow: false, loadingState: 'Loading forecast...'});
     this.loadInitialForecast(locationEntity)
   };

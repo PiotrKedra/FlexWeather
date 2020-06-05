@@ -5,6 +5,7 @@ import CustomText from "../components/CustomText";
 import {connect} from "react-redux";
 import fetchRootForecast from "../weather/api/ForecastApi";
 import getThemeEntity from "../theme/ThemeService";
+import AsyncStorage from "@react-native-community/async-storage";
 
 
 class LocationSearchComponent extends React.Component {
@@ -15,19 +16,32 @@ class LocationSearchComponent extends React.Component {
         onFocus: false,
         animatedPadding: new Animated.Value(0),
         animatedHeight: new Animated.Value(0),
+        homeLocation: '',
+        searching: false,
     };
 
+    componentDidMount() {
+        AsyncStorage.getItem('@home_location').then(e => this.setState({homeLocation: JSON.parse(e)}));
+    }
+
     async searchForLocation(query, lon, lat){
-        this.setState({locationInput: query});
+        this.setState({locationInput: query, searching: true});
         if(query.length >= 3) {
             const locations = await searchForLocations(query, lat, lon);
-            this.setState({suggestedLocations: locations});
+            this.setState({suggestedLocations: locations, searching: false});
         }
     }
 
-     setActiveLocation = async (item) =>{
+    activeHomeLocation = async () => {
         this.props.closeMenu();
+        const forecast = await fetchRootForecast(this.state.homeLocation.latitude, this.state.homeLocation.longitude);
+        const theme = getThemeEntity(forecast);
+        // need to wait until menu close, because of issue #27
+        await new Promise(resolve => setTimeout(resolve, 200));
+        this.props.setForecastInNewLocation(this.state.homeLocation, forecast, theme);
+    };
 
+    setActiveLocation = async (item) =>{
         const location = {
             city: item.properties.name,
             country: item.properties.country,
@@ -70,6 +84,46 @@ class LocationSearchComponent extends React.Component {
         })
     }
 
+    getTmpView(){
+        return (
+            <React.Fragment>
+                <TouchableOpacity style={{
+                                      padding: 5,
+                                      flexDirection: 'row',
+                                      borderTopWidth: 1,
+                                      borderColor: 'rgba(0,0,0,0.1)'
+                                  }}
+                                  onPress={() => this.activeHomeLocation()}
+                >
+                    <Image
+                        style={{width: 20, height: 20, marginHorizontal: 5, flex: 1}}
+                        source={require('../../../assets/images/icons/home.png')}
+                    />
+                    <CustomText style={{
+                        fontSize: 18,
+                        flex: 9,
+                        marginHorizontal: 3
+                    }}>{this.state.homeLocation.city}, {this.state.homeLocation.country}</CustomText>
+                </TouchableOpacity>
+                {this.state.searching &&
+                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                        <Image
+                            style={{width: 23, height: 23, marginLeft: 10, marginRight: 7}}
+                            source={require('../../../assets/images/icons/location-marker.png')}
+                        />
+                        <View style={{
+                            width: '50%',
+                            height: 10,
+                            backgroundColor: '#ccc',
+                            opacity: 0.7,
+                            borderRadius: 15
+                        }}/>
+                    </View>
+                }
+            </React.Fragment>
+        )
+    }
+
     render() {
 
         let s1 = {};
@@ -105,18 +159,30 @@ class LocationSearchComponent extends React.Component {
                 </Animated.View>
 
                 {this.state.onFocus &&
-                <Animated.ScrollView style={{backgroundColor: 'rgba(240,0,0,0.2)', width: '100%', height: this.state.animatedHeight}}>
-                    {
+                <Animated.ScrollView keyboardShouldPersistTaps="always"
+                                     style={{backgroundColor: 'rgba(240,0,0,0.2)', width: '100%', height: this.state.animatedHeight}}>
+                    {this.state.suggestedLocations.length === 0 ?
+                        this.getTmpView()
+                        :
                         this.state.suggestedLocations.map(item => (
                             <TouchableOpacity key={item.properties.osm_id}
-                                              style={{padding: 5, flexDirection: 'row', borderTopWidth: 1, borderColor: 'rgba(0,0,0,0.1)'}}
+                                              style={{
+                                                  padding: 5,
+                                                  flexDirection: 'row',
+                                                  borderTopWidth: 1,
+                                                  borderColor: 'rgba(0,0,0,0.1)'
+                                              }}
                                               onPress={() => this.setActiveLocation(item)}
                             >
                                 <Image
                                     style={{width: 20, height: 20, marginHorizontal: 5, flex: 1}}
                                     source={require('../../../assets/images/icons/location-marker.png')}
                                 />
-                                <CustomText style={{fontSize: 18, flex: 9, marginHorizontal: 3}}>{item.properties.name}, {item.properties.country}</CustomText>
+                                <CustomText style={{
+                                    fontSize: 18,
+                                    flex: 9,
+                                    marginHorizontal: 3
+                                }}>{item.properties.name}, {item.properties.country}</CustomText>
                             </TouchableOpacity>
                         ))
                     }

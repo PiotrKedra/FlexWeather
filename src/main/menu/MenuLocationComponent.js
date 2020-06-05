@@ -28,7 +28,7 @@ const MenuLocationComponent = (props) => {
 
 function mapStateToProps(state){
     return {
-        location: state.activeLocation
+        location: state.activeLocation,
     }
 }
 
