@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect, Provider} from 'react-redux';
-import {View, PermissionsAndroid, Animated} from 'react-native';
+import {View, PermissionsAndroid, Animated, Dimensions} from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import NetInfo from "@react-native-community/netinfo";
 
@@ -188,7 +188,7 @@ class InitLoader extends React.Component {
 
   render() {
     return (
-      <View style={{flex: 1}}>
+      <View style={{height: Dimensions.get('window').height}}>
         {this.state.isInitialForecastLoaded ?
             (<MainPage/>)
           :
