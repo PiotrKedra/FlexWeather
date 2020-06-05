@@ -12,11 +12,6 @@ import { connect } from 'react-redux';
 
 import Text from '../main/components/CustomText';
 import AnimatedMenu from './menu/AnimatedMenu';
-import RootWeatherPanel from './weather/rootpanel/RootWeatherPanel';
-import DayPickerList from './components/DayPickerList';
-import HourlyForecastInfo from './weather/charts/info/HourlyForecastInfo'
-import DetailsPanel from "./weather/detailpanel/DetailPanel";
-import HourlyForecastPanel from "./weather/charts/HourlyForecastPanel";
 import GeneralStatusBar from "./components/GeneralStatusBar";
 import PoweredBy from "./components/PoweredBy";
 import WeekViewComponent from "./WeekViewComponent";
@@ -27,7 +22,6 @@ class MainPage extends React.Component {
     scroll: false,
     fontLoaded: false,
     locationOpacity: new Animated.Value(1),
-    isWeakView: true,
   };
 
   onScrollNotTopMinimizeHeader = event => {
@@ -106,17 +100,10 @@ class MainPage extends React.Component {
                 </Text>
               </View>
             </Animated.View>
-            {this.state.isWeakView ? <WeekViewComponent currentForecast={this.props.currentForecast}
-                                                        todayForecast={this.getTodayForecast()}
-                                                        theme={this.props.theme}
-                /> :
-                <React.Fragment>
-                  <DayPickerList/>
-                  <RootWeatherPanel forecast={this.getCurrentForecast()} />
-                  {this.shouldDisplayHourlyCharts() ? <HourlyForecastPanel /> : <HourlyForecastInfo/>}
-                  <DetailsPanel/>
-                </React.Fragment>
-            }
+            <WeekViewComponent currentForecast={this.props.currentForecast}
+                               todayForecast={this.getTodayForecast()}
+                               theme={this.props.theme}
+            />
             <View style={{flexDirection: 'row', marginHorizontal: '4%', marginVertical: 5}}>
               <PoweredBy/>
               <RefreshInfo/>
