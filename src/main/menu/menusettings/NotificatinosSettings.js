@@ -25,18 +25,19 @@ const NotificationsSettingsComponent = () => {
 
     return (
         <View style={styles.mainView}>
-            <View style={styles.notificationSetting}>
-                <CustomText style={styles.notificationSettingText}>
-                    Daily notifications
-                </CustomText>
-                <Switch isEnabled={isEnabled} setIsEnabled={setIsEnabled}/>
-            </View>
-            <View style={styles.notificationSetting}>
-                <CustomText style={styles.notificationSettingText}>
-                    Alert notifications
-                </CustomText>
-                <Switch isEnabled={isEnabled2} setIsEnabled={setIsEnabled2}/>
-            </View>
+            <CustomText style={{fontSize: 20, color: '#333'}}>coming soon ...</CustomText>
+            {/*<View style={styles.notificationSetting}>*/}
+            {/*    <CustomText style={styles.notificationSettingText}>*/}
+            {/*        Daily notifications*/}
+            {/*    </CustomText>*/}
+            {/*    <Switch isEnabled={isEnabled} setIsEnabled={setIsEnabled}/>*/}
+            {/*</View>*/}
+            {/*<View style={styles.notificationSetting}>*/}
+            {/*    <CustomText style={styles.notificationSettingText}>*/}
+            {/*        Alert notifications*/}
+            {/*    </CustomText>*/}
+            {/*    <Switch isEnabled={isEnabled2} setIsEnabled={setIsEnabled2}/>*/}
+            {/*</View>*/}
         </View>
     )
 };
@@ -44,6 +45,7 @@ const NotificationsSettingsComponent = () => {
 
 const styles = StyleSheet.create({
     mainView: {
+        marginLeft: 40,
         marginTop: 10,
     },
     notificationSetting: {

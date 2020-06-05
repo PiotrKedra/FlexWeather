@@ -20,17 +20,18 @@ const ReportBugSettings = () => {
 const ReportBugSettingsComponent = () => {
 
     return (
-        <View style={styles.mainView}>
-            <TouchableOpacity style={styles.button}>
-                <CustomText style={styles.buttonText}>
-                    Send by email
-                </CustomText>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.button}>
-                <CustomText style={styles.buttonText}>
-                    Send by app
-                </CustomText>
-            </TouchableOpacity>
+        <View style={{marginLeft: 40}}>
+            <CustomText style={{fontSize: 20, color: '#333'}}>coming soon ...</CustomText>
+            {/*<TouchableOpacity style={styles.button}>*/}
+            {/*    <CustomText style={styles.buttonText}>*/}
+            {/*        Send by email*/}
+            {/*    </CustomText>*/}
+            {/*</TouchableOpacity>*/}
+            {/*<TouchableOpacity style={styles.button}>*/}
+            {/*    <CustomText style={styles.buttonText}>*/}
+            {/*        Send by app*/}
+            {/*    </CustomText>*/}
+            {/*</TouchableOpacity>*/}
         </View>
     )
 };
