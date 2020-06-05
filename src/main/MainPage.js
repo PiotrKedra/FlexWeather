@@ -7,6 +7,7 @@ import {
   ScrollView,
   Animated,
   Image,
+  Dimensions,
 } from 'react-native';
 import { connect } from 'react-redux';
 
@@ -21,21 +22,21 @@ class MainPage extends React.Component {
   state = {
     scroll: false,
     fontLoaded: false,
-    locationOpacity: new Animated.Value(1),
+    locationLeftPosition: new Animated.Value(Dimensions.get('window').width*0.03)
   };
 
   onScrollNotTopMinimizeHeader = event => {
     const y = event.nativeEvent.contentOffset.y;
     if (y >= 10 && this.state.scroll === false) {
-      Animated.timing(this.state.locationOpacity, {
-        toValue: 0,
+      Animated.timing(this.state.locationLeftPosition, {
+        toValue: -200,
         duration: 400,
       }).start();
       this.setState({ scroll: true });
     }
     if (y < 10 && this.state.scroll === true) {
-      Animated.timing(this.state.locationOpacity, {
-        toValue: 1,
+      Animated.timing(this.state.locationLeftPosition, {
+        toValue: Dimensions.get('window').width*0.03,
         duration: 400,
       }).start();
       this.setState({ scroll: false });
@@ -48,7 +49,9 @@ class MainPage extends React.Component {
 
   render = () => {
     let locationStyle = {
-      opacity: this.state.locationOpacity,
+      position: 'absolute',
+      top: 0,
+      left: this.state.locationLeftPosition
     };
 
     this.shouldDisplayHourlyCharts();
@@ -60,19 +63,20 @@ class MainPage extends React.Component {
           imageStyle={{resizeMode: 'repeat'}}
         >
           <GeneralStatusBar/>
+
           <ScrollView
-            contentContainerStyle={{ alignItems: 'center' }}
+            contentContainerStyle={{alignItems: 'center', paddingTop: 50}}
             onScroll={this.onScrollNotTopMinimizeHeader}
             nestedScrollEnabled={true}
           >
             <Animated.View style={[styles.locationView, locationStyle]}>
               <View
-                style={{
-                  flex: 1,
-                  alignItems: 'center',
-                  flexDirection: 'row',
-                  paddingTop: 10
-                }}
+                  style={{
+                    flex: 1,
+                    alignItems: 'center',
+                    flexDirection: 'row',
+                    paddingTop: 10
+                  }}
               >
                 <Image style={{width: 26, height: 26, marginBottom: 2, marginRight: 5, tintColor: this.props.theme.textColor}} source={require('../../assets/images/icons/location-marker.png')}/>
                 <Text style={{fontSize: 30, color: this.props.theme.textColor}}>
@@ -89,7 +93,7 @@ class MainPage extends React.Component {
               <RefreshInfo theme={this.props.theme}/>
             </View>
           </ScrollView>
-          <AnimatedMenu isScroll={this.state.scroll} theme={this.props.theme}/>
+          <AnimatedMenu isScroll={this.state.scroll} theme={this.props.theme} location={this.props.activeLocation.city}/>
         </ImageBackground>
       </View>
     );
@@ -129,8 +133,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#0000',
   },
   locationView: {
-    flex: 1,
     flexDirection: 'row',
-    paddingHorizontal: '4%',
   },
 });

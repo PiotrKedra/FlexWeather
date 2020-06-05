@@ -2,6 +2,7 @@ import React from 'react';
 import {Image, StyleSheet, Animated, Dimensions, View, TouchableOpacity as TO} from "react-native";
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Menu from "./Menu";
+import CustomText from "../components/CustomText";
 
 
 const WINDOW_WIDTH = Dimensions.get('window').width;
@@ -22,7 +23,7 @@ class AnimatedMenu extends React.PureComponent {
         this.state = {
             width: new Animated.Value(HEADER_WIDTH_CLOSE),
             height: new Animated.Value(HEADER_HEIGHT_CLOSE),
-            locationOpacity: new Animated.Value(0),
+            locationTextLeftPosition: new Animated.Value(300),
             menu: false
         }
     }
@@ -44,16 +45,22 @@ class AnimatedMenu extends React.PureComponent {
                 toValue: isScroll ? HEADER_HEIGHT_OPEN : HEADER_HEIGHT_CLOSE,
                 duration: 300
             }),
-            Animated.timing(this.state.locationOpacity, {
-                toValue: isScroll ? 1 : 0,
+            Animated.timing(this.state.locationTextLeftPosition, {
+                toValue: isScroll ? Dimensions.get('window').width*0.2 : 300,
                 duration: 400
-            })
+            }),
         ]).start();
     }
 
     showOrHideMenu = () => {
         const menu = this.state.menu;
         const isScroll = this.props.isScroll;
+        if(isScroll){
+            Animated.timing(this.state.locationTextLeftPosition, {
+                toValue: menu ? Dimensions.get('window').width*0.2 : 300,
+                duration: 400
+            }).start();
+        }
         Animated.parallel([
             Animated.timing(this.state.width, {
                 toValue: menu ? this.getWidthOnMenuClosing(isScroll) : HEADER_WIDTH_MENU_OPEN,
@@ -80,21 +87,30 @@ class AnimatedMenu extends React.PureComponent {
             width: this.state.width,
             height: this.state.height,
         };
-        let locationStyle = {
-            opacity: this.state.locationOpacity
-        };
         return (
             <View style={styles.mainView}>
+
                 <TO style={this.state.menu ? styles.outsideTouchableView : null}
                     onPress={()=> this.showOrHideMenu()}/>
+
                 <Animated.View style={[styles.headerOnScroll, animationStyle, {backgroundColor: this.props.theme.menuColor}]}>
-                    {!this.state.menu && <View><TouchableOpacity style={styles.burgerMenuOnScroll} onPress={() => this.showOrHideMenu()}>
-                        <Image style={{height: 25, width: 25}} source={require('../../../assets/images/menu.png')}/>
-                    </TouchableOpacity>
-                    {/*<Animated.View style={locationStyle}>*/}
-                    {/*    <CustomText style={{fontSize: 30}}>Zabierzów</CustomText>*/}
-                    {/*</Animated.View>*/}
-                    </View>    }
+                    {!this.state.menu &&
+                    <View>
+                        <TouchableOpacity style={styles.burgerMenuOnScroll} onPress={() => this.showOrHideMenu()}>
+                            <Image style={{height: 25, width: 25}} source={require('../../../assets/images/menu.png')}/>
+                        </TouchableOpacity>
+
+                    </View>
+
+                    }
+                    <Animated.View style={{
+                        position: 'absolute',
+                        top: 35,
+                        left: this.state.locationTextLeftPosition,
+                        elevation: 7,
+                    }}>
+                        <CustomText style={{fontSize: 25}}>{this.props.location}</CustomText>
+                    </Animated.View>
                     {this.state.menu && <Menu closeMenu={this.showOrHideMenu}/>}
                 </Animated.View>
 
