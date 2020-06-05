@@ -3,7 +3,7 @@ import {Image, TextInput, TouchableOpacity, View, StyleSheet, ScrollView} from "
 
 import CustomText from "../components/CustomText";
 import LocationSearchComponent from "../location/LocationSearchComponent";
-
+import {connect} from "react-redux";
 
 
 const MenuLocationComponent = (props) => {
@@ -18,7 +18,7 @@ const MenuLocationComponent = (props) => {
                 </CustomText>
             </View>
             <CustomText style={styles.currentLocationText}>
-                Zabierzów, Poland
+                {props.location.city}, {props.location.country}
             </CustomText>
             <LocationSearchComponent closeMenu={props.closeMenu}/>
         </View>
@@ -26,7 +26,13 @@ const MenuLocationComponent = (props) => {
     )
 };
 
-export default MenuLocationComponent;
+function mapStateToProps(state){
+    return {
+        location: state.activeLocation
+    }
+}
+
+export default connect(mapStateToProps)(MenuLocationComponent);
 
 
 const styles = StyleSheet.create({

@@ -62,13 +62,13 @@ const DailyGeneralChart = ({forecast}) => {
 
 };
 
-function getRainBars(data, x, y, minValue, initialYCordOfChart) {
+function getRainBars(data, x, y, minValue) {
     if(minValue===0) return null;
     return (data.map(item => (
         <Rect
             key={item.dt}
             x={x(item.dt)-3}
-            y={-(150+y(item.rain)/2)}
+            y={-(150+y(item.rain ? item.rain : 0)/2)}
             rx={3}
             width={6}
             height={y(item.rain)}

@@ -4,6 +4,7 @@ import searchForLocations from "./LocationAutocompleteApi";
 import CustomText from "../components/CustomText";
 import {connect} from "react-redux";
 import fetchRootForecast from "../weather/api/ForecastApi";
+import getThemeEntity from "../theme/ThemeService";
 
 
 class LocationSearchComponent extends React.Component {
@@ -34,10 +35,10 @@ class LocationSearchComponent extends React.Component {
             longitude: item.geometry.coordinates[0],
         };
         const forecast = await fetchRootForecast(location.latitude, location.longitude);
-
+        const theme = getThemeEntity(forecast);
         // need to wait until menu close, because of issue #27
         await new Promise(resolve => setTimeout(resolve, 200));
-        this.props.setForecastInNewLocation(location, forecast);
+        this.props.setForecastInNewLocation(location, forecast, theme);
     };
 
     animate() {
@@ -189,7 +190,7 @@ function mapStateToProps(state){
 
 function mapDispatcherToProps(dispatch) {
     return {
-        setForecastInNewLocation: (location, forecast) => dispatch({ type: 'ROOT_FORECAST', payload: { location: location, forecast: forecast, saveToStorage: true}})
+        setForecastInNewLocation: (location, forecast, theme) => dispatch({ type: 'ROOT_FORECAST', payload: { location: location, forecast: forecast, theme: theme, saveToStorage: true}})
     }
 }
 
