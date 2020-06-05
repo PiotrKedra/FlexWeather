@@ -40,7 +40,7 @@ class DailyForecastPanel extends React.PureComponent{
                     <View style={{flex: 1, flexDirection: 'row'}}>
                         <Image style={{width: 45, height: 45}} source={require('../../../../../assets/images/details/rainfall.png')}/>
                         <View style={{paddingLeft: 10}}>
-                            <Text style={{fontSize: 20}}>{this.props.forecast[0].rain} mm</Text>
+                            <Text style={{fontSize: 20}}>{this.props.forecast[0].rain ? this.props.forecast[0].rain : 0} mm</Text>
                             <Text style={{fontSize: 17, color: '#666'}}>rainfall</Text>
                         </View>
                     </View>
