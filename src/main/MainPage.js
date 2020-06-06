@@ -1,3 +1,4 @@
+import 'react-native-gesture-handler';
 import React from 'react';
 import {
   View,
@@ -24,6 +25,10 @@ class MainPage extends React.Component {
     fontLoaded: false,
     locationLeftPosition: new Animated.Value(Dimensions.get('window').width*0.03)
   };
+
+  componentDidMount() {
+    // this.props.navigation.navigate('InitLoader');
+  }
 
   onScrollNotTopMinimizeHeader = event => {
     const y = event.nativeEvent.contentOffset.y;

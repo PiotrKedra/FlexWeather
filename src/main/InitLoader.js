@@ -14,6 +14,7 @@ import NoInternetConnectionComponent from "./components/NoInternetConnectionComp
 import AnimatedInitLocationSearchComponent from "./location/AnimatedInitLocationSearchComponent";
 import GeneralStatusBar from "./components/GeneralStatusBar";
 import getThemeEntity from "./theme/ThemeService";
+import AnimatedInitText from "./AnimatedInitText";
 
 const ACTIVE_LOCATION_STORAGE = '@active_location';
 const HOME_LOCATION_STORAGE = '@home_location';
@@ -160,7 +161,9 @@ class InitLoader extends React.Component {
     let initialForecast = await fetchRootForecast(location.latitude, location.longitude);
     const theme = getThemeEntity(initialForecast);
     this.props.setInitialForecast(initialForecast, location, theme);
-    this.setState({isInitialForecastLoaded: true});
+    //this.setState({isInitialForecastLoaded: true});
+    setTimeout(() => this.props.navigation.navigate('MainPage'), 1000);
+
   }
 
   async loadForecastUsingLocationInStorage(){
@@ -182,7 +185,9 @@ class InitLoader extends React.Component {
     const lastForecast = JSON.parse(await AsyncStorage.getItem('@last_forecast'));
     const theme = getThemeEntity(lastForecast);
     this.props.setInitialForecast(lastForecast, JSON.parse(activeLocation), theme, false);
-    this.setState({isInitialForecastLoaded: true});
+
+    //this.setState({isInitialForecastLoaded: true});
+    setTimeout(() => this.props.navigation.navigate('Dupa'), 1000);
   }
 
   loadForecastFromSearchComponent = async (location) => {
@@ -203,14 +208,15 @@ class InitLoader extends React.Component {
         {this.state.isInitialForecastLoaded ?
             (<MainPage/>)
           :
-            (<View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-              <GeneralStatusBar/>
-              <LottieView
-                  style={{height: 200}}
-                  source={require('../../assets/lottie/loading')}
-                  autoPlay
-                  loop/>
-              <CustomText style={{fontSize: 25}}>{this.state.loadingState}</CustomText>
+            (<View style={{flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#2C82C9'}}>
+              <GeneralStatusBar opacity={0}/>
+              {/*<LottieView*/}
+              {/*    style={{height: 200}}*/}
+              {/*    source={require('../../assets/lottie/loading')}*/}
+              {/*    autoPlay*/}
+              {/*    loop/>*/}
+              <AnimatedInitText/>
+              {/*<CustomText style={{fontSize: 25}}>{this.state.loadingState}</CustomText>*/}
               <AnimatedInitLocationSearchComponent isSearchLocationWindow={this.state.isSearchLocationWindow}
                                                    loadForecastFromSearchComponent={this.loadForecastFromSearchComponent}/>
             </View>)

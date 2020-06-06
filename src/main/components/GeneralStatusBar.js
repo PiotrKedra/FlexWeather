@@ -5,10 +5,10 @@ import {
 } from "react-native";
 import React from "react";
 
-const GeneralStatusBar = () => {
+const GeneralStatusBar = ({opacity=0.1}) => {
     return (
         <View style={styles.statusBar}>
-            <StatusBar translucent backgroundColor={'rgba(0,0,0,0.1)'}/>
+            <StatusBar translucent backgroundColor={'rgba(0,0,0,' + opacity + ')'}/>
         </View>
     )
 };

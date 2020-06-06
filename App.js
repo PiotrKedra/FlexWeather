@@ -1,12 +1,14 @@
 import 'react-native-gesture-handler';
 import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
-import {createStackNavigator} from '@react-navigation/stack';
+import {CardStyleInterpolators, createStackNavigator} from '@react-navigation/stack';
 import {createStore} from 'redux';
 import {Provider} from 'react-redux';
 
 import InitLoader from './src/main/InitLoader';
 import AsyncStorage from "@react-native-community/async-storage";
+import MainPage from "./src/main/MainPage";
+import Dupa from "./src/main/Dupa";
 
 
 const IS_STORAGE = '@is_storage';
@@ -69,6 +71,18 @@ export default function App() {
               headerShown: false,
             }}
           />
+          <Stack.Screen name="Dupa"
+                        component={Dupa}
+                        options={{
+                          headerShown: false,
+                          cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS
+                        }}/>
+          <Stack.Screen name="MainPage"
+                        component={MainPage}
+                        options={{
+                          headerShown: false,
+                          cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS
+                        }}/>
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>
