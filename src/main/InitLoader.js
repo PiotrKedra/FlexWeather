@@ -162,7 +162,7 @@ class InitLoader extends React.Component {
     const theme = getThemeEntity(initialForecast);
     this.props.setInitialForecast(initialForecast, location, theme);
     //this.setState({isInitialForecastLoaded: true});
-    setTimeout(() => this.props.navigation.navigate('MainPage'), 1000);
+    this.props.navigation.replace('MainPage')
 
   }
 
@@ -177,6 +177,8 @@ class InitLoader extends React.Component {
     } catch(e) {
       console.log(e);
     }
+
+    // navigate to search component
     this.setState({isSearchLocationWindow: true})
   }
 
@@ -187,7 +189,7 @@ class InitLoader extends React.Component {
     this.props.setInitialForecast(lastForecast, JSON.parse(activeLocation), theme, false);
 
     //this.setState({isInitialForecastLoaded: true});
-    setTimeout(() => this.props.navigation.navigate('Dupa'), 1000);
+    this.props.navigation.replace('MainPage')
   }
 
   loadForecastFromSearchComponent = async (location) => {
@@ -204,24 +206,19 @@ class InitLoader extends React.Component {
 
   render() {
     return (
-      <View style={{height: Dimensions.get('window').height}}>
-        {this.state.isInitialForecastLoaded ?
-            (<MainPage/>)
-          :
-            (<View style={{flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#2C82C9'}}>
-              <GeneralStatusBar opacity={0}/>
-              {/*<LottieView*/}
-              {/*    style={{height: 200}}*/}
-              {/*    source={require('../../assets/lottie/loading')}*/}
-              {/*    autoPlay*/}
-              {/*    loop/>*/}
-              <AnimatedInitText/>
-              {/*<CustomText style={{fontSize: 25}}>{this.state.loadingState}</CustomText>*/}
-              <AnimatedInitLocationSearchComponent isSearchLocationWindow={this.state.isSearchLocationWindow}
-                                                   loadForecastFromSearchComponent={this.loadForecastFromSearchComponent}/>
-            </View>)
-        }
-        <NoInternetConnectionComponent/>
+      <View style={{height: Dimensions.get('window').height, backgroundColor: '#2C82C9'}}>
+        <GeneralStatusBar/>
+        {/*<View style={{flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#2C82C9'}}>*/}
+        {/*  */}
+        {/*  /!*<LottieView*!/*/}
+        {/*  /!*    style={{height: 200}}*!/*/}
+        {/*  /!*    source={require('../../assets/lottie/loading')}*!/*/}
+        {/*  /!*    autoPlay*!/*/}
+        {/*  /!*    loop/>*!/*/}
+        {/*  /!*<CustomText style={{fontSize: 25}}>{this.state.loadingState}</CustomText>*!/*/}
+        {/*  /!*<AnimatedInitLocationSearchComponent isSearchLocationWindow={this.state.isSearchLocationWindow}*!/*/}
+        {/*  /!*                                     loadForecastFromSearchComponent={this.loadForecastFromSearchComponent}/>*!/*/}
+        {/*</View>)*/}
       </View>)
   }
 }

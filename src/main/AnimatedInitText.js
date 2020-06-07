@@ -18,7 +18,7 @@ class AnimatedInitText extends React.PureComponent{
     render() {
         return (
             <Animated.View style={{ position: 'absolute', top: 0, bottom: 0, left: this.state.initTextLeftPosition, justifyContent: 'center', alignItems: 'center', width: Dimensions.get('window').width}}>
-                <CustomText style={{fontSize: 50, color: '#fff'}}>Cool Weather</CustomText>
+                {/*<CustomText style={{fontSize: 50, color: '#fff'}}>Cool Weather</CustomText>*/}
             </Animated.View>
         )
     }

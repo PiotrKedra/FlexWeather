@@ -1,15 +1,14 @@
 import 'react-native-gesture-handler';
-import React from 'react';
+import React, {useEffect} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {CardStyleInterpolators, createStackNavigator} from '@react-navigation/stack';
 import {createStore} from 'redux';
 import {Provider} from 'react-redux';
+import SplashScreen from 'react-native-splash-screen'
 
 import InitLoader from './src/main/InitLoader';
 import AsyncStorage from "@react-native-community/async-storage";
 import MainPage from "./src/main/MainPage";
-import Dupa from "./src/main/Dupa";
-
 
 const IS_STORAGE = '@is_storage';
 const LAST_FORECAST_UPDATE_STORAGE = "@forecast_update_date";
@@ -60,6 +59,10 @@ const store = createStore(reducer);
 const Stack = createStackNavigator();
 
 export default function App() {
+
+  useEffect(() => {
+    SplashScreen.hide();
+  });
   return (
     <Provider store={store}>
       <NavigationContainer>
@@ -69,14 +72,10 @@ export default function App() {
             component={InitLoader}
             options={{
               headerShown: false,
+              cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS
+
             }}
           />
-          <Stack.Screen name="Dupa"
-                        component={Dupa}
-                        options={{
-                          headerShown: false,
-                          cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS
-                        }}/>
           <Stack.Screen name="MainPage"
                         component={MainPage}
                         options={{

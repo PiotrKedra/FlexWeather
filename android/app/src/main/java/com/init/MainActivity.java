@@ -1,6 +1,8 @@
 package com.init;
 
 import com.facebook.react.ReactActivity;
+import org.devio.rn.splashscreen.SplashScreen; // Import this.
+import android.os.Bundle; // Import this.
 
 public class MainActivity extends ReactActivity {
 
@@ -11,5 +13,11 @@ public class MainActivity extends ReactActivity {
   @Override
   protected String getMainComponentName() {
     return "init";
+  }
+
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
+      SplashScreen.show(this, R.style.SplashTheme);
+      super.onCreate(savedInstanceState);
   }
 }

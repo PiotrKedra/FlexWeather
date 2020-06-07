@@ -4,7 +4,6 @@ import {
   View,
   StyleSheet,
   ImageBackground,
-  StatusBar,
   ScrollView,
   Animated,
   Image,
@@ -126,16 +125,10 @@ function mapStateToProps(state) {
 export default connect(mapStateToProps)(MainPage);
 
 const styles = StyleSheet.create({
-  statusBarCover: {
-    width: '100%',
-    height: StatusBar.currentHeight,
-    backgroundColor: '#FFAD94',
-  },
   imageBackground: {
-    flex: 1,
-    width: '100%',
-    height: '100%',
-    backgroundColor: '#0000',
+    height: Dimensions.get('window').height,
+    width: Dimensions.get('window').width,
+    backgroundColor: '#fff',
   },
   locationView: {
     flexDirection: 'row',
