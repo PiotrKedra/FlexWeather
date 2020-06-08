@@ -24,6 +24,7 @@ class AnimatedMenu extends React.PureComponent {
             width: new Animated.Value(HEADER_WIDTH_CLOSE),
             height: new Animated.Value(HEADER_HEIGHT_CLOSE),
             locationTextLeftPosition: new Animated.Value(300),
+            locationTextOpacity: new Animated.Value(0),
             menu: false
         }
     }
@@ -49,6 +50,10 @@ class AnimatedMenu extends React.PureComponent {
                 toValue: isScroll ? Dimensions.get('window').width*0.2 : 300,
                 duration: 400
             }),
+            Animated.timing(this.state.locationTextOpacity, {
+                toValue: isScroll ? 1 : 0,
+                duration: 300
+            }),
         ]).start();
     }
 
@@ -56,10 +61,16 @@ class AnimatedMenu extends React.PureComponent {
         const menu = this.state.menu;
         const isScroll = this.props.isScroll;
         if(isScroll){
-            Animated.timing(this.state.locationTextLeftPosition, {
-                toValue: menu ? Dimensions.get('window').width*0.2 : 300,
-                duration: 400
-            }).start();
+            Animated.parallel([
+                Animated.timing(this.state.locationTextLeftPosition, {
+                    toValue: menu ? Dimensions.get('window').width*0.2 : 300,
+                    duration: 400
+                }),
+                Animated.timing(this.state.locationTextOpacity, {
+                    toValue: menu ? 1 : 0,
+                    duration: 300
+                }),
+            ]).start();
         }
         Animated.parallel([
             Animated.timing(this.state.width, {
@@ -107,6 +118,7 @@ class AnimatedMenu extends React.PureComponent {
                         position: 'absolute',
                         top: 35,
                         left: this.state.locationTextLeftPosition,
+                        opacity: this.state.locationTextOpacity,
                         elevation: 7,
                     }}>
                         <CustomText style={{fontSize: 25}}>{this.props.location}</CustomText>
@@ -130,7 +142,7 @@ const styles = StyleSheet.create({
         top: 0,
         right: 0,
         width: WINDOW_WIDTH,
-        height: WINDOW_HEIGHT,
+        height: WINDOW_HEIGHT+50,
         backgroundColor: 'rgba(1,1,1,0.3)'
     },
     header:{

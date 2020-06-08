@@ -48,8 +48,8 @@ class InitLoader extends React.Component {
 
   componentDidMount = async () => {
     if(this.props.route.params){
-      this.loadForecastWithGivenLocation(this.props.route.params.position, this.props.route.params.saveHomeLocation);
-      return
+      this.loadForecastWithGivenLocation(this.props.route.params.location, this.props.route.params.saveHomeLocation);
+      return;
     }
     const unsubscribe = NetInfo.addEventListener(this.internetConnectionListener);
     try{
@@ -82,30 +82,6 @@ class InitLoader extends React.Component {
     return await NetInfo.fetch().then(state => state.isConnected);
   }
 
-  async firstForecastLaunch() {
-    // get current location and load forecast using it
-    try {
-      const granted = await PermissionsAndroid.request(
-          PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION, {
-            'title': 'Location Access Required',
-            'message': 'This App needs to Access your location'
-          }
-      );
-      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-        await Geolocation.getCurrentPosition(
-            (position) => this.loadForecastWithGivenLocation(position, true),
-            (error) => this.setState({isSearchLocationWindow: true}),
-            {enableHighAccuracy: false, timeout: 15000, maximumAge: 10000}
-        );
-        return;
-      }
-    } catch (err) {
-      console.log(err);
-    }
-    // if couldn't get location -> load search component
-    this.setState({isSearchLocationWindow: true});
-  }
-
   async normalAppLaunch(){
     // load forecast from internet, if no then from storage
     if(await this.dataIsNotFresh()){
@@ -136,7 +112,7 @@ class InitLoader extends React.Component {
       );
       if (granted === PermissionsAndroid.RESULTS.GRANTED) {
         await Geolocation.getCurrentPosition(
-            (position) => this.loadForecastWithGivenLocation(position),
+            (position) => this.loadForecastWithGivenPosition(position),
             (error) => {console.log(error); this.loadForecastUsingLocationInStorage();},
             {enableHighAccuracy: false, timeout: 15000, maximumAge: 10000}
         );
@@ -148,11 +124,17 @@ class InitLoader extends React.Component {
     this.loadForecastUsingLocationInStorage();
   }
 
-  async loadForecastWithGivenLocation(position, saveHomeLocation=false){
+  async loadForecastWithGivenLocation(location, saveHomeLocation=false){
+    console.log(location);
+    if(saveHomeLocation) this.saveHomeLocation(location);
+    this.setState({loadingState: 'Loading forecast...'});
+    this.loadInitialForecast(location)
+  }
+
+  async loadForecastWithGivenPosition(position){
     const latitude = position.coords.latitude;
     const longitude = position.coords.longitude;
     const location = await getLocationDetails(longitude, latitude);
-    if(saveHomeLocation) this.saveHomeLocation(location);
     this.setState({loadingState: 'Loading forecast...'});
     this.loadInitialForecast(location)
   }

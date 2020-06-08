@@ -3,7 +3,7 @@ import {Image, StyleSheet, TextInput, TouchableOpacity, View, ScrollView} from "
 import CustomText from "../components/CustomText";
 import {searchForLocationsByQuery} from "./LocationAutocompleteApi";
 
-const InitLocationSearchComponent = () => {
+const InitLocationSearchComponent = ({navigation}) => {
 
     const [locationInput, changeLocationInput] = useState("");
     const [locations, changeLocations] = useState([]);
@@ -34,12 +34,12 @@ const InitLocationSearchComponent = () => {
                 </View>
             </View>
 
-            <ScrollView style={styles.scrollView}>
+            <ScrollView style={styles.scrollView} keyboardShouldPersistTaps="always">
                 {
                     locations.map(item => (
                         <TouchableOpacity key={item.properties.osm_id}
                                           style={styles.locationItem}
-                                          // onPress={() => loadForecast(item)}
+                                          onPress={() => navigation.replace('InitLoader', {location: parseLocation(item), saveHomeLocation: false})}
                         >
                             <Image
                                 style={styles.locationItemImage}
@@ -55,6 +55,15 @@ const InitLocationSearchComponent = () => {
         </View>
     )
 };
+
+function parseLocation(location){
+    return {
+        longitude: location.geometry.coordinates[0],
+        latitude: location.geometry.coordinates[1],
+        city: location.properties.name,
+        country: location.properties.country,
+    }
+}
 
 async function searchForLocation(query, changeLocationInput, changeLocations){
     changeLocationInput(query);

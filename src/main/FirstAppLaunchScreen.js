@@ -4,16 +4,24 @@ import CustomText from "./components/CustomText";
 import GeneralStatusBar from "./components/GeneralStatusBar";
 import Geolocation from "@react-native-community/geolocation";
 import RNAndroidLocationEnabler from 'react-native-android-location-enabler';
+import getLocationDetails from "./location/LocationApi";
 
 
 class FirstAppLaunchScreen extends React.PureComponent {
+
+    passLocationData(position){
+        const latitude = position.coords.latitude;
+        const longitude = position.coords.longitude;
+        getLocationDetails(longitude, latitude)
+            .then(location => this.props.navigation.replace('InitLoader', {location: location, saveHomeLocation: true}));
+    }
 
     getLocation(granted) {
         if (granted === PermissionsAndroid.RESULTS.GRANTED) {
             RNAndroidLocationEnabler.promptForEnableLocationIfNeeded({interval: 10000, fastInterval: 5000})
                 .then(() => {
                     Geolocation.getCurrentPosition(
-                        (position) => this.props.navigation.replace('InitLoader', {position: position, saveHomeLocation: true}),
+                        (position) => this.passLocationData(position),
                         () => ToastAndroid.show('Could\'n get your location', ToastAndroid.SHORT),
                         {enableHighAccuracy: false, timeout: 5000, maximumAge: 10000}
                     );})
