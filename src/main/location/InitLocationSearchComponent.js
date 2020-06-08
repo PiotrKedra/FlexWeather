@@ -3,13 +3,13 @@ import {Image, StyleSheet, TextInput, TouchableOpacity, View, ScrollView} from "
 import CustomText from "../components/CustomText";
 import {searchForLocationsByQuery} from "./LocationAutocompleteApi";
 
-const InitLocationSearchComponent = ({loadForecast}) => {
+const InitLocationSearchComponent = () => {
 
     const [locationInput, changeLocationInput] = useState("");
     const [locations, changeLocations] = useState([]);
 
     return (
-        <View style={styles.mainView}>
+        <View style={{flex: 1, backgroundColor: '#eee'}}>
             <View style={styles.overflowView}>
                 <View style={styles.locationSearchViewInner}>
                     <Image
@@ -21,6 +21,7 @@ const InitLocationSearchComponent = ({loadForecast}) => {
                         placeholder="Search location"
                         onChangeText={text => searchForLocation(text, changeLocationInput, changeLocations)}
                         value={locationInput}
+                        autoFocus={true}
                     />
                     <TouchableOpacity style={styles.locationSearchCancelButton}
                                       onPress={() => {changeLocationInput(""); changeLocations([])}}
@@ -38,7 +39,7 @@ const InitLocationSearchComponent = ({loadForecast}) => {
                     locations.map(item => (
                         <TouchableOpacity key={item.properties.osm_id}
                                           style={styles.locationItem}
-                                          onPress={() => loadForecast(item)}
+                                          // onPress={() => loadForecast(item)}
                         >
                             <Image
                                 style={styles.locationItemImage}
@@ -64,10 +65,6 @@ async function searchForLocation(query, changeLocationInput, changeLocations){
 }
 
 const styles = StyleSheet.create({
-    mainView: {
-        marginTop: 10,
-        marginVertical: 10
-    },
     overflowView: {
         overflow: 'hidden',
         paddingBottom: 1
@@ -75,23 +72,20 @@ const styles = StyleSheet.create({
     locationSearchViewInner: {
         flexDirection: 'row',
         alignItems: 'center',
-        borderBottomWidth: 1,
-        backgroundColor: 'white',
-        elevation: 1,
     },
     locationSearchViewSearchImage: {
         height: 20,
         width: 20,
-        marginLeft: 10,
+        marginLeft: '4.5%',
         marginRight: 5,
     },
     locationSearchViewTextInput: {
         backgroundColor: 'rgba(1,1,1,0.1)',
         fontFamily: 'Neucha-Regular',
-        fontSize: 20,
-        marginHorizontal: 3,
+        fontSize: 25,
+        marginHorizontal: 10,
         paddingVertical: 0,
-        marginVertical: 5,
+        marginVertical: 10,
         flex: 8,
         borderRadius: 3
     },
@@ -99,9 +93,9 @@ const styles = StyleSheet.create({
         flex: 1
     },
     locationSearchCancelImage: {
-        marginLeft: 5,
-        height: 15,
-        width: 15,
+        height: 16,
+        width: 16,
+        tintColor: '#2c82c9'
     },
     scrollView: {
         width: '100%',
@@ -112,14 +106,15 @@ const styles = StyleSheet.create({
         flexDirection: 'row'
     },
     locationItemImage: {
-        width: 20,
-        height: 20,
-        marginHorizontal: 1
+        width: 28,
+        height: 28,
+        marginHorizontal: 1,
+        tintColor: '#2c82c9'
     },
     locationItemText: {
-        fontSize: 18,
+        fontSize: 21,
         flex: 9,
-        marginHorizontal: 8
+        marginHorizontal: 14
     },
 });
 

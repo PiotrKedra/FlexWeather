@@ -9,6 +9,8 @@ import SplashScreen from 'react-native-splash-screen'
 import InitLoader from './src/main/InitLoader';
 import AsyncStorage from "@react-native-community/async-storage";
 import MainPage from "./src/main/MainPage";
+import FirstAppLaunchScreen from "./src/main/FirstAppLaunchScreen";
+import InitLocationSearchComponent from "./src/main/location/InitLocationSearchComponent";
 
 const IS_STORAGE = '@is_storage';
 const LAST_FORECAST_UPDATE_STORAGE = "@forecast_update_date";
@@ -76,6 +78,25 @@ export default function App() {
 
             }}
           />
+          <Stack.Screen name="FirstAppLaunch"
+                        component={FirstAppLaunchScreen}
+                        options={{
+                          headerShown: false,
+                          cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS
+                        }}/>
+          <Stack.Screen name="SearchScreen"
+                        component={InitLocationSearchComponent}
+                        options={{
+                          title: null,
+                          headerStyle: {
+                            backgroundColor: '#eee',
+                            elevation: 0,
+                          },
+                          headerTitleStyle: {
+                            fontWeight: 'bold',
+                          },
+                          cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS
+                        }}/>
           <Stack.Screen name="MainPage"
                         component={MainPage}
                         options={{

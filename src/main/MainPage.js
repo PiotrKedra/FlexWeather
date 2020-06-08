@@ -64,7 +64,6 @@ class MainPage extends React.Component {
         <ImageBackground
           style={styles.imageBackground}
           source={this.props.theme.background}
-          imageStyle={{resizeMode: 'repeat'}}
         >
           <GeneralStatusBar/>
 
@@ -126,8 +125,7 @@ export default connect(mapStateToProps)(MainPage);
 
 const styles = StyleSheet.create({
   imageBackground: {
-    height: Dimensions.get('window').height,
-    width: Dimensions.get('window').width,
+    flex: 1,
     backgroundColor: '#fff',
   },
   locationView: {

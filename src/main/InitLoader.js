@@ -47,12 +47,20 @@ class InitLoader extends React.Component {
   };
 
   componentDidMount = async () => {
+    if(this.props.route.params){
+      this.loadForecastWithGivenLocation(this.props.route.params.position, this.props.route.params.saveHomeLocation);
+      return
+    }
     const unsubscribe = NetInfo.addEventListener(this.internetConnectionListener);
     try{
-      const isStorage = await AsyncStorage.getItem('@is_storage');
+      const isStorage = await AsyncStorage.getItem('@active_location');
       if(isStorage === null){
         // first app launch -> load from internet
-        this.firstAppLaunchForecastLoading();
+        //this.firstAppLaunchForecastLoading();
+
+        this.props.navigation.replace('FirstAppLaunch');
+
+
       } else {
         this.normalAppLaunch();
       }
@@ -163,7 +171,6 @@ class InitLoader extends React.Component {
     this.props.setInitialForecast(initialForecast, location, theme);
     //this.setState({isInitialForecastLoaded: true});
     this.props.navigation.replace('MainPage')
-
   }
 
   async loadForecastUsingLocationInStorage(){
@@ -206,7 +213,7 @@ class InitLoader extends React.Component {
 
   render() {
     return (
-      <View style={{height: Dimensions.get('window').height, backgroundColor: '#2C82C9'}}>
+      <View style={{flex: 1, backgroundColor: '#2C82C9'}}>
         <GeneralStatusBar/>
         {/*<View style={{flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#2C82C9'}}>*/}
         {/*  */}
