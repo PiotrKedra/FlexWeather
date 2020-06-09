@@ -11,7 +11,6 @@ import getLocationDetails from "./location/LocationApi";
 import CustomText from "./components/CustomText";
 import LottieView from "lottie-react-native";
 import NoInternetConnectionComponent from "./components/NoInternetConnectionComponent";
-import AnimatedInitLocationSearchComponent from "./location/AnimatedInitLocationSearchComponent";
 import GeneralStatusBar from "./components/GeneralStatusBar";
 import getThemeEntity from "./theme/ThemeService";
 import AnimatedInitText from "./AnimatedInitText";

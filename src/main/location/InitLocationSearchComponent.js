@@ -1,12 +1,61 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import {Image, StyleSheet, TextInput, TouchableOpacity, View, ScrollView} from "react-native";
 import CustomText from "../components/CustomText";
 import {searchForLocationsByQuery} from "./LocationAutocompleteApi";
+import AsyncStorage from "@react-native-community/async-storage";
+import SUGGESTED_LOCATIONS from "./SugestedLocations";
 
-const InitLocationSearchComponent = ({navigation}) => {
+function renderHistoricalLocations(historyLocations, homeLocation, navigation){
+    return (
+        <React.Fragment>
+            <TouchableOpacity style={{
+                padding: 5,
+                flexDirection: 'row',
+            }}
+                              onPress={() => navigation.replace('InitLoader', {location: homeLocation, saveHomeLocation: false})}
+            >
+                <Image
+                    style={{width: 25, height: 25, marginHorizontal: 5, marginLeft: 8, tintColor: '#2c82c9'}}
+                    source={require('../../../assets/images/icons/home.png')}
+                />
+                <CustomText style={{
+                    fontSize: 21,
+                    flex: 9,
+                    marginHorizontal: 12
+                }}>{homeLocation.city}, {homeLocation.country}</CustomText>
+            </TouchableOpacity>
+            {historyLocations.map(l => renderLocationItem(l, navigation))}
+        </React.Fragment>
+    )
+}
+
+function renderLocationItem(location, navigation, saveHomeLocation=false){
+    return (
+        <TouchableOpacity key={location.latitude + location.longitude}
+                          style={styles.locationItem}
+                          onPress={() => navigation.replace('InitLoader', {location: location, saveHomeLocation: saveHomeLocation})}
+        >
+            <Image
+                style={styles.locationItemImage}
+                source={require('../../../assets/images/icons/location-marker.png')}
+            />
+            <CustomText style={styles.locationItemText}>{location.city}, {location.country}</CustomText>
+        </TouchableOpacity>
+    )
+}
+
+const InitLocationSearchComponent = ({navigation, route}) => {
 
     const [locationInput, changeLocationInput] = useState("");
     const [locations, changeLocations] = useState([]);
+
+    const [homeLocation, setHomeLocation] = useState(null);
+    const [historyLocations, setHistoryLocations] = useState([]);
+
+    useEffect(() => {
+        AsyncStorage.getItem('@home_location').then(e => {if(e){setHomeLocation(JSON.parse(e))}});
+        AsyncStorage.getItem('@history_locations').then(e => setHistoryLocations(e ? JSON.parse(e) : []));
+    }, []);
 
     return (
         <View style={{flex: 1, backgroundColor: '#eee'}}>
@@ -35,11 +84,28 @@ const InitLocationSearchComponent = ({navigation}) => {
             </View>
 
             <ScrollView style={styles.scrollView} keyboardShouldPersistTaps="always">
-                {
+
+                {locationInput.length <= 3 ?
+                    (
+                        homeLocation ?
+                            renderHistoricalLocations(historyLocations, homeLocation, navigation)
+                            :
+                            <React.Fragment>
+                                <CustomText style={{marginHorizontal: '5%', fontSize: 25, marginVertical: 5}}>Some suggestions:</CustomText>
+                                {SUGGESTED_LOCATIONS.map(item => renderLocationItem(item, navigation, true))}
+                            </React.Fragment>
+                    )
+
+                    :
                     locations.map(item => (
                         <TouchableOpacity key={item.properties.osm_id}
                                           style={styles.locationItem}
-                                          onPress={() => navigation.replace('InitLoader', {location: parseLocation(item), saveHomeLocation: false})}
+                                          onPress={() => {
+                                              const location = parseLocation(item);
+                                              navigation.replace('InitLoader', {location: location, saveHomeLocation: route.params.saveHomeLocation});
+                                              if(!route.params.saveHomeLocation)
+                                                  addToHistory(location, historyLocations);
+                                          }}
                         >
                             <Image
                                 style={styles.locationItemImage}
@@ -55,6 +121,32 @@ const InitLocationSearchComponent = ({navigation}) => {
         </View>
     )
 };
+
+function addToHistory(location, history) {
+    history.push(location);
+    try {
+        AsyncStorage.setItem('@history_locations', JSON.stringify(removeDuplicates(history)));
+    } catch (e) {
+        console.log(e);
+    }
+}
+
+function removeDuplicates(array) {
+    let result = [];
+    for(let i=0; i< array.length; ++i){
+        if(!contains(array[i], result)){
+            result.push(array[i]);
+        }
+    }
+    return result;
+}
+
+function contains(ele, array){
+    for(let i=0; i< array.length;++i){
+        if(array[i].city === ele.city) return true;
+    }
+    return false;
+}
 
 function parseLocation(location){
     return {

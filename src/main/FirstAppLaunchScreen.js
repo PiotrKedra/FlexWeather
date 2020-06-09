@@ -67,7 +67,7 @@ class FirstAppLaunchScreen extends React.PureComponent {
                         </TouchableOpacity>
                         <TouchableOpacity
                             style={{justifyContent: 'center', alignItems: 'center', padding: 10, width: '80%'}}
-                            onPress={() => this.props.navigation.navigate('SearchScreen')}
+                            onPress={() => this.props.navigation.navigate('SearchScreen', {saveHomeLocation: true})}
                         >
                             <CustomText style={{fontSize: 28, color: '#222'}}>Pick a location</CustomText>
                         </TouchableOpacity>

@@ -123,7 +123,7 @@ class AnimatedMenu extends React.PureComponent {
                     }}>
                         <CustomText style={{fontSize: 25}}>{this.props.location}</CustomText>
                     </Animated.View>
-                    {this.state.menu && <Menu closeMenu={this.showOrHideMenu}/>}
+                    {this.state.menu && <Menu closeMenu={this.showOrHideMenu} navigation={this.props.navigation}/>}
                 </Animated.View>
 
             </View>

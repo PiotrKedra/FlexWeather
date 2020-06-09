@@ -8,6 +8,7 @@ import {
   Animated,
   Image,
   Dimensions,
+  TouchableOpacity
 } from 'react-native';
 import { connect } from 'react-redux';
 
@@ -73,19 +74,20 @@ class MainPage extends React.Component {
             nestedScrollEnabled={true}
           >
             <Animated.View style={[styles.locationView, locationStyle]}>
-              <View
+              <TouchableOpacity
                   style={{
                     flex: 1,
                     alignItems: 'center',
                     flexDirection: 'row',
                     paddingTop: 10
                   }}
+                  onPress={() => this.props.navigation.navigate('SearchScreen', {saveHomeLocation: false})}
               >
                 <Image style={{width: 26, height: 26, marginBottom: 2, marginRight: 5, tintColor: this.props.theme.textColor}} source={require('../../assets/images/icons/location-marker.png')}/>
                 <Text style={{fontSize: 30, color: this.props.theme.textColor}}>
                   {this.props.activeLocation.city}
                 </Text>
-              </View>
+              </TouchableOpacity>
             </Animated.View>
             <WeekViewComponent currentForecast={this.props.currentForecast}
                                todayForecast={this.getTodayForecast()}
@@ -96,7 +98,7 @@ class MainPage extends React.Component {
               <RefreshInfo theme={this.props.theme}/>
             </View>
           </ScrollView>
-          <AnimatedMenu isScroll={this.state.scroll} theme={this.props.theme} location={this.props.activeLocation.city}/>
+          <AnimatedMenu isScroll={this.state.scroll} theme={this.props.theme} location={this.props.activeLocation.city} navigation={this.props.navigation}/>
         </ImageBackground>
       </View>
     );

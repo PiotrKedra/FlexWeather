@@ -2,7 +2,6 @@ import React from "react";
 import {Image, TextInput, TouchableOpacity, View, StyleSheet, ScrollView} from "react-native";
 
 import CustomText from "../components/CustomText";
-import LocationSearchComponent from "../location/LocationSearchComponent";
 import {connect} from "react-redux";
 
 
@@ -20,7 +19,26 @@ const MenuLocationComponent = (props) => {
             <CustomText style={styles.currentLocationText}>
                 {props.location.city}, {props.location.country}
             </CustomText>
-            <LocationSearchComponent closeMenu={props.closeMenu}/>
+            <TouchableOpacity style={{
+                                    marginTop: 10,
+                                    paddingHorizontal: 4,
+                                    paddingTop: 3,
+                                    paddingBottom: 1,
+                                    flexDirection: 'row',
+                                    backgroundColor: 'rgba(250,250,250,0.4)',
+                                    borderRadius: 20,
+                                    width: '90%'
+                                }}
+                              onPress={() => props.navigation.navigate('SearchScreen', {saveHomeLocation: false})}
+            >
+                <Image
+                    style={{marginLeft: 5, width: 22, height: 22}}
+                    source={require('../../../assets/images/icons/search.png')}
+                />
+                <CustomText style={{fontSize: 18, color: 'rgba(0,0,0,0.35)', marginLeft: 10}}>
+                    Find a location
+                </CustomText>
+            </TouchableOpacity>
         </View>
 
     )
