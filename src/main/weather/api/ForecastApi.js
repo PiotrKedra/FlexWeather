@@ -24,7 +24,7 @@ async function fetchRootForecast(lat, lng){
             rootForecast: forecastPerDay,
             currentTimestamp: forecastPerDay[0].timestamp,
             days: days,
-            hourlyForecast: hourlyForecast,
+            hourlyForecast: responseJson2.hourly,
         }
     } catch (error) {
         console.log(error);

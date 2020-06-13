@@ -3,7 +3,6 @@ import {View, ScrollView, TouchableOpacity, StyleSheet} from 'react-native';
 import Text from "../../components/CustomText";
 import { connect } from 'react-redux';
 import Info from "./info/Info";
-import UvIndexLegend from "./info/UvIndexLegend";
 import ChartLoading from "./utility/ChartLoading";
 
 
@@ -43,12 +42,6 @@ class HourlyForecastPanel extends React.PureComponent {
                             rainfall
                         </Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={[styles.chartSelectionButton, (this.state.currentChart==='uv_index') ? {backgroundColor: this.props.theme.mainColor} : styles.chartNotSelected]}
-                                      onPress={() => this.setState({currentChart: 'uv_index'})}>
-                        <Text style={styles.buttonText}>
-                            uv index
-                        </Text>
-                    </TouchableOpacity>
                     <TouchableOpacity style={[styles.chartSelectionButton, (this.state.currentChart==='humidity') ? {backgroundColor: this.props.theme.mainColor} : styles.chartNotSelected]}>
                         <Text style={styles.buttonText}>
                             humidity
@@ -56,9 +49,8 @@ class HourlyForecastPanel extends React.PureComponent {
                     </TouchableOpacity>
                 </ScrollView>
                 <Suspense fallback={<ChartLoading/>}>
-                    <ChartView currentChart={this.state.currentChart} hourlyForecast={this.props.hourlyForecast}/>
+                    <ChartView currentChart={this.state.currentChart} hourlyForecast={this.props.hourlyForecast} theme={this.props.theme}/>
                 </Suspense>
-                {(this.state.currentChart === 'uv_index') && <UvIndexLegend/>}
                 <Info/>
             </View>
         )

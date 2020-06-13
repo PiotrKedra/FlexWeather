@@ -3,10 +3,10 @@ import * as d3 from "d3";
 import {G, Image, Line, Text} from "react-native-svg";
 
 import COLORS from "../../utility/ChartColors";
-import mapDataToIcon from "../../utility/ForecastIconMapper";
+import mapDataToIcon, {mapToDayIcon, mapToHourlyIcon} from "../../utility/ForecastIconMapper";
 
 function getFunctionX(data, svgWidth) {
-    const xDomain = data.map(item => item.time);
+    const xDomain = data.map(item => item.dt);
     const xRange = [0, svgWidth];
     return d3
         .scalePoint()
@@ -28,9 +28,9 @@ function getGrid(svgWidth, svgHeight, graphHeight, initialYCordOfChart, xFunctio
     return (
         <G>
             {generateVerticalBeginLine(svgHeight)}
-            {generateFullLengthLine(-initialYCordOfChart - graphHeight, svgWidth)}
+            {generateFullLengthLine(-initialYCordOfChart - graphHeight, svgWidth, 20)}
             {generateFullLengthLine(-initialYCordOfChart - graphHeight / 2, svgWidth,50)}
-            {generateFullLengthLine(-initialYCordOfChart, svgWidth)}
+            {generateFullLengthLine(-initialYCordOfChart, svgWidth, 20)}
             {generateVerticalGridLines(data, xFunction, graphHeight, initialYCordOfChart)}
         </G>
     )
@@ -63,10 +63,10 @@ function generateFullLengthLine(y, svgWidth, xPadding = 0) {
 function generateVerticalGridLines(data, x, graphHeight, initialYCordOfChart) {
     return (data.map(item => (
         <Line
-            key={item.timeObject.timestamp}
-            x1={x(item.time)}
+            key={item.dt}
+            x1={x(item.dt)}
             y1={-initialYCordOfChart + 10}
-            x2={x(item.time)}
+            x2={x(item.dt)}
             y2={-initialYCordOfChart - graphHeight - 10}
             stroke={COLORS.gridColor}
             strokeDasharray={[3, 3]}
@@ -77,14 +77,14 @@ function generateVerticalGridLines(data, x, graphHeight, initialYCordOfChart) {
 
 function generateForecastImageForEach(data, x, graphHeight, initialYCordOfChart) {
     return (data.map(item => (<Image
-            key={item.timeObject.timestamp}
-            x={x(item.time) - 17}
+            key={item.dt}
+            x={x(item.dt) - 17}
             y={(initialYCordOfChart + graphHeight) * -1 - 60}
             width={35}
             height={35}
             preserveAspectRatio="xMidYMid slice"
             opacity="0.8"
-            href={mapDataToIcon(item.icon)}
+            href={mapToHourlyIcon(item.weather[0].icon)}
         />)
     ))
 }
@@ -98,16 +98,42 @@ function generateDateText(data, svgHeight) {
         fill={COLORS.gridColor}
         fontFamily="Neucha-Regular"
         transform="rotate(90, 3, -230)">
-        {data[0].timeObject.day}
+        {parseToDay(data[0].dt)}
     </Text>;
+}
+
+function parseToDay(timestamp) {
+    let days = ['Sunday', 'Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+    return days[new Date(timestamp*1000).getDay()];
+}
+
+function getTimeLabels(data, xFunction, y){
+    return (data.map(item => (
+        <Text
+            key={item.dt}
+            fontSize={20}
+            x={xFunction(item.dt)}
+            y={y}
+            textAnchor="middle"
+            fill={COLORS.mainText}
+            fontFamily="Neucha-Regular">
+            {parseTime(item.dt)}
+        </Text>
+    )))
+}
+
+function parseTime(timestamp){
+    if(timestamp==='23:59') return timestamp;
+    const time = new Date(timestamp*1000);
+    return time.getHours() + ':00';
 }
 
 function generateTextForEachItem(data, itemKey, xFunction, xShift, y, fontSize, sufix='',color=COLORS.mainText) {
     return (data.map(item => (
         <Text
-            key={itemKey + item.timeObject.timestamp}
+            key={itemKey + item.dt}
             fontSize={fontSize}
-            x={xFunction(item.time) + xShift}
+            x={xFunction(item.dt) + xShift}
             y={y}
             textAnchor="middle"
             fill={color}
@@ -120,14 +146,14 @@ function generateTextForEachItem(data, itemKey, xFunction, xShift, y, fontSize, 
 function getDataTextForEachItemAboveBars(data, x, y, key, sufix) {
     return (data.map(item => (
         <Text
-            key={item.time}
+            key={item.dt}
             fontSize={16}
-            x={x(item.time)}
+            x={x(item.dt)}
             y={y(item[key]) * -1 - 6}
             textAnchor="middle"
             fill={COLORS.mainText}
             fontFamily="Neucha-Regular">
-            {item[key] + sufix}
+            {Math.round(item[key]) + sufix}
         </Text>
     )))
 }
@@ -139,5 +165,6 @@ export {
     generateForecastImageForEach,
     generateDateText,
     generateTextForEachItem,
-    getDataTextForEachItemAboveBars
+    getDataTextForEachItemAboveBars,
+    getTimeLabels
 }

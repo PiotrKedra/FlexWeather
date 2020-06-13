@@ -1,7 +1,7 @@
 import {BACKGORUND} from "../../resource/ImagePath";
 
 const ICON_MAPPER = [
-    {name: '02d', background: BACKGORUND.sun, mainColor: '#FCB941', textColor: '#191206', menuColor: '#BFD5FE', panelColor: '#EEE'},
+    {name: '01d', background: BACKGORUND.sun, mainColor: '#FCB941', textColor: '#191206', menuColor: '#BFD5FE', panelColor: '#EEE'},
     {name: '02d', background: BACKGORUND.cloud, mainColor: '#FC6042', textColor: '#190906', menuColor: '#C0F4FE', panelColor: '#EEE'},
     {name: '03d', background: BACKGORUND.cloud, mainColor: '#FC6042', textColor: '#190906', menuColor: '#C0F4FE', panelColor: '#EEE'},
     {name: '04d', background: BACKGORUND.cloud, mainColor: '#FC6042', textColor: '#190906', menuColor: '#C0F4FE', panelColor: '#EEE'},
@@ -49,7 +49,7 @@ function getSummary(description){
         case 'clear sky':
             return 'Clear sky for you guys.';
         case 'few clouds':
-            return 'Just few clouds on the sky.';
+            return 'Just few clouds on the sky.(' + description + ')';
         case 'scattered clouds':
             return 'Boring. Only clouds.';
         case 'broken clouds':

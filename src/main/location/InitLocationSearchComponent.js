@@ -5,45 +5,6 @@ import {searchForLocationsByQuery} from "./LocationAutocompleteApi";
 import AsyncStorage from "@react-native-community/async-storage";
 import SUGGESTED_LOCATIONS from "./SugestedLocations";
 
-function renderHistoricalLocations(historyLocations, homeLocation, navigation){
-    return (
-        <React.Fragment>
-            <TouchableOpacity style={{
-                padding: 5,
-                flexDirection: 'row',
-            }}
-                              onPress={() => navigation.replace('InitLoader', {location: homeLocation, saveHomeLocation: false})}
-            >
-                <Image
-                    style={{width: 25, height: 25, marginHorizontal: 5, marginLeft: 8, tintColor: '#2c82c9'}}
-                    source={require('../../../assets/images/icons/home.png')}
-                />
-                <CustomText style={{
-                    fontSize: 21,
-                    flex: 9,
-                    marginHorizontal: 12
-                }}>{homeLocation.city}, {homeLocation.country}</CustomText>
-            </TouchableOpacity>
-            {historyLocations.map(l => renderLocationItem(l, navigation))}
-        </React.Fragment>
-    )
-}
-
-function renderLocationItem(location, navigation, saveHomeLocation=false){
-    return (
-        <TouchableOpacity key={location.latitude + location.longitude}
-                          style={styles.locationItem}
-                          onPress={() => navigation.replace('InitLoader', {location: location, saveHomeLocation: saveHomeLocation})}
-        >
-            <Image
-                style={styles.locationItemImage}
-                source={require('../../../assets/images/icons/location-marker.png')}
-            />
-            <CustomText style={styles.locationItemText}>{location.city}, {location.country}</CustomText>
-        </TouchableOpacity>
-    )
-}
-
 const InitLocationSearchComponent = ({navigation, route}) => {
 
     const [locationInput, changeLocationInput] = useState("");
@@ -121,6 +82,45 @@ const InitLocationSearchComponent = ({navigation, route}) => {
         </View>
     )
 };
+
+function renderHistoricalLocations(historyLocations, homeLocation, navigation){
+    return (
+        <React.Fragment>
+            <TouchableOpacity style={{
+                padding: 5,
+                flexDirection: 'row',
+            }}
+                              onPress={() => navigation.replace('InitLoader', {location: homeLocation, saveHomeLocation: false})}
+            >
+                <Image
+                    style={{width: 25, height: 25, marginHorizontal: 5, marginLeft: 8, tintColor: '#2c82c9'}}
+                    source={require('../../../assets/images/icons/home.png')}
+                />
+                <CustomText style={{
+                    fontSize: 21,
+                    flex: 9,
+                    marginHorizontal: 12
+                }}>{homeLocation.city}, {homeLocation.country}</CustomText>
+            </TouchableOpacity>
+            {historyLocations.map(l => renderLocationItem(l, navigation))}
+        </React.Fragment>
+    )
+}
+
+function renderLocationItem(location, navigation, saveHomeLocation=false){
+    return (
+        <TouchableOpacity key={location.latitude + location.longitude}
+                          style={styles.locationItem}
+                          onPress={() => navigation.replace('InitLoader', {location: location, saveHomeLocation: saveHomeLocation})}
+        >
+            <Image
+                style={styles.locationItemImage}
+                source={require('../../../assets/images/icons/location-marker.png')}
+            />
+            <CustomText style={styles.locationItemText}>{location.city}, {location.country}</CustomText>
+        </TouchableOpacity>
+    )
+}
 
 function addToHistory(location, history) {
     history.push(location);

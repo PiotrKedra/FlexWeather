@@ -4,15 +4,13 @@ import {ScrollView} from "react-native";
 import TemperatureChart from "./svgcharts/TemperatureChart";
 import WindChart from "./svgcharts/WindChart";
 import RainfallChart from "./svgcharts/RainfallChart";
-import UvIndexChart from "./svgcharts/UvIndexChart";
 
 const ChartView = (props) => {
     return  (
         <ScrollView horizontal={true}>
-            {(props.currentChart === 'temperature') && <HourlyTemperatureChart hourlyForecast={props.hourlyForecast}/>}
+            {(props.currentChart === 'temperature') && <HourlyTemperatureChart hourlyForecast={props.hourlyForecast} theme={props.theme}/>}
             {(props.currentChart === 'wind') && <HourlyWindChart hourlyForecast={props.hourlyForecast}/>}
             {(props.currentChart === 'rainfall') && <HourlyRainfallChart hourlyForecast={props.hourlyForecast}/>}
-            {(props.currentChart === 'uv_index') && <HourlyUvIndexChart hourlyForecast={props.hourlyForecast}/>}
         </ScrollView>
     )
 };
@@ -23,6 +21,7 @@ const HourlyTemperatureChart = (props) => {
         <TemperatureChart key={i++}
                           data={hourlyForecastPerDay}
                           dimensions={getDimensions(hourlyForecastPerDay.length)}
+                          theme={props.theme}
         />)
 };
 
@@ -44,29 +43,20 @@ function HourlyRainfallChart(props){
         />)
 }
 
-function HourlyUvIndexChart(props){
-    let i = 0;
-    return parseHourlyForecast(props.hourlyForecast).map(hourlyForecastPerDay =>
-        <UvIndexChart key={i++}
-                      data={hourlyForecastPerDay}
-                      dimensions={getDimensions(hourlyForecastPerDay.length, 100)}
-        />)
-}
-
 //todo mb keep this in state instead of 'hourlyForecast'
 function parseHourlyForecast(hourlyForecast) {
-    let currentDate = new Date(hourlyForecast[0].timeObject.timestamp * 1000).getDate();
+    let currentDate = new Date(hourlyForecast[0].dt*1000).getDate();
     let hourlyForecastByDailyDate = [];
     let tmpArray = [];
     hourlyForecast.forEach(item => {
-        if ( currentDate === new Date(item.timeObject.timestamp * 1000).getDate()) {
+        if (currentDate === new Date(item.dt*1000).getDate()) {
             tmpArray.push(item);
         } else {
             let tmpItem = Object.assign({}, item);
-            tmpItem.time = '23:59';
+            tmpItem.dt = '23:59';
             tmpArray.push(tmpItem);
             hourlyForecastByDailyDate.push(tmpArray);
-            currentDate = new Date(item.timeObject.timestamp * 1000).getDate();
+            currentDate = new Date(item.dt*1000).getDate();
             tmpArray = [item];
         }
     });
