@@ -10,7 +10,8 @@ import {
     getGrid,
     generateForecastImageForEach,
     generateDateText,
-    generateTextForEachItem, getDataTextForEachItemAboveBars, getTimeLabels,
+    getDataTextForEachItemAboveBars,
+    getTimeLabels,
 } from "./utility/ChartDrawService";
 
 const DEGREE_SIGN = '°';

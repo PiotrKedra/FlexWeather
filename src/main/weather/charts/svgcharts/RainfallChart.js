@@ -13,7 +13,7 @@ import {
     getGrid,
     generateForecastImageForEach,
     generateDateText,
-    generateTextForEachItem,
+    getTimeLabels,
 } from "./utility/ChartDrawService";
 
 const RainfallChart = (props) => {
@@ -24,7 +24,7 @@ const RainfallChart = (props) => {
     const graphHeight = props.dimensions.graphHeight;
     const initialYCordOfChart = props.dimensions.initialYCordOfChart;
 
-    const minValue = d3.min(data, d => d.precipIntensity);
+    const minValue = d3.min(data, d => d.rain ? d.rain['1h'] : 0);
     const maxValue = getMaxValue(data);
     const xFunction = getFunctionX(data, svgWidth);
     const yFunction = getFunctionY(minValue, maxValue, graphHeight, initialYCordOfChart);
@@ -35,22 +35,18 @@ const RainfallChart = (props) => {
                 {getDefinitions()}
                 {getGrid(svgWidth, svgHeight, graphHeight, initialYCordOfChart, xFunction, data)}
 
-                {generateFullLengthLine(svgWidth)}
-                {getHumidityText()}
-
-                {/* day date text */}
+                {/*/!* day date text *!/*/}
                 {generateDateText(data, svgHeight)}
 
-                {/* forecast images*/}
+                {/*/!* forecast images*!/*/}
                 {generateForecastImageForEach(data, xFunction, graphHeight, initialYCordOfChart)}
 
                 {getGradientForBars(data, xFunction, yFunction, initialYCordOfChart)}
                 {getRainfallBars(data, xFunction, yFunction)}
 
-                {/* data values ( text for: hour, temperature, rainfall % ) */}
+                {/*/!* data values ( text for: hour, temperature, rainfall % ) *!/*/}
                 {generateDegreeTextForEachItem(data, xFunction, yFunction)}
-                {generateTextForEachItem(data, 'humidity', xFunction, 0, -20, 14, '%', COLORS.gray)}
-                {generateTextForEachItem(data, 'time', xFunction, 0, (initialYCordOfChart + graphHeight) * -1 - 70, 20)}
+                {getTimeLabels(data,  xFunction, (initialYCordOfChart + graphHeight) * -1 - 70)}
             </G>
         </Svg>
     )
@@ -58,8 +54,7 @@ const RainfallChart = (props) => {
 
 function getMaxValue(data) {
     const defaultMaxValue = 1;
-    console.log(data);
-    const maxValue = d3.max(data, d => d.precipIntensity);
+    const maxValue = d3.max(data, d => d.rain ? d.rain['1h'] : 0);
     return (defaultMaxValue > maxValue) ? defaultMaxValue : maxValue;
 }
 
@@ -72,48 +67,27 @@ function getDefinitions() {
     </Defs>;
 }
 
-function getHumidityText() {
-    return <Text fontSize={14}
-                 x={11}
-                 y={-37}
-                 textAnchor="start"
-                 fill={COLORS.gray}
-                 fontFamily="Neucha-Regular">
-                humidity:
-            </Text>;
-}
-
 function getGradientForBars(data, xFunction, yFunction, initialYCordOfChart){
     return data.map(item => (
         <Rect
-            key={item.time}
-            x={xFunction(item.time)-12.5}
-            y={-yFunction(item.precipIntensity)}
+            key={item.dt}
+            x={xFunction(item.dt)-12.5}
+            y={-yFunction(item.rain ? item.rain['1h'] : 0)}
             rx={1.5}
             width={25}
-            height={yFunction(item.precipIntensity) - initialYCordOfChart}
+            height={yFunction(item.rain ? item.rain['1h'] : 0) - initialYCordOfChart}
             fill={'url(#dupa)'}
         />
     ))
 }
 
-function generateFullLengthLine(svgWidth) {
-    return <Line
-        x1={11}
-        y1={-50}
-        x2={60}
-        y2={-50}
-        stroke={COLORS.gray}
-    />;
-}
-
 function getRainfallBars(data, xFunction, yFunction){
     return data.map(item => {
-        if (item.precipIntensity <= 0) return null;
+        if (item.rain === undefined) return null;
         return <Rect
-            key={item.time}
-            x={xFunction(item.time) - 12.5}
-            y={yFunction(item.precipIntensity) * -1 - 2.5}
+            key={item.dt}
+            x={xFunction(item.dt) - 12.5}
+            y={yFunction(item.rain['1h']) * -1 - 2.5}
             rx={1.5}
             width={25}
             height={5}
@@ -126,14 +100,14 @@ function getRainfallBars(data, xFunction, yFunction){
 function generateDegreeTextForEachItem(data, x, y) {
     return (data.map(item => (
         <Text
-            key={'degree' + item.timeObject.timestamp}
+            key={item.dt}
             fontSize={16}
-            x={x(item.time)}
-            y={y(item.precipIntensity) * -1 - 6}
+            x={x(item.dt)}
+            y={y(item.rain ? item.rain['1h'] : 0) * -1 - 6}
             textAnchor="middle"
             fill={COLORS.mainText}
             fontFamily="Neucha-Regular">
-            {Math.round(item.precipIntensity*100)/100 + 'mm'}
+            {Math.round((item.rain ? item.rain['1h'] : 0)*100)/100 + 'mm'}
         </Text>
     )))
 }

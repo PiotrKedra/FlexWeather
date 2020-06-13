@@ -14,7 +14,7 @@ import {
     getGrid,
     generateDateText,
     generateTextForEachItem,
-    getDataTextForEachItemAboveBars,
+    getDataTextForEachItemAboveBars, getTimeLabels,
 } from "./utility/ChartDrawService";
 import COLORS from "../utility/ChartColors";
 
@@ -41,8 +41,8 @@ const WindChart = (props) => {
                 {generateDataBars(data, xFunction, yFunction, maxValue, initialYCordOfChart)}
 
                 {getWindBearingStringForEach(data, xFunction)}
-                {getDataTextForEachItemAboveBars(data, xFunction, yFunction, 'windSpeed', 'm/s')}
-                {generateTextForEachItem(data, 'time', xFunction, 0, svgHeight * -1 + 40, 20)}
+                {getDataTextForEachItemAboveBars(data, xFunction, yFunction, 'wind_speed', 'm/s')}
+                {getTimeLabels(data, xFunction, svgHeight * -1 + 40, 20)}
             </G>
         </Svg>
     )
@@ -58,12 +58,12 @@ function generateDataBars(data, x, y, maxValue, initialYCordOfChart) {
     if(maxValue===0) return null;
     return (data.map(item => (
         <Rect
-            key={item.time}
-            x={x(item.time) - 3}
-            y={y(item.windSpeed)*-1}
+            key={item.dt}
+            x={x(item.dt) - 3}
+            y={y(item.wind_speed)*-1}
             rx={3}
             width={6}
-            height={y(item.windSpeed) - initialYCordOfChart}
+            height={y(item.wind_speed) - initialYCordOfChart}
             fill={COLORS.green}
         />
     )))
@@ -80,18 +80,18 @@ const WIND_ARROW_WIDTH = 24;
 const WIND_ARROW_HEIGHT = 30;
 const WIND_ARROW_R = 5;
 function getWindArrow(item, xFunction) {
-    const x = xFunction(item.time) - WIND_ARROW_WIDTH/2;
+    const x = xFunction(item.dt) - WIND_ARROW_WIDTH/2;
     const y = 180;
     const points = x + ',' + -y + ' ' +
         (x+WIND_ARROW_WIDTH/2) + ',' + -(y-WIND_ARROW_R) + ' ' +
         (x+WIND_ARROW_WIDTH) + ',' + -y + ' ' +
         (x+WIND_ARROW_WIDTH/2) + ',' + -(y-WIND_ARROW_HEIGHT);
     return <Polygon points={points}
-                    key={item.time}
+                    key={item.dt}
                     fill={COLORS.green}
                     opacity={0.8}
                     transform={{
-                        rotation: item.windBearing,
+                        rotation: item.wind_deg,
                         originX: x + WIND_ARROW_WIDTH/2,
                         originY: -(y - WIND_ARROW_HEIGHT/3)
                     }}
@@ -101,18 +101,19 @@ function getWindArrow(item, xFunction) {
 function getWindBearingStringForEach(data, xFunction) {
     return data.map(item => (
         <Text
-            key={item.time}
+            key={item.dt}
             fontSize="20"
-            x={xFunction(item.time)}
+            x={xFunction(item.dt)}
             y={-130}
             textAnchor="middle"
             fill={COLORS.gray}
             fontFamily="Neucha-Regular">
-            {getWindDirectionString(item.windBearing)}
+            {getWindDirectionString(item.wind_deg)}
         </Text>
     ))
 }
 
+//todo we have wind deg, change it
 function getWindDirectionString(windBearing) {
     if(windBearing < 23)
         return 'N';

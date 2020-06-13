@@ -29,8 +29,8 @@ function HourlyWindChart(props){
     let i = 0;
     return parseHourlyForecast(props.hourlyForecast).map(hourlyForecastPerDay =>
         <WindChart key={i++}
-                       data={hourlyForecastPerDay}
-                       dimensions={getDimensions(hourlyForecastPerDay.length, 80, 30)}
+                   data={hourlyForecastPerDay}
+                   dimensions={getDimensions(hourlyForecastPerDay.length, 80, 30)}
         />)
 }
 
