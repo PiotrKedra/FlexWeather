@@ -14,7 +14,7 @@ const ICON_MAPPER = [
 
 const NIGHT_THEME_COLOR = '#23395d';
 const NIGHT_MENU_COLOR = '#B98E46';
-const NIGHT_TEXT_COLOR = '#e9ebee';
+const NIGHT_TEXT_COLOR = '#ccc';
 const NIGHT_PANEL_COLOR = '#ccc';
 
 function getThemeEntity(forecast){

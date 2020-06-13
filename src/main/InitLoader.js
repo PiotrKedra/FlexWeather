@@ -41,7 +41,6 @@ class InitLoader extends React.Component {
         console.log(e);
       }
     }
-    console.log('dont need to reload data');
     this.setState({afterFirstLaunch: true})
   };
 
@@ -54,12 +53,7 @@ class InitLoader extends React.Component {
     try{
       const isStorage = await AsyncStorage.getItem('@active_location');
       if(isStorage === null){
-        // first app launch -> load from internet
-        //this.firstAppLaunchForecastLoading();
-
         this.props.navigation.replace('FirstAppLaunch');
-
-
       } else {
         this.normalAppLaunch();
       }
@@ -124,7 +118,6 @@ class InitLoader extends React.Component {
   }
 
   async loadForecastWithGivenLocation(location, saveHomeLocation=false){
-    console.log(location);
     if(saveHomeLocation) this.saveHomeLocation(location);
     this.setState({loadingState: 'Loading forecast...'});
     this.loadInitialForecast(location)

@@ -48,10 +48,6 @@ class MainPage extends React.Component {
     }
   };
 
-  getTodayForecast() {
-    return (this.props.forecast)
-  }
-
   render = () => {
     let locationStyle = {
       position: 'absolute',
@@ -90,7 +86,7 @@ class MainPage extends React.Component {
               </TouchableOpacity>
             </Animated.View>
             <WeekViewComponent currentForecast={this.props.currentForecast}
-                               todayForecast={this.getTodayForecast()}
+                               todayForecast={this.props.forecast}
                                theme={this.props.theme}
             />
             <View style={{flexDirection: 'row', marginHorizontal: '4%', marginVertical: 5}}>
@@ -118,7 +114,6 @@ function mapStateToProps(state) {
     activeLocation: state.activeLocation,
     days: state.days,
     forecast: state.rootForecastPerDay,
-    currentTimestamp: state.currentTimestamp,
     theme: state.theme
   };
 }

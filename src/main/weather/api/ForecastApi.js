@@ -5,26 +5,14 @@ export default fetchRootForecast;
 
 async function fetchRootForecast(lat, lng){
     try {
-        let response2 = await fetch('http://api.openweathermap.org/data/2.5/onecall?lat='+ lat + '&lon='+lng+'&appid=299a842c62583504c69d7d27b25e5d96&units=metric');
-        let response = await fetch('https://api.darksky.net/forecast/' + TOKEN + '/' + lat + ',' + lng + '?units=si');
+        let response = await fetch('http://api.openweathermap.org/data/2.5/onecall?lat='+ lat + '&lon='+lng+'&appid=' + TOKEN + '&units=metric');
 
-        let responseJson2 = await response2.json();
         let responseJson = await response.json();
 
-        //let forecastPerDay = responseJson.daily.data;
-        let forecastPerDay = responseJson2.daily;
-
-        let hourlyForecast = getHourlyForecast(responseJson.hourly);
-
-        let dayForecastArray = responseJson.daily.data;
-        let days = getDateObjectsList(dayForecastArray);
-
         return {
-            current: responseJson2.current,
-            rootForecast: forecastPerDay,
-            currentTimestamp: forecastPerDay[0].timestamp,
-            days: days,
-            hourlyForecast: responseJson2.hourly,
+            current: responseJson.current,
+            daily: responseJson.daily,
+            hourly: responseJson.hourly,
         }
     } catch (error) {
         console.log(error);
