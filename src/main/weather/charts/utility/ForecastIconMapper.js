@@ -15,15 +15,15 @@ const MAPPER = [
 ];
 
 const DAY_MAPPER = [
-    {name: '01d', icon: NEW_API.clearDay},
-    {name: '02d', icon: NEW_API.fewClouds},
-    {name: '03d', icon: NEW_API.clouds},
-    {name: '04d', icon: NEW_API.brokenClouds},
-    {name: '09d', icon: NEW_API.rain},
-    {name: '10d', icon: NEW_API.sunRain},
-    {name: '11d', icon: NEW_API.thunderstorm},
-    {name: '13d', icon: NEW_API.snow},
-    {name: '50d', icon: NEW_API.fog},
+    {name: '01d', icon: FORECAST_ICONS2.clearDay},
+    {name: '02d', icon: FORECAST_ICONS2.fewClouds},
+    {name: '03d', icon: FORECAST_ICONS2.clouds},
+    {name: '04d', icon: FORECAST_ICONS2.brokenClouds},
+    {name: '09d', icon: FORECAST_ICONS2.rain},
+    {name: '10d', icon: FORECAST_ICONS2.sunRain},
+    {name: '11d', icon: FORECAST_ICONS2.thunderstorm},
+    {name: '13d', icon: FORECAST_ICONS2.snow},
+    {name: '50d', icon: FORECAST_ICONS2.fog},
 ];
 
 const NIGHT_MAPPER = [
@@ -64,12 +64,18 @@ function mapToHourlyIcon(icon){
     return iconEntity === undefined ? HOURLY_ICON_MAPPER[1].icon : iconEntity.icon;
 }
 
-function mapToDayIcon(icon) {
+function mapToDayIcon(icon, rain) {
+    if(icon === '10d' && rain <= 3){
+        return DAY_MAPPER[3].icon;
+    }
     const iconEntity = DAY_MAPPER.find(item => item.name === icon);
     return iconEntity === undefined ? DAY_MAPPER[1].icon : iconEntity.icon;
 }
 
-function mapToNightIcon(icon) {
+function mapToNightIcon(icon, rain) {
+    if(icon === '10d' && rain <= 2.5){
+        return NIGHT_MAPPER[3].icon;
+    }
     const iconEntity = NIGHT_MAPPER.find(item => item.name === icon);
     return iconEntity === undefined ? NIGHT_MAPPER[1].icon : iconEntity.icon;
 }

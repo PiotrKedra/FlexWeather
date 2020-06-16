@@ -2,19 +2,19 @@ import {BACKGORUND} from "../../resource/ImagePath";
 
 const ICON_MAPPER = [
     {name: '01d', background: BACKGORUND.sun, mainColor: '#FCB941', textColor: '#191206', menuColor: '#BFD5FE', panelColor: '#EEE'},
-    {name: '02d', background: BACKGORUND.cloud, mainColor: '#FC6042', textColor: '#190906', menuColor: '#C0F4FE', panelColor: '#EEE'},
-    {name: '03d', background: BACKGORUND.cloud, mainColor: '#FC6042', textColor: '#190906', menuColor: '#C0F4FE', panelColor: '#EEE'},
-    {name: '04d', background: BACKGORUND.cloud, mainColor: '#FC6042', textColor: '#190906', menuColor: '#C0F4FE', panelColor: '#EEE'},
+    {name: '02d', background: BACKGORUND.cloud, mainColor: '#f97a78', textColor: '#190906', menuColor: '#C0F4FE', panelColor: '#EEE'},
+    {name: '03d', background: BACKGORUND.cloud, mainColor: '#f97a78', textColor: '#190906', menuColor: '#C0F4FE', panelColor: '#EEE'},
+    {name: '04d', background: BACKGORUND.cloud, mainColor: '#f97a78', textColor: '#190906', menuColor: '#C0F4FE', panelColor: '#EEE'},
     {name: '09d', background: BACKGORUND.rain, mainColor: '#2C82C9', textColor: '#040d14', menuColor: '#E6B68E', panelColor: '#EEE'},
-    {name: '10d', background: BACKGORUND.cloud, mainColor: '#FC6042', textColor: '#190906', menuColor: '#C0F4FE', panelColor: '#EEE'},
+    {name: '10d', background: BACKGORUND.cloud, mainColor: '#f97a78', textColor: '#190906', menuColor: '#C0F4FE', panelColor: '#EEE'},
     {name: '11d', background: BACKGORUND.rain, mainColor: '#2C82C9', textColor: '#040d14', menuColor: '#E6B68E', panelColor: '#EEE'},
     {name: '13d', background: BACKGORUND.snow, mainColor: '#8dafe4', textColor: '#0e1116', menuColor: '#E4C28D', panelColor: '#EEE'},
-    {name: '50d', background: BACKGORUND.cloud, mainColor: '#FC6042', textColor: '#190906', menuColor: '#C0F4FE', panelColor: '#EEE'},
+    {name: '50d', background: BACKGORUND.cloud, mainColor: '#f97a78', textColor: '#190906', menuColor: '#C0F4FE', panelColor: '#EEE'},
 ];
 
-const NIGHT_THEME_COLOR = '#23395d';
-const NIGHT_MENU_COLOR = '#B98E46';
-const NIGHT_TEXT_COLOR = '#ccc';
+const NIGHT_THEME_COLOR = '#4d243d';
+const NIGHT_MENU_COLOR = '#CAC2B5';
+const NIGHT_TEXT_COLOR = '#CAC2B5';
 const NIGHT_PANEL_COLOR = '#ccc';
 
 function getThemeEntity(forecast){

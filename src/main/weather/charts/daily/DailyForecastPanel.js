@@ -91,7 +91,7 @@ class DailyForecastPanel extends React.PureComponent{
                     </TouchableOpacity>
                 </ScrollView>
                 <ScrollView horizontal={true}>
-                    <DailyGeneralChart forecast={this.props.forecast}/>
+                    <DailyGeneralChart forecast={this.props.forecast} theme={this.props.theme}/>
                 </ScrollView>
             </View>
         )

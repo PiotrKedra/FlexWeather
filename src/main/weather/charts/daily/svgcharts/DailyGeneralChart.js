@@ -4,7 +4,7 @@ import * as d3 from "d3";
 import COLORS from "../../utility/ChartColors";
 import {mapToDayIcon, mapToNightIcon} from "../../utility/ForecastIconMapper";
 
-const DailyGeneralChart = ({forecast}) => {
+const DailyGeneralChart = ({forecast, theme}) => {
 
     const minValue = d3.min(forecast, i => parseInt(i.temp.max));
     const maxValue = d3.max(forecast, i => parseInt(i.temp.max));
@@ -24,14 +24,14 @@ const DailyGeneralChart = ({forecast}) => {
     return (
         <Svg width={600} height={300}>
             <G y={300}>
-                {getDefinitions()}
+                {getDefinitions(theme.mainColor)}
+                {getRainBars(forecast, functionX, yRainFunction, minValueRain, 100)}
                 {generateGradientComponent(forecast, functionX, functionY)}
-                {generateLineComponents(forecast, functionX, functionY)}
-                {generateDotForEach(forecast, functionX, functionY)}
+                {generateLineComponents(forecast, functionX, functionY, theme.mainColor)}
+                {generateDotForEach(forecast, functionX, functionY, theme.mainColor)}
 
                 {generateVerticalGridLines(forecast, functionX)}
 
-                {getRainBars(forecast, functionX, yRainFunction, minValueRain, 100)}
                 {generateTextForEachItem(forecast, functionX)}
 
                 {generateForecastImageForEach(forecast, functionX, -260, mapToDayIcon)}
@@ -68,16 +68,16 @@ function getRainBars(data, x, y, minValue) {
             rx={3}
             width={6}
             height={y(item.rain)}
-            fill="#2a4de2"
-            opacity={0.5}
+            fill={COLORS.pathBlue}
+            opacity={0.6}
         />
     )))
 }
 
-function getDefinitions() {
+function getDefinitions(color=COLORS.pathBlue) {
     return <Defs>
         <LinearGradient id={'GRADIENT_ID'} x1="0" y1="1" x2="0" y2="0">
-            <Stop offset="1" stopColor={COLORS.pathBlue} stopOpacity="0.3"/>
+            <Stop offset="1" stopColor={color} stopOpacity="0.3"/>
             <Stop offset="0" stopColor={COLORS.gradientLight} stopOpacity="0"/>
         </LinearGradient>
     </Defs>;
@@ -86,9 +86,9 @@ function getDefinitions() {
 function generateGradientComponent(data, x, y){
     let polygonPoints = "";
     for (let item of data) {
-        polygonPoints += Math.ceil(x(item.dt)) + ',' + -Math.ceil(y(item.temp.max)) + ' ';
+        polygonPoints += Math.ceil(x(item.dt)-1) + ',' + -Math.ceil(y(item.temp.max)) + ' ';
     }
-    polygonPoints +=  Math.ceil(x(data[data.length - 1].dt)) + ',' + -100 +  ' '
+    polygonPoints +=  Math.ceil(x(data[data.length - 1].dt)-1) + ',' + -100 +  ' '
         + Math.ceil(x(data[0].dt)) + ',' + -100;
     return (
         <Polygon
@@ -165,7 +165,7 @@ function generateForecastImageForEach(data, x, position, fun) {
             height={35}
             preserveAspectRatio="xMidYMid slice"
             opacity="0.8"
-            href={fun(item.weather[0].icon)}
+            href={fun(item.weather[0].icon, item.rain)}
         />)
     ))
 }
@@ -204,19 +204,19 @@ function generateLineComponentsMin(data, x, y) {
     }
     return lineArray;
 }
-function generateDotForEach(data, x, y) {
+function generateDotForEach(data, x, y, color=COLORS.pathBlue) {
     return (data.map(item => (
         <Circle
             key={item.dt}
             cx={x(item.dt)}
             cy={y(item.temp.max) * -1}
             r="2"
-            fill={COLORS.pathBlue}
+            fill={color}
         />
     )))
 }
 
-function generateLineComponents(data, x, y) {
+function generateLineComponents(data, x, y, color=COLORS.pathBlue) {
     let lineArray = [];
     for (let i = 0; i < data.length - 1; i++) {
         const x1 = x(data[i].dt);
@@ -230,7 +230,7 @@ function generateLineComponents(data, x, y) {
                 y1={y1 * -1}
                 x2={x2}
                 y2={y2 * -1}
-                stroke={COLORS.pathBlue}
+                stroke={color}
                 strokeWidth="4"
             />
         );
