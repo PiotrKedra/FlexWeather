@@ -3,6 +3,7 @@ import {Svg, G, Line, Circle, Image, Text, Polygon, Defs, LinearGradient, Stop, 
 import * as d3 from "d3";
 import COLORS from "../../utility/ChartColors";
 import {mapToDayIcon, mapToNightIcon} from "../../utility/ForecastIconMapper";
+import {getDaysText, getFunctionX, getGrid} from "../DailyChartService";
 
 const DailyGeneralChart = ({forecast, theme}) => {
 
@@ -31,8 +32,9 @@ const DailyGeneralChart = ({forecast, theme}) => {
                 {generateDotForEach(forecast, functionX, functionY, theme.mainColor)}
 
                 {generateVerticalGridLines(forecast, functionX)}
+                {getGrid(forecast, functionX, 125, 90)}
 
-                {generateTextForEachItem(forecast, functionX)}
+                {getDaysText(forecast, functionX)}
 
                 {generateForecastImageForEach(forecast, functionX, -260, mapToDayIcon)}
                 {generateForecastImageForEach(forecast, functionX, -75, mapToNightIcon)}
@@ -43,15 +45,6 @@ const DailyGeneralChart = ({forecast, theme}) => {
                 {getDataTextForEachItemAboveBars(forecast, functionX, functionY, 'max', '°')}
                 {getDataTextForEachItemAboveBars(forecast, functionX, functionMinY, 'min', '°')}
                 {generateDotForEachMin(forecast, functionX, functionMinY)}
-                <Line
-                    x1={10}
-                    y1={-150}
-                    x2={590}
-                    y2={-150}
-                    stroke={COLORS.gridColor}
-                    strokeDasharray={[3, 3]}
-                    strokeWidth="0.5"
-                />
             </G>
         </Svg>
     )
@@ -96,34 +89,6 @@ function generateGradientComponent(data, x, y){
             fill={'url(#' + 'GRADIENT_ID' + ')'}
         />
     )
-}
-
-function getDate(timestamp){
-    const date = new Date(timestamp * 1000);
-    const days = ['Sun', 'Mon','Tue','Wed','Thu','Fri','Sat'];
-    return date.getDate() + '.' + (date.getMonth()+1);
-}
-
-function getDay(timestamp){
-    const date = new Date(timestamp * 1000);
-    const days = ['Sun', 'Mon','Tue','Wed','Thu','Fri','Sat'];
-    return days[date.getDay()];
-}
-
-
-function generateTextForEachItem(data, xFunction) {
-    return (data.map(item => (
-        <Text
-            key={item.dt}
-            fontSize={20}
-            x={xFunction(item.dt)}
-            y={-270}
-            textAnchor="middle"
-            fill={COLORS.mainText}
-            fontFamily="Neucha-Regular">
-            {getDay(item.dt)}
-        </Text>
-    )))
 }
 
 function generateVerticalGridLines(data, x) {
@@ -237,16 +202,6 @@ function generateLineComponents(data, x, y, color=COLORS.pathBlue) {
         lineArray.push(lineComponent);
     }
     return lineArray;
-}
-
-function getFunctionX(data, svgWidth) {
-    const xDomain = data.map(item => item.dt);
-    const xRange = [-20, svgWidth+20];
-    return d3
-        .scalePoint()
-        .domain(xDomain)
-        .range(xRange)
-        .padding(1);
 }
 
 function getFunctionY(minValue, maxValue, graphHeight, initialYCordOfChart) {

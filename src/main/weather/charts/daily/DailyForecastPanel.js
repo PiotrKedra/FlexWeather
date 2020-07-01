@@ -1,9 +1,11 @@
-import React from 'react';
+import React, {Suspense} from 'react';
 import {View, StyleSheet, TouchableOpacity, ScrollView, Image} from 'react-native';
 
 import Text from '../../../components/CustomText'
 import DailyGeneralChart from "./svgcharts/DailyGeneralChart";
 import {connect} from "react-redux";
+import ChartLoading from "../utility/ChartLoading";
+import DailyUvIndexChart from "./svgcharts/DailyUvIndexChart";
 
 class DailyForecastPanel extends React.PureComponent{
 
@@ -78,21 +80,20 @@ class DailyForecastPanel extends React.PureComponent{
                             rainfall
                         </Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={[styles.chartSelectionButton, (this.state.currentChart==='uv_index') ? {backgroundColor: this.props.theme.mainColor} : styles.chartNotSelected]}
+                    <TouchableOpacity style={[styles.chartSelectionButton, (this.state.currentChart==='uv_index') ? {backgroundColor: this.props.theme.mainColor} : styles.chartNotSelected, {marginRight: 30}]}
                                       onPress={() => this.setState({currentChart: 'uv_index'})}>
                         <Text style={styles.buttonText}>
                             uv index
                         </Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={[styles.chartSelectionButton, (this.state.currentChart==='humidity') ? {backgroundColor: this.props.theme.mainColor} : styles.chartNotSelected]}>
-                        <Text style={styles.buttonText}>
-                            humidity
-                        </Text>
-                    </TouchableOpacity>
                 </ScrollView>
-                <ScrollView horizontal={true}>
-                    <DailyGeneralChart forecast={this.props.forecast} theme={this.props.theme}/>
-                </ScrollView>
+                <Suspense fallback={<ChartLoading/>}>
+                    <ScrollView horizontal={true}>
+                        {this.state.currentChart==='general' && <DailyGeneralChart forecast={this.props.forecast} theme={this.props.theme}/>}
+                        {this.state.currentChart==='uv_index' && <DailyUvIndexChart forecast={this.props.forecast}/>}
+                    </ScrollView>
+                </Suspense>
+
             </View>
         )
     }
