@@ -2,11 +2,10 @@ import React from 'react';
 import {Svg, G, Text, Rect} from "react-native-svg";
 import COLORS, {UV_COLORS} from "../../utility/ChartColors";
 import {
-    generateForecastImageForEach,
     getFunctionY,
 } from "../../svgcharts/utility/ChartDrawService";
 import * as d3 from "d3";
-import {getDaysText, getFunctionX, getGrid} from "../DailyChartService";
+import {getDaysText, getForecastImagesForChart, getFunctionX, getGrid} from "../DailyChartService";
 
 const SVG_WIDTH = 600;
 const SVG_HEIGHT = 300;
@@ -24,7 +23,7 @@ const DailyUvIndexChart = ({forecast}) => {
             <G y={SVG_HEIGHT}>
                 {getGrid(forecast, xFunction, 150, 60)}
 
-                {generateForecastImageForEach(forecast, xFunction, 140, 60)}
+                {getForecastImagesForChart(forecast, xFunction)}
                 {getDaysText(forecast, xFunction)}
 
                 {/* data bars */}
@@ -40,7 +39,7 @@ function drawUvIndexValues(forecast, xFunction){
     return (forecast.map(item => (
         <Text
             key={item.dt}
-            fontSize={14}
+            fontSize={18}
             x={xFunction(item.dt)}
             y={-30}
             textAnchor="middle"

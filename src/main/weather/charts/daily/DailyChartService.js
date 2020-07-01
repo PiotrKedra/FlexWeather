@@ -1,7 +1,8 @@
-import {G, Line, Text} from "react-native-svg";
+import {G, Image, Line, Text} from "react-native-svg";
 import COLORS from "../utility/ChartColors";
 import React from "react";
 import * as d3 from "d3";
+import {mapToDayIcon} from "../utility/ForecastIconMapper";
 
 
 function getDaysText(data, xFunction) {
@@ -73,4 +74,18 @@ function getFunctionX(data, svgWidth) {
         .padding(1);
 }
 
-export {getDaysText, getGrid, getFunctionX}
+function getForecastImagesForChart(data, x) {
+    return (data.map(item => (<Image
+            key={item.dt}
+            x={x(item.dt) - 17}
+            y={-260}
+            width={35}
+            height={35}
+            preserveAspectRatio="xMidYMid slice"
+            opacity="0.8"
+            href={mapToDayIcon(item.weather[0].icon, item.rain)}
+        />)
+    ))
+}
+
+export {getDaysText, getGrid, getFunctionX, getForecastImagesForChart}

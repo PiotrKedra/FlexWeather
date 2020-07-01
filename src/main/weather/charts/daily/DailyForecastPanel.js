@@ -6,6 +6,7 @@ import DailyGeneralChart from "./svgcharts/DailyGeneralChart";
 import {connect} from "react-redux";
 import ChartLoading from "../utility/ChartLoading";
 import DailyUvIndexChart from "./svgcharts/DailyUvIndexChart";
+import DailyRainfallCHart from "./svgcharts/DailyRainfallChart";
 
 class DailyForecastPanel extends React.PureComponent{
 
@@ -90,6 +91,7 @@ class DailyForecastPanel extends React.PureComponent{
                 <Suspense fallback={<ChartLoading/>}>
                     <ScrollView horizontal={true}>
                         {this.state.currentChart==='general' && <DailyGeneralChart forecast={this.props.forecast} theme={this.props.theme}/>}
+                        {this.state.currentChart==='rainfall' && <DailyRainfallCHart forecast={this.props.forecast}/>}
                         {this.state.currentChart==='uv_index' && <DailyUvIndexChart forecast={this.props.forecast}/>}
                     </ScrollView>
                 </Suspense>
