@@ -11,7 +11,7 @@ class CustomText extends React.PureComponent {
       style = [{ fontFamily: 'Neucha-Regular' }, this.props.style || {}];
     }
     return (
-      <Text x={this.props.x} style={style}>
+      <Text x={this.props.x} numberOfLines={1} style={style}>
         {this.props.children}
       </Text>
     );

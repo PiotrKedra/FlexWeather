@@ -4,6 +4,7 @@ import Text from "../../components/CustomText";
 import { connect } from 'react-redux';
 import Info from "./info/Info";
 import ChartLoading from "./utility/ChartLoading";
+import AnimatedChartText from "./utility/AnimatedChartText";
 
 
 class HourlyForecastPanel extends React.PureComponent {
@@ -26,26 +27,18 @@ class HourlyForecastPanel extends React.PureComponent {
                             horizontal={true}>
                     <TouchableOpacity style={[styles.chartSelectionButton, (this.state.currentChart==='temperature') ? {backgroundColor: this.props.theme.mainColor} : styles.chartNotSelected]}
                                       onPress={() => this.setState({currentChart: 'temperature'})}>
-                        <Text style={styles.buttonText}>
-                            temperature
-                        </Text>
+                        <AnimatedChartText selected={this.state.currentChart==='temperature'} title={'temperature'} unit={'°C'}/>
                     </TouchableOpacity>
                     <TouchableOpacity style={[styles.chartSelectionButton, (this.state.currentChart==='wind') ? {backgroundColor: this.props.theme.mainColor} : styles.chartNotSelected]}
                                       onPress={() => this.setState({currentChart: 'wind'})}>
-                        <Text style={styles.buttonText}>
-                            wind
-                        </Text>
+                        <AnimatedChartText selected={this.state.currentChart==='wind'} title={'wind'} unit={'km/h'}/>
                     </TouchableOpacity>
                     <TouchableOpacity style={[styles.chartSelectionButton, (this.state.currentChart==='rainfall') ? {backgroundColor: this.props.theme.mainColor} : styles.chartNotSelected]}
                                       onPress={() => this.setState({currentChart: 'rainfall'})}>
-                        <Text style={styles.buttonText}>
-                            rainfall
-                        </Text>
+                        <AnimatedChartText selected={this.state.currentChart==='rainfall'} title={'rainfall'} unit={'mm'}/>
                     </TouchableOpacity>
                     <TouchableOpacity style={[styles.chartSelectionButton, (this.state.currentChart==='humidity') ? {backgroundColor: this.props.theme.mainColor} : styles.chartNotSelected]}>
-                        <Text style={styles.buttonText}>
-                            humidity
-                        </Text>
+                        <AnimatedChartText selected={this.state.currentChart==='humidity'} title={'humidity'} unit={'%'}/>
                     </TouchableOpacity>
                 </ScrollView>
                 <Suspense fallback={<ChartLoading/>}>

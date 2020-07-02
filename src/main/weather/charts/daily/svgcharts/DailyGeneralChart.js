@@ -3,7 +3,7 @@ import {Svg, G, Line, Circle, Image, Text, Polygon, Defs, LinearGradient, Stop, 
 import * as d3 from "d3";
 import COLORS from "../../utility/ChartColors";
 import {mapToDayIcon, mapToNightIcon} from "../../utility/ForecastIconMapper";
-import {getDaysText, getFunctionX, getGrid} from "../DailyChartService";
+import {getDaysText, getFunctionX, getGrid} from "../DailyChartDrawService";
 
 const DailyGeneralChart = ({forecast, theme}) => {
 

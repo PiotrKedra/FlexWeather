@@ -5,7 +5,7 @@ import {
     getFunctionY,
 } from "../../svgcharts/utility/ChartDrawService";
 import * as d3 from "d3";
-import {getDaysText, getForecastImagesForChart, getFunctionX, getGrid} from "../DailyChartService";
+import {getDaysText, getForecastImagesForChart, getFunctionX, getGrid} from "../DailyChartDrawService";
 
 const SVG_WIDTH = 600;
 const SVG_HEIGHT = 300;
