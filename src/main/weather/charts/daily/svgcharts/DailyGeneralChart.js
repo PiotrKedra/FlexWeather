@@ -10,11 +10,11 @@ const DailyGeneralChart = ({forecast, theme}) => {
     const minValue = d3.min(forecast, i => parseInt(i.temp.max));
     const maxValue = d3.max(forecast, i => parseInt(i.temp.max));
     const functionX = getFunctionX(forecast, 600);
-    const functionY = getFunctionY(minValue, maxValue, 35, 160);
+    const functionY = getFunctionY(minValue, maxValue, 35, 130);
 
     const minValueMin = d3.min(forecast, i => parseInt(i.temp.min));
     const maxValueMin = d3.max(forecast, i => parseInt(i.temp.max));
-    const functionMinY = getFunctionY(minValueMin, maxValueMin, 35, 100);
+    const functionMinY = getFunctionY(minValueMin, maxValueMin, 35, 80);
 
     let minValueRain = d3.min(forecast, i => parseFloat(i.rain));
     minValueRain = minValueRain ? minValueRain : 0;
@@ -32,12 +32,12 @@ const DailyGeneralChart = ({forecast, theme}) => {
                 {generateDotForEach(forecast, functionX, functionY, theme.mainColor)}
 
                 {generateVerticalGridLines(forecast, functionX)}
-                {getGrid(forecast, functionX, 125, 90)}
+                {getGrid(forecast, functionX, 150, 60)}
 
                 {getDaysText(forecast, functionX)}
 
                 {generateForecastImageForEach(forecast, functionX, -260, mapToDayIcon)}
-                {generateForecastImageForEach(forecast, functionX, -75, mapToNightIcon)}
+                {generateForecastImageForEach(forecast, functionX, -48, mapToNightIcon)}
 
                 {generateLineComponentsMin(forecast, functionX, functionMinY)}
 
@@ -57,7 +57,7 @@ function getRainBars(data, x, y, minValue) {
         <Rect
             key={item.dt}
             x={x(item.dt)-3}
-            y={-(150+y(item.rain ? item.rain : 0)/2)}
+            y={-(135+y(item.rain ? item.rain : 0)/2)}
             rx={3}
             width={6}
             height={y(item.rain)}

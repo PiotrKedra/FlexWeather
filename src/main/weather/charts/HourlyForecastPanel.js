@@ -2,7 +2,6 @@ import React, {Suspense} from 'react';
 import {View, ScrollView, TouchableOpacity, StyleSheet} from 'react-native';
 import Text from "../../components/CustomText";
 import { connect } from 'react-redux';
-import Info from "./info/Info";
 import ChartLoading from "./utility/ChartLoading";
 import AnimatedChartText from "./utility/AnimatedChartText";
 
@@ -44,7 +43,6 @@ class HourlyForecastPanel extends React.PureComponent {
                 <Suspense fallback={<ChartLoading/>}>
                     <ChartView currentChart={this.state.currentChart} hourlyForecast={this.props.hourlyForecast} theme={this.props.theme}/>
                 </Suspense>
-                <Info/>
             </View>
         )
     }

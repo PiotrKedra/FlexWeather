@@ -1,59 +1,45 @@
+import {G, Polygon, Rect, Svg, Text} from "react-native-svg";
 import React from "react";
-import {
-    G,
-    Polygon,
-    Rect,
-    Svg,
-    Text
-} from "react-native-svg";
 import * as d3 from "d3";
+import {getFunctionY} from "../../svgcharts/utility/ChartDrawService";
+import {getDaysText, getFunctionX, getGrid} from "../DailyChartDrawService";
+import COLORS from "../../utility/ChartColors";
 
-import {
-    getFunctionX,
-    getFunctionY,
-    getGrid,
-    generateDateText,
-    getTimeLabels,
-} from "./utility/ChartDrawService";
-import COLORS from "../utility/ChartColors";
+const SVG_WIDTH = 600;
+const SVG_HEIGHT = 300;
 
-const WindChart = (props) => {
-
-    const data = props.data;
-    const svgWidth = props.dimensions.svgWidth;
-    const svgHeight = props.dimensions.svgHeight;
-    const graphHeight = props.dimensions.graphHeight;
-    const initialYCordOfChart = props.dimensions.initialYCordOfChart;
+const DailyWindChart = ({forecast}) => {
 
     const minValue = 0;
-    const maxValue = getMaxValue(data);
-    const xFunction = getFunctionX(data, svgWidth);
-    const yFunction = getFunctionY(minValue, maxValue, graphHeight, initialYCordOfChart);
+    const potentialMaxValue = d3.max(forecast, d => d.wind_speed);
+    const maxValue = 10 < potentialMaxValue ? potentialMaxValue : 10;
+    const xFunction = getFunctionX(forecast, SVG_WIDTH);
+    const yFunction = getFunctionY(minValue, maxValue, 100, 60);
 
     return (
-        <Svg width={svgWidth} height={svgHeight}>
-            <G y={svgHeight}>
-                {getGrid(svgWidth, svgHeight, graphHeight, initialYCordOfChart, xFunction, data)}
-                {generateDateText(data, svgHeight)}
+        <Svg width={SVG_WIDTH} height={SVG_HEIGHT}>
+            <G y={SVG_HEIGHT}>
+                {getGrid(forecast, xFunction, 100, 60)}
 
-                {getWindDirectionArrowsForEach(data, xFunction)}
-                {generateDataBars(data, xFunction, yFunction, maxValue, initialYCordOfChart)}
+                {getDaysText(forecast, xFunction)}
 
-                {getWindBearingStringForEach(data, xFunction)}
-                {getDataTextForEachItemAboveBars(data, xFunction, yFunction)}
-                {getTimeLabels(data, xFunction, svgHeight * -1 + 40, 20)}
+                {getWindDirectionArrowsForEach(forecast, xFunction)}
+                {getWindBearingStringForEach(forecast, xFunction)}
+
+                {getDataBars(forecast, xFunction, yFunction, maxValue, 60)}
+                {getWindSpeedValues(forecast, xFunction)}
             </G>
         </Svg>
     )
 };
 
-function getDataTextForEachItemAboveBars(data, x, y) {
-    return (data.map(item => (
+function getWindSpeedValues(forecast, xFunction){
+    return (forecast.map(item => (
         <Text
             key={item.dt}
-            fontSize={16}
-            x={x(item.dt)}
-            y={y(item.wind_speed) * -1 - 6}
+            fontSize={18}
+            x={xFunction(item.dt)}
+            y={-30}
             textAnchor="middle"
             fill={COLORS.mainText}
             fontFamily="Neucha-Regular">
@@ -62,13 +48,7 @@ function getDataTextForEachItemAboveBars(data, x, y) {
     )))
 }
 
-function getMaxValue(data){
-    const max = d3.max(data, d => d.windSpeed);
-    const defaultMax = 10;
-    return (max > defaultMax) ? max : defaultMax;
-}
-
-function generateDataBars(data, x, y, maxValue, initialYCordOfChart) {
+function getDataBars(data, x, y, maxValue, initialYCordOfChart) {
     if(maxValue===0) return null;
     return (data.map(item => (
         <Rect
@@ -85,8 +65,8 @@ function generateDataBars(data, x, y, maxValue, initialYCordOfChart) {
 
 function getWindDirectionArrowsForEach(data, xFunction) {
     return data.map(item => (
-            getWindArrow(item, xFunction)
-        ));
+        getWindArrow(item, xFunction)
+    ));
 }
 
 const WIND_ARROW_WIDTH = 24;
@@ -95,7 +75,7 @@ const WIND_ARROW_HEIGHT = 30;
 const WIND_ARROW_R = 5;
 function getWindArrow(item, xFunction) {
     const x = xFunction(item.dt) - WIND_ARROW_WIDTH/2;
-    const y = 180;
+    const y = 250;
     const points = x + ',' + -y + ' ' +
         (x+WIND_ARROW_WIDTH/2) + ',' + -(y-WIND_ARROW_R) + ' ' +
         (x+WIND_ARROW_WIDTH) + ',' + -y + ' ' +
@@ -118,7 +98,7 @@ function getWindBearingStringForEach(data, xFunction) {
             key={item.dt}
             fontSize="20"
             x={xFunction(item.dt)}
-            y={-130}
+            y={-190}
             textAnchor="middle"
             fill={COLORS.gray}
             fontFamily="Neucha-Regular">
@@ -127,6 +107,7 @@ function getWindBearingStringForEach(data, xFunction) {
     ))
 }
 
+//todo we have wind deg, change it
 function getWindDirectionString(windDirection) {
     if(windDirection < 23)
         return 'N';
@@ -148,4 +129,4 @@ function getWindDirectionString(windDirection) {
         return 'N';
 }
 
-export default WindChart;
+export default DailyWindChart;

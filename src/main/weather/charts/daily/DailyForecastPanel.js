@@ -1,12 +1,9 @@
 import React, {Suspense} from 'react';
-import {View, StyleSheet, TouchableOpacity, ScrollView, Image} from 'react-native';
+import {View, StyleSheet, TouchableOpacity, ScrollView, Image, Text} from 'react-native';
 
-import Text from '../../../components/CustomText'
-import DailyGeneralChart from "./svgcharts/DailyGeneralChart";
+import CustomText from '../../../components/CustomText'
 import {connect} from "react-redux";
 import ChartLoading from "../utility/ChartLoading";
-import DailyUvIndexChart from "./svgcharts/DailyUvIndexChart";
-import DailyRainfallCHart from "./svgcharts/DailyRainfallChart";
 import AnimatedChartText from "../utility/AnimatedChartText";
 import DailyChartService from "./DailyChartService";
 
@@ -19,25 +16,25 @@ class DailyForecastPanel extends React.PureComponent{
     render() {
         return (
             <View style={[styles.mainView, {backgroundColor: this.props.theme.panelColor}]}>
-                <Text style={styles.title}>
+                <CustomText style={styles.title}>
                     Today forecast
-                </Text>
-                <Text style={{fontSize: 18, color: '#777', paddingLeft: '5%'}}>
+                </CustomText>
+                <CustomText style={{fontSize: 18, color: '#777', paddingLeft: '5%'}}>
                     Details
-                </Text>
+                </CustomText>
                 <View style={{flexDirection: 'row', paddingLeft: '5%', marginVertical: 20}}>
                     <View style={{flex: 1, flexDirection: 'row'}}>
                         <Image style={{width: 45, height: 45}} source={require('../../../../../assets/images/details/temperature.png')}/>
                         <View style={{paddingLeft: 10}}>
-                            <Text style={{fontSize: 20}}>{Math.round(this.props.forecast[0].temp.max)}°/{Math.round(this.props.forecast[0].temp.min)}°</Text>
-                            <Text style={{fontSize: 17, color: '#666'}}>temperature</Text>
+                            <CustomText style={{fontSize: 20}}>{Math.round(this.props.forecast[0].temp.max)}°/{Math.round(this.props.forecast[0].temp.min)}°</CustomText>
+                            <CustomText style={{fontSize: 17, color: '#666'}}>temperature</CustomText>
                         </View>
                     </View>
                     <View style={{flex: 1, flexDirection: 'row'}}>
                         <Image style={{width: 45, height: 45}} source={require('../../../../../assets/images/details/sensed-temperature.png')}/>
                         <View style={{paddingLeft: 10, flexShrink: 1}}>
-                            <Text style={{fontSize: 20}}>{Math.round(this.props.currentForecast.feels_like)}°</Text>
-                            <Text style={{fontSize: 17, color: '#666'}}>sensed temperature</Text>
+                            <CustomText style={{fontSize: 20}}>{Math.round(this.props.currentForecast.feels_like)}°</CustomText>
+                            <Text style={{fontFamily: 'Neucha-Regular', fontSize: 17, color: '#666'}}>sensed temperature</Text>
                         </View>
                     </View>
                 </View>
@@ -45,24 +42,24 @@ class DailyForecastPanel extends React.PureComponent{
                     <View style={{flex: 1, flexDirection: 'row'}}>
                         <Image style={{width: 45, height: 45}} source={require('../../../../../assets/images/details/rainfall.png')}/>
                         <View style={{paddingLeft: 10}}>
-                            <Text style={{fontSize: 20}}>{this.props.forecast[0].rain ? this.props.forecast[0].rain : 0} mm</Text>
-                            <Text style={{fontSize: 17, color: '#666'}}>rainfall</Text>
+                            <CustomText style={{fontSize: 20}}>{this.props.forecast[0].rain ? this.props.forecast[0].rain : 0} mm</CustomText>
+                            <CustomText style={{fontSize: 17, color: '#666'}}>rainfall</CustomText>
                         </View>
                     </View>
                     <View style={{flex: 1, flexDirection: 'row'}}>
                         <Image style={{width: 45, height: 45}} source={require('../../../../../assets/images/details/wind-speed.png')}/>
                         <View style={{paddingLeft: 10}}>
-                            <Text style={{fontSize: 20}}>{this.props.currentForecast.wind_speed} m/s</Text>
-                            <Text style={{fontSize: 17, color: '#666'}}>wind speed</Text>
+                            <CustomText style={{fontSize: 20}}>{Math.round(this.props.currentForecast.wind_speed*36)/10} km/h</CustomText>
+                            <CustomText style={{fontSize: 17, color: '#666'}}>wind speed</CustomText>
                         </View>
                     </View>
                 </View>
-                <Text style={styles.title}>
+                <CustomText style={styles.title}>
                     Daily forecast
-                </Text>
-                <Text style={{fontSize: 18, color: '#777', paddingLeft: '5%'}}>
+                </CustomText>
+                <CustomText style={{fontSize: 18, color: '#777', paddingLeft: '5%'}}>
                     For next 7 days
-                </Text>
+                </CustomText>
                 <ScrollView style={styles.selectionView}
                             horizontal={true}>
                     <TouchableOpacity style={[styles.chartSelectionButton, (this.state.currentChart==='general') ? {backgroundColor: this.props.theme.mainColor} : styles.chartNotSelected]}
@@ -80,9 +77,9 @@ class DailyForecastPanel extends React.PureComponent{
                     </TouchableOpacity>
                     <TouchableOpacity style={[styles.chartSelectionButton, (this.state.currentChart==='uv_index') ? {backgroundColor: this.props.theme.mainColor} : styles.chartNotSelected, {marginRight: 30}]}
                                       onPress={() => this.setState({currentChart: 'uv_index'})}>
-                        <Text style={styles.buttonText}>
+                        <CustomText style={styles.buttonText}>
                             uv index
-                        </Text>
+                        </CustomText>
                     </TouchableOpacity>
                 </ScrollView>
                 <Suspense fallback={<ChartLoading/>}>
