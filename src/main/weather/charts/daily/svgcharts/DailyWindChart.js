@@ -107,7 +107,6 @@ function getWindBearingStringForEach(data, xFunction) {
     ))
 }
 
-//todo we have wind deg, change it
 function getWindDirectionString(windDirection) {
     if(windDirection < 23)
         return 'N';

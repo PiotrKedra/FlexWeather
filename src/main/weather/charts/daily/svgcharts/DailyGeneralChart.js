@@ -10,11 +10,11 @@ const DailyGeneralChart = ({forecast, theme}) => {
     const minValue = d3.min(forecast, i => parseInt(i.temp.max));
     const maxValue = d3.max(forecast, i => parseInt(i.temp.max));
     const functionX = getFunctionX(forecast, 600);
-    const functionY = getFunctionY(minValue, maxValue, 35, 130);
+    const functionY = getFunctionY(minValue, maxValue, 35, 140);
 
     const minValueMin = d3.min(forecast, i => parseInt(i.temp.min));
     const maxValueMin = d3.max(forecast, i => parseInt(i.temp.max));
-    const functionMinY = getFunctionY(minValueMin, maxValueMin, 35, 80);
+    const functionMinY = getFunctionY(minValueMin, maxValueMin, 35, 90);
 
     let minValueRain = d3.min(forecast, i => parseFloat(i.rain));
     minValueRain = minValueRain ? minValueRain : 0;

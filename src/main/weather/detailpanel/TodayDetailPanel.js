@@ -16,14 +16,14 @@ const TodayDetailPanel = ({forecast, theme}) => {
                 <View style={styles.elementInRow}>
                     <Image style={styles.image} source={require('../../../../assets/images/details/wind-speed.png')}/>
                     <View style={styles.textView}>
-                        <Text style={styles.textValue}>{forecast.wind_speed} m/s</Text>
+                        <Text style={styles.textValue}>{Math.round(forecast.wind_speed*36)/10} km/h</Text>
                         <Text style={styles.textTitle}>wind speed</Text>
                     </View>
                 </View>
                 <View style={styles.elementInRow}>
                     <Image style={styles.image} source={require('../../../../assets/images/details/wind-deg.png')}/>
                     <View style={styles.textView}>
-                        <Text style={styles.textValue}>{forecast.wind_deg}</Text>
+                        <Text style={styles.textValue}>{getWindDirectionString(forecast.wind_deg)}</Text>
                         <Text style={styles.textTitle}>wind direction</Text>
                     </View>
                 </View>
@@ -99,6 +99,27 @@ const TodayDetailPanel = ({forecast, theme}) => {
 function parseTime(timestamp){
     const date = new Date(timestamp*1000);
     return date.getHours() + ':' + date.getMinutes();
+}
+
+function getWindDirectionString(windDirection) {
+    if(windDirection < 23)
+        return 'N';
+    else if (windDirection < 68)
+        return 'NE';
+    else if (windDirection < 113)
+        return 'E';
+    else if (windDirection < 158)
+        return 'SE';
+    else if (windDirection < 203)
+        return 'S';
+    else if (windDirection < 248)
+        return 'SW';
+    else if (windDirection < 293)
+        return 'W';
+    else if (windDirection < 338)
+        return 'NW';
+    else
+        return 'N';
 }
 
 const styles = StyleSheet.create({

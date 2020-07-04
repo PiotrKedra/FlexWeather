@@ -5,9 +5,14 @@ import GeneralStatusBar from "./components/GeneralStatusBar";
 import Geolocation from "@react-native-community/geolocation";
 import RNAndroidLocationEnabler from 'react-native-android-location-enabler';
 import getLocationDetails from "./location/LocationApi";
+import LoadingComponent from "./components/LoadingComponent";
 
 
 class FirstAppLaunchScreen extends React.PureComponent {
+
+    state = {
+        loading: false
+    };
 
     passLocationData(position){
         const latitude = position.coords.latitude;
@@ -20,6 +25,7 @@ class FirstAppLaunchScreen extends React.PureComponent {
         if (granted === PermissionsAndroid.RESULTS.GRANTED) {
             RNAndroidLocationEnabler.promptForEnableLocationIfNeeded({interval: 10000, fastInterval: 5000})
                 .then(() => {
+                    this.setState({loading: true});
                     Geolocation.getCurrentPosition(
                         (position) => this.passLocationData(position),
                         () => ToastAndroid.show('Could\'n get your location', ToastAndroid.SHORT),
@@ -73,6 +79,7 @@ class FirstAppLaunchScreen extends React.PureComponent {
                         </TouchableOpacity>
                     </View>
                 </View>
+                <LoadingComponent loading={this.state.loading}/>
             </View>
         )
     }
