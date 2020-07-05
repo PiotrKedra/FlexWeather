@@ -18,6 +18,7 @@ import GeneralStatusBar from "./components/GeneralStatusBar";
 import PoweredBy from "./components/PoweredBy";
 import WeatherViewComponent from "./WeatherViewComponent";
 import RefreshInfo from "./components/RefreshInfo";
+import NoInternetConnectionComponent from "./components/NoInternetConnectionComponent";
 
 class MainPage extends React.Component {
   state = {
@@ -91,6 +92,7 @@ class MainPage extends React.Component {
             </View>
           </ScrollView>
           <AnimatedMenu isScroll={this.state.scroll} theme={this.props.theme} location={this.props.activeLocation.city} navigation={this.props.navigation}/>
+          <NoInternetConnectionComponent/>
         </ImageBackground>
       </View>
     );

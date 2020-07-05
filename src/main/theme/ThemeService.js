@@ -31,7 +31,6 @@ function getThemeEntity(forecast){
 }
 
 function getTheme(current){
-    console.log(current);
     if(new Date() < new Date(current.sunrise*1000) || new Date(current.sunset*1000) < new Date()){
         return {
             background: BACKGORUND.night,

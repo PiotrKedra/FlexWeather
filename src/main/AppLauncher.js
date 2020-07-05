@@ -11,6 +11,7 @@ import getLocationDetails from "./location/LocationApi";
 import GeneralStatusBar from "./components/GeneralStatusBar";
 import getThemeEntity from "./theme/ThemeService";
 import LoadingComponent from "./components/LoadingComponent";
+import NoInternetConnectionComponent from "./components/NoInternetConnectionComponent";
 
 const ACTIVE_LOCATION_STORAGE = '@active_location';
 const HOME_LOCATION_STORAGE = '@home_location';
@@ -57,12 +58,7 @@ class AppLauncher extends React.Component {
     }
   };
 
-  async isInternetConnection() {
-    return await NetInfo.fetch().then(state => state.isConnected);
-  }
-
   async normalAppLaunch(){
-    // load forecast from internet, if no then from storage
     if(await this.dataIsNotFresh()){
       if(await this.isInternetConnection()){
         await this.tryToLoadDataFromInternet();
@@ -79,6 +75,10 @@ class AppLauncher extends React.Component {
     } catch (e) {
       return true;
     }
+  }
+
+  async isInternetConnection() {
+    return await NetInfo.fetch().then(state => state.isConnected);
   }
 
   async tryToLoadDataFromInternet() {
@@ -157,6 +157,7 @@ class AppLauncher extends React.Component {
       <View style={{flex: 1, backgroundColor: '#2C82C9'}}>
         <GeneralStatusBar/>
         <LoadingComponent loading={true}/>
+        <NoInternetConnectionComponent/>
       </View>)
   }
 }
