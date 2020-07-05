@@ -7,7 +7,7 @@ import {Provider} from 'react-redux';
 import SplashScreen from 'react-native-splash-screen'
 
 import AppLauncher from './src/main/AppLauncher';
-import MainPage from "./src/main/MainPage";
+import WeatherScreen from "./src/main/WeatherScreen";
 import FirstAppLaunchScreen from "./src/main/FirstAppLaunchScreen";
 import InitLocationSearchComponent from "./src/main/location/InitLocationSearchComponent";
 import reducer from "./src/main/ReduxReducer";
@@ -53,7 +53,7 @@ export default function App() {
                           cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS
                         }}/>
           <Stack.Screen name="MainPage"
-                        component={MainPage}
+                        component={WeatherScreen}
                         options={{
                           headerShown: false,
                           cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS

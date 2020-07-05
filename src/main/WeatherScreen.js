@@ -20,7 +20,7 @@ import WeatherViewComponent from "./WeatherViewComponent";
 import RefreshInfo from "./components/RefreshInfo";
 import NoInternetConnectionComponent from "./components/NoInternetConnectionComponent";
 
-class MainPage extends React.Component {
+class WeatherScreen extends React.Component {
   state = {
     scroll: false,
     fontLoaded: false,
@@ -116,7 +116,7 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps)(MainPage);
+export default connect(mapStateToProps)(WeatherScreen);
 
 const styles = StyleSheet.create({
   imageBackground: {

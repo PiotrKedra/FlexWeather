@@ -103,23 +103,23 @@ function parseTime(timestamp){
 
 function getWindDirectionString(windDirection) {
     if(windDirection < 23)
-        return 'N';
+        return 'North';
     else if (windDirection < 68)
-        return 'NE';
+        return 'North-East';
     else if (windDirection < 113)
-        return 'E';
+        return 'East';
     else if (windDirection < 158)
-        return 'SE';
+        return 'South-East';
     else if (windDirection < 203)
-        return 'S';
+        return 'South';
     else if (windDirection < 248)
-        return 'SW';
+        return 'South-West';
     else if (windDirection < 293)
-        return 'W';
+        return 'West';
     else if (windDirection < 338)
-        return 'NW';
+        return 'North-West';
     else
-        return 'N';
+        return 'North';
 }
 
 const styles = StyleSheet.create({

@@ -4,7 +4,6 @@ import {View, PermissionsAndroid} from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import NetInfo from "@react-native-community/netinfo";
 
-import MainPage from './MainPage';
 import fetchRootForecast from './weather/api/ForecastApi';
 import Geolocation from '@react-native-community/geolocation';
 import getLocationDetails from "./location/LocationApi";
@@ -12,6 +11,7 @@ import GeneralStatusBar from "./components/GeneralStatusBar";
 import getThemeEntity from "./theme/ThemeService";
 import LoadingComponent from "./components/LoadingComponent";
 import NoInternetConnectionComponent from "./components/NoInternetConnectionComponent";
+import RNAndroidLocationEnabler from "react-native-android-location-enabler";
 
 const ACTIVE_LOCATION_STORAGE = '@active_location';
 const HOME_LOCATION_STORAGE = '@home_location';
@@ -45,7 +45,8 @@ class AppLauncher extends React.Component {
       this.loadForecastWithGivenLocation(this.props.route.params.location, this.props.route.params.saveHomeLocation);
       return;
     }
-    const unsubscribe = NetInfo.addEventListener(this.internetConnectionListener);
+    //todo re think how this listener should works
+    // const unsubscribe = NetInfo.addEventListener(this.internetConnectionListener);
     try{
       const isStorage = await AsyncStorage.getItem('@active_location');
       if(isStorage === null){
@@ -61,11 +62,11 @@ class AppLauncher extends React.Component {
   async normalAppLaunch(){
     if(await this.dataIsNotFresh()){
       if(await this.isInternetConnection()){
-        await this.tryToLoadDataFromInternet();
-        return;
+        this.tryToLoadDataFromInternet();
       }
+    } else {
+      await this.showForecastFromStorage();
     }
-    await this.showForecastFromStorage();
   }
 
   async dataIsNotFresh() {
@@ -90,17 +91,24 @@ class AppLauncher extends React.Component {
           }
       );
       if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-        await Geolocation.getCurrentPosition(
-            (position) => this.loadForecastWithGivenPosition(position),
-            (error) => {console.log(error); this.loadForecastUsingLocationInStorage();},
-            {enableHighAccuracy: false, timeout: 15000, maximumAge: 10000}
-        );
-        return;
+        await RNAndroidLocationEnabler.promptForEnableLocationIfNeeded({interval: 10000, fastInterval: 5000})
+            .then(() => {
+              Geolocation.getCurrentPosition(
+                  (position) => this.loadForecastWithGivenPosition(position),
+                  (error) => {
+                    console.log(error);
+                    this.loadForecastUsingLocationInStorage();
+                  },
+                  {enableHighAccuracy: false, timeout: 15000, maximumAge: 10000}
+              );
+            })
+      } else {
+        this.loadForecastUsingLocationInStorage();
       }
     } catch (err) {
+      this.loadForecastUsingLocationInStorage();
       console.log(err);
     }
-    this.loadForecastUsingLocationInStorage();
   }
 
   async loadForecastWithGivenLocation(location, saveHomeLocation=false){
@@ -126,7 +134,7 @@ class AppLauncher extends React.Component {
   async loadInitialForecast(location){
     let initialForecast = await fetchRootForecast(location.latitude, location.longitude);
     const theme = getThemeEntity(initialForecast);
-    this.props.setInitialForecast(initialForecast, location, theme);
+    await this.props.setInitialForecast(initialForecast, location, theme);
     this.props.navigation.replace('MainPage')
   }
 
