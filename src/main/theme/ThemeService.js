@@ -1,4 +1,5 @@
 import {BACKGORUND} from "../../resource/ImagePath";
+import getSummary from "./SummaryService";
 
 const ICON_MAPPER = [
     {name: '01d', background: BACKGORUND.sun, mainColor: '#FCB941', textColor: '#191206', menuColor: '#BFD5FE', panelColor: '#EEE'},
@@ -6,7 +7,7 @@ const ICON_MAPPER = [
     {name: '03d', background: BACKGORUND.cloud, mainColor: '#f97a78', textColor: '#190906', menuColor: '#C0F4FE', panelColor: '#EEE'},
     {name: '04d', background: BACKGORUND.cloud, mainColor: '#f97a78', textColor: '#190906', menuColor: '#C0F4FE', panelColor: '#EEE'},
     {name: '09d', background: BACKGORUND.rain, mainColor: '#2C82C9', textColor: '#040d14', menuColor: '#E6B68E', panelColor: '#EEE'},
-    {name: '10d', background: BACKGORUND.cloud, mainColor: '#f97a78', textColor: '#190906', menuColor: '#C0F4FE', panelColor: '#EEE'},
+    {name: '10d', background: BACKGORUND.rain, mainColor: '#2C82C9', textColor: '#040d14', menuColor: '#E6B68E', panelColor: '#EEE'},
     {name: '11d', background: BACKGORUND.rain, mainColor: '#2C82C9', textColor: '#040d14', menuColor: '#E6B68E', panelColor: '#EEE'},
     {name: '13d', background: BACKGORUND.snow, mainColor: '#8dafe4', textColor: '#0e1116', menuColor: '#E4C28D', panelColor: '#EEE'},
     {name: '50d', background: BACKGORUND.cloud, mainColor: '#f97a78', textColor: '#190906', menuColor: '#C0F4FE', panelColor: '#EEE'},
@@ -25,11 +26,12 @@ function getThemeEntity(forecast){
         textColor: theme.textColor,
         menuColor: theme.menuColor,
         panelColor: theme.panelColor,
-        summary: getSummary(forecast.current.weather[0].description),
+        summary: getSummary(forecast.current.weather[0].main, forecast.current.weather[0].description),
     };
 }
 
 function getTheme(current){
+    console.log(current);
     if(new Date() < new Date(current.sunrise*1000) || new Date(current.sunset*1000) < new Date()){
         return {
             background: BACKGORUND.night,
@@ -42,29 +44,6 @@ function getTheme(current){
     const icon = current.weather[0].icon;
     const theme = ICON_MAPPER.find(i => i.name === icon);
     return theme === undefined ? ICON_MAPPER[0] : theme;
-}
-
-function getSummary(description){
-    switch (description) {
-        case 'clear sky':
-            return 'Clear sky for you guys.';
-        case 'few clouds':
-            return 'Just few clouds on the sky.(' + description + ')';
-        case 'scattered clouds':
-            return 'Boring. Only clouds.';
-        case 'broken clouds':
-            return 'May looks like it\'s about to rain.';
-        case 'shower rain':
-            return 'It may rain a little bit.';
-        case 'rain':
-            return 'Rain, rain and rain.';
-        case 'thunderstorm':
-            return 'There could be some lighting.';
-        case 'snow':
-            return 'Outside the snow began to fall.';
-        default:
-            return 'Hard to say. Few clouds? (' + description + ')';
-    }
 }
 
 export default getThemeEntity;
