@@ -18,7 +18,7 @@ class FirstAppLaunchScreen extends React.PureComponent {
         const latitude = position.coords.latitude;
         const longitude = position.coords.longitude;
         getLocationDetails(longitude, latitude)
-            .then(location => this.props.navigation.replace('InitLoader', {location: location, saveHomeLocation: true}));
+            .then(location => this.props.navigation.replace('AppLauncher', {location: location, saveHomeLocation: true}));
     }
 
     getLocation(granted) {

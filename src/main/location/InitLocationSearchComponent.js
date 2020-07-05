@@ -63,7 +63,7 @@ const InitLocationSearchComponent = ({navigation, route}) => {
                                           style={styles.locationItem}
                                           onPress={() => {
                                               const location = parseLocation(item);
-                                              navigation.replace('InitLoader', {location: location, saveHomeLocation: route.params.saveHomeLocation});
+                                              navigation.replace('AppLauncher', {location: location, saveHomeLocation: route.params.saveHomeLocation});
                                               if(!route.params.saveHomeLocation)
                                                   addToHistory(location, historyLocations);
                                           }}
@@ -90,7 +90,7 @@ function renderHistoricalLocations(historyLocations, homeLocation, navigation){
                 padding: 5,
                 flexDirection: 'row',
             }}
-                              onPress={() => navigation.replace('InitLoader', {location: homeLocation, saveHomeLocation: false})}
+                              onPress={() => navigation.replace('AppLauncher', {location: homeLocation, saveHomeLocation: false})}
             >
                 <Image
                     style={{width: 25, height: 25, marginHorizontal: 5, marginLeft: 8, tintColor: '#2c82c9'}}
@@ -111,7 +111,7 @@ function renderLocationItem(location, navigation, saveHomeLocation=false){
     return (
         <TouchableOpacity key={location.latitude + location.longitude}
                           style={styles.locationItem}
-                          onPress={() => navigation.replace('InitLoader', {location: location, saveHomeLocation: saveHomeLocation})}
+                          onPress={() => navigation.replace('AppLauncher', {location: location, saveHomeLocation: saveHomeLocation})}
         >
             <Image
                 style={styles.locationItemImage}

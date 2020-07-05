@@ -74,15 +74,6 @@ const FORECAST_ART = {
     wind: require('../../assets/images/art/wind.png'),
 };
 
-const DETAIL_ICONS = {
-    humidity: require('../../assets/images/details/humidity.png'),
-    pressure: require('../../assets/images/details/pressure.png'),
-    visibility: require('../../assets/images/details/visibility.png'),
-    cloudCover: require('../../assets/images/details/cloud-cover.png'),
-    ozone: require('../../assets/images/details/ozone.png'),
-    uvIndex: require('../../assets/images/details/uv-index.png'),
-};
-
-export { BACKGORUND, FORECAST_ICONS, FORECAST_ART, DETAIL_ICONS, NEW_API, FORECAST_ICONS2};
+export { BACKGORUND, FORECAST_ICONS, FORECAST_ART, NEW_API, FORECAST_ICONS2};
 
 export default IMAGES;

@@ -1,11 +1,11 @@
 import React from 'react';
-import {View, Image} from 'react-native';
+import {View} from 'react-native';
 import HourlyForecastPanel from "./weather/charts/HourlyForecastPanel";
 import DailyForecastPanel from "./weather/charts/daily/DailyForecastPanel";
 import CustomText from "./components/CustomText";
 import TodayDetailPanel from "./weather/detailpanel/TodayDetailPanel";
 
-class WeekViewComponent extends React.PureComponent{
+class WeatherViewComponent extends React.PureComponent{
 
 
     render() {
@@ -24,4 +24,4 @@ class WeekViewComponent extends React.PureComponent{
     }
 }
 
-export default WeekViewComponent;
+export default WeatherViewComponent;

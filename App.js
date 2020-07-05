@@ -6,7 +6,7 @@ import {createStore} from 'redux';
 import {Provider} from 'react-redux';
 import SplashScreen from 'react-native-splash-screen'
 
-import InitLoader from './src/main/InitLoader';
+import AppLauncher from './src/main/AppLauncher';
 import AsyncStorage from "@react-native-community/async-storage";
 import MainPage from "./src/main/MainPage";
 import FirstAppLaunchScreen from "./src/main/FirstAppLaunchScreen";
@@ -68,12 +68,11 @@ export default function App() {
       <NavigationContainer>
         <Stack.Navigator>
           <Stack.Screen
-            name="InitLoader"
-            component={InitLoader}
+            name="AppLauncher"
+            component={AppLauncher}
             options={{
               headerShown: false,
               cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS
-
             }}
           />
           <Stack.Screen name="FirstAppLaunch"

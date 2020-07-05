@@ -1,6 +1,6 @@
 import React from 'react';
-import {connect, Provider} from 'react-redux';
-import {View, PermissionsAndroid, Animated, Dimensions} from 'react-native';
+import {connect} from 'react-redux';
+import {View, PermissionsAndroid} from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import NetInfo from "@react-native-community/netinfo";
 
@@ -8,22 +8,17 @@ import MainPage from './MainPage';
 import fetchRootForecast from './weather/api/ForecastApi';
 import Geolocation from '@react-native-community/geolocation';
 import getLocationDetails from "./location/LocationApi";
-import CustomText from "./components/CustomText";
-import LottieView from "lottie-react-native";
-import NoInternetConnectionComponent from "./components/NoInternetConnectionComponent";
 import GeneralStatusBar from "./components/GeneralStatusBar";
 import getThemeEntity from "./theme/ThemeService";
-import AnimatedInitText from "./AnimatedInitText";
+import LoadingComponent from "./components/LoadingComponent";
 
 const ACTIVE_LOCATION_STORAGE = '@active_location';
 const HOME_LOCATION_STORAGE = '@home_location';
 
-class InitLoader extends React.Component {
+class AppLauncher extends React.Component {
 
   state = {
     isInitialForecastLoaded: false,
-    isSearchLocationWindow: false,
-    loadingState: 'Getting position...',
     noInternetConnection: false,
     afterFirstLaunch: false,
   };
@@ -61,15 +56,6 @@ class InitLoader extends React.Component {
       console.log(e);
     }
   };
-
-  async firstAppLaunchForecastLoading(){
-    if(this.isInternetConnection()){
-      await this.firstForecastLaunch();
-    } else {
-        // no internet -> do nothing (need internet for first launch)
-        this.setState({loadingState: 'Need internet for first launch.'})
-    }
-  }
 
   async isInternetConnection() {
     return await NetInfo.fetch().then(state => state.isConnected);
@@ -119,7 +105,6 @@ class InitLoader extends React.Component {
 
   async loadForecastWithGivenLocation(location, saveHomeLocation=false){
     if(saveHomeLocation) this.saveHomeLocation(location);
-    this.setState({loadingState: 'Loading forecast...'});
     this.loadInitialForecast(location)
   }
 
@@ -127,7 +112,6 @@ class InitLoader extends React.Component {
     const latitude = position.coords.latitude;
     const longitude = position.coords.longitude;
     const location = await getLocationDetails(longitude, latitude);
-    this.setState({loadingState: 'Loading forecast...'});
     this.loadInitialForecast(location)
   }
 
@@ -143,7 +127,6 @@ class InitLoader extends React.Component {
     let initialForecast = await fetchRootForecast(location.latitude, location.longitude);
     const theme = getThemeEntity(initialForecast);
     this.props.setInitialForecast(initialForecast, location, theme);
-    //this.setState({isInitialForecastLoaded: true});
     this.props.navigation.replace('MainPage')
   }
 
@@ -158,9 +141,7 @@ class InitLoader extends React.Component {
     } catch(e) {
       console.log(e);
     }
-
-    // navigate to search component
-    this.setState({isSearchLocationWindow: true})
+    this.props.navigation.replace('FirstAppLaunch');
   }
 
   async showForecastFromStorage() {
@@ -168,38 +149,14 @@ class InitLoader extends React.Component {
     const lastForecast = JSON.parse(await AsyncStorage.getItem('@last_forecast'));
     const theme = getThemeEntity(lastForecast);
     this.props.setInitialForecast(lastForecast, JSON.parse(activeLocation), theme, false);
-
-    //this.setState({isInitialForecastLoaded: true});
     this.props.navigation.replace('MainPage')
   }
-
-  loadForecastFromSearchComponent = async (location) => {
-    const locationEntity = {
-      longitude: location.geometry.coordinates[0],
-      latitude: location.geometry.coordinates[1],
-      city: location.properties.name,
-      country: location.properties.country,
-    };
-    this.saveHomeLocation(locationEntity);
-    this.setState({isSearchLocationWindow: false, loadingState: 'Loading forecast...'});
-    this.loadInitialForecast(locationEntity)
-  };
 
   render() {
     return (
       <View style={{flex: 1, backgroundColor: '#2C82C9'}}>
         <GeneralStatusBar/>
-        {/*<View style={{flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#2C82C9'}}>*/}
-        {/*  */}
-        {/*  /!*<LottieView*!/*/}
-        {/*  /!*    style={{height: 200}}*!/*/}
-        {/*  /!*    source={require('../../assets/lottie/loading')}*!/*/}
-        {/*  /!*    autoPlay*!/*/}
-        {/*  /!*    loop/>*!/*/}
-        {/*  /!*<CustomText style={{fontSize: 25}}>{this.state.loadingState}</CustomText>*!/*/}
-        {/*  /!*<AnimatedInitLocationSearchComponent isSearchLocationWindow={this.state.isSearchLocationWindow}*!/*/}
-        {/*  /!*                                     loadForecastFromSearchComponent={this.loadForecastFromSearchComponent}/>*!/*/}
-        {/*</View>)*/}
+        <LoadingComponent loading={true}/>
       </View>)
   }
 }
@@ -220,4 +177,4 @@ function mapDispatcherToProps(dispatch) {
 export default connect(
   mapStateToProps,
   mapDispatcherToProps,
-)(InitLoader);
+)(AppLauncher);

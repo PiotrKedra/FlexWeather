@@ -16,7 +16,7 @@ import Text from '../main/components/CustomText';
 import AnimatedMenu from './menu/AnimatedMenu';
 import GeneralStatusBar from "./components/GeneralStatusBar";
 import PoweredBy from "./components/PoweredBy";
-import WeekViewComponent from "./WeekViewComponent";
+import WeatherViewComponent from "./WeatherViewComponent";
 import RefreshInfo from "./components/RefreshInfo";
 
 class MainPage extends React.Component {
@@ -25,10 +25,6 @@ class MainPage extends React.Component {
     fontLoaded: false,
     locationLeftPosition: new Animated.Value(Dimensions.get('window').width*0.03)
   };
-
-  componentDidMount() {
-    // this.props.navigation.navigate('InitLoader');
-  }
 
   onScrollNotTopMinimizeHeader = event => {
     const y = event.nativeEvent.contentOffset.y;
@@ -85,9 +81,9 @@ class MainPage extends React.Component {
                 </Text>
               </TouchableOpacity>
             </Animated.View>
-            <WeekViewComponent currentForecast={this.props.currentForecast}
-                               todayForecast={this.props.forecast}
-                               theme={this.props.theme}
+            <WeatherViewComponent currentForecast={this.props.currentForecast}
+                                  todayForecast={this.props.forecast}
+                                  theme={this.props.theme}
             />
             <View style={{flexDirection: 'row', marginHorizontal: '4%', marginVertical: 5}}>
               <PoweredBy theme={this.props.theme}/>
