@@ -1,5 +1,4 @@
-import {TOKEN} from "../../token";
-
+import foo from "./Dupa";
 
 export default fetchRootForecast;
 

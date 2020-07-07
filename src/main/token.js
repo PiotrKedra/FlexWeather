@@ -1,4 +1,0 @@
-const TOKEN = 'DARK WEATHER API KEY';
-const GOOGLE_TOKEN = 'GOOGLE API KEY';
-
-export { TOKEN }
