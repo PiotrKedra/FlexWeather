@@ -4,6 +4,7 @@ import HomeLocationItem from "./menusettings/HomeLocationSetting";
 import NotificationsSettings from "./menusettings/NotificatinosSettings";
 import LanguageSettings from "./menusettings/LanguageSettings";
 import ReportBugSettings from "./menusettings/ReposrtBugSettings";
+import AboutSettings from "./menusettings/AboutSettings";
 
 
 
@@ -15,6 +16,7 @@ const MenuList = () => {
             <NotificationsSettings/>
             <LanguageSettings/>
             <ReportBugSettings/>
+            <AboutSettings/>
         </ScrollView>
     )
 };
