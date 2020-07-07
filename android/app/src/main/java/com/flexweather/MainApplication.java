@@ -1,4 +1,4 @@
-package com.init;
+package com.flexweather;
 
 import android.app.Application;
 import android.content.Context;

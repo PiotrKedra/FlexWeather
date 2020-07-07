@@ -1,4 +1,4 @@
-package com.init;
+package com.flexweather;
 
 import com.facebook.react.ReactActivity;
 import org.devio.rn.splashscreen.SplashScreen; // Import this.
