@@ -12,6 +12,7 @@ import FirstAppLaunchScreen from "./src/main/FirstAppLaunchScreen";
 import InitLocationSearchComponent from "./src/main/location/InitLocationSearchComponent";
 import reducer from "./src/main/ReduxReducer";
 import AboutScreen from "./src/main/menu/settingscreens/AboutScreen";
+import SupportScreen from "./src/main/menu/settingscreens/SupportScreen";
 
 const store = createStore(reducer);
 
@@ -72,6 +73,19 @@ export default function App() {
                               },
                               cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS
                           }}/>
+          <Stack.Screen name="SupportScreen"
+              component={SupportScreen}
+              options={{
+                  title: null,
+                  headerStyle: {
+                      backgroundColor: '#eee',
+                      elevation: 0,
+                  },
+                  headerTitleStyle: {
+                      fontWeight: 'bold',
+                  },
+                  cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS
+              }}/>
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>
