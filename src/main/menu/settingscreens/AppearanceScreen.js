@@ -16,10 +16,6 @@ class AppearanceScreen extends React.PureComponent {
         softTextColor: this.props.theme.softText,
     };
 
-    componentDidMount(){
-        console.log(this.props.theme)
-    }
-
     setTheme(theme){
         let themeEntity;
         if(theme==='light')

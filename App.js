@@ -1,11 +1,12 @@
 import 'react-native-gesture-handler';
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Dimensions} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {CardStyleInterpolators, createStackNavigator} from '@react-navigation/stack';
 import {createStore} from 'redux';
 import {Provider} from 'react-redux';
-import SplashScreen from 'react-native-splash-screen'
+import SplashScreen from 'react-native-splash-screen';
+import AsyncStorage from '@react-native-community/async-storage';
 
 import AppLauncher from './src/main/AppLauncher';
 import WeatherScreen from "./src/main/WeatherScreen";
@@ -15,6 +16,7 @@ import reducer from "./src/main/ReduxReducer";
 import AboutScreen from "./src/main/menu/settingscreens/AboutScreen";
 import SupportScreen from "./src/main/menu/settingscreens/SupportScreen";
 import AppearanceScreen from "./src/main/menu/settingscreens/AppearanceScreen";
+import {getDarkTheme, getLightTheme} from "./src/main/theme/Theme";
 
 const store = createStore(reducer);
 
@@ -22,8 +24,16 @@ const Stack = createStackNavigator();
 
 export default function App() {
 
+  const [theme, setTheme] = useState(getLightTheme());
   useEffect(() => {
     SplashScreen.hide();
+    AsyncStorage.getItem('@theme')
+        .then((theme) => {
+            if(theme === 'light')
+                setTheme(getLightTheme());
+            else if(theme === 'dark')
+                setTheme(getDarkTheme());
+        });
   });
   return (
     <Provider store={store}>
@@ -64,30 +74,31 @@ export default function App() {
                         }}/>
             <Stack.Screen name="AboutScreen"
                           component={AboutScreen}
-                          options={getSettingScreenOptions('ABOUT')}/>
+                          options={getSettingScreenOptions('ABOUT', theme)}/>
           <Stack.Screen name="SupportScreen"
                         component={SupportScreen}
-                        options={getSettingScreenOptions('SUPPORT')}/>
+                        options={getSettingScreenOptions('SUPPORT', theme)}/>
           <Stack.Screen name="AppearanceScreen"
                         component={AppearanceScreen}
-                        options={getSettingScreenOptions('APPEARANCE')}/>
+                        options={getSettingScreenOptions('APPEARANCE', theme)}/>
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>
   );
 }
 
-function getSettingScreenOptions(title){
+function getSettingScreenOptions(title, theme){
     return {
         title: title,
         headerLeft: null,
         headerStyle: {
-            backgroundColor: '#eee',
+            backgroundColor: theme.mainColor,
             elevation: 0,
         },
         headerTitleStyle: {
             fontFamily: 'Neucha-Regular',
             fontSize: 22,
+            color: theme.mainText,
             paddingHorizontal: Dimensions.get('window').width/20
         },
         cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS
