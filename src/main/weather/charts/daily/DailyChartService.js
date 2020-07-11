@@ -6,11 +6,11 @@ import DailyUvIndexChart from "./svgcharts/DailyUvIndexChart";
 import DailyWindChart from "./svgcharts/DailyWindChart";
 
 
-const DailyChartService = ({currentChart, forecast, theme}) => {
+const DailyChartService = ({currentChart, forecast, weatherTheme}) => {
 
     return (
         <ScrollView horizontal={true}>
-            {currentChart==='general' && <DailyGeneralChart forecast={forecast} theme={theme}/>}
+            {currentChart==='general' && <DailyGeneralChart forecast={forecast} weatherTheme={weatherTheme}/>}
             {currentChart==='wind' && <DailyWindChart forecast={forecast}/>}
             {currentChart==='rainfall' && <DailyRainfallCHart forecast={forecast}/>}
             {currentChart==='uv_index' && <DailyUvIndexChart forecast={forecast}/>}

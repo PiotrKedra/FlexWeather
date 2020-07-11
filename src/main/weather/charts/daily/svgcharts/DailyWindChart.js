@@ -4,11 +4,12 @@ import * as d3 from "d3";
 import {getFunctionY} from "../../svgcharts/utility/ChartDrawService";
 import {getDaysText, getFunctionX, getGrid} from "../DailyChartDrawService";
 import COLORS from "../../utility/ChartColors";
+import {connect} from "react-redux";
 
 const SVG_WIDTH = 600;
 const SVG_HEIGHT = 300;
 
-const DailyWindChart = ({forecast}) => {
+const DailyWindChart = ({forecast, theme}) => {
 
     const minValue = 0;
     const potentialMaxValue = d3.max(forecast, d => d.wind_speed);
@@ -16,24 +17,27 @@ const DailyWindChart = ({forecast}) => {
     const xFunction = getFunctionX(forecast, SVG_WIDTH);
     const yFunction = getFunctionY(minValue, maxValue, 100, 60);
 
+    const mainTextColor = theme.mainText;
+    const softTextColor = theme.softText;
+
     return (
         <Svg width={SVG_WIDTH} height={SVG_HEIGHT}>
             <G y={SVG_HEIGHT}>
-                {getGrid(forecast, xFunction, 100, 60)}
+                {getGrid(forecast, xFunction, 100, 60, softTextColor)}
 
-                {getDaysText(forecast, xFunction)}
+                {getDaysText(forecast, xFunction, mainTextColor)}
 
                 {getWindDirectionArrowsForEach(forecast, xFunction)}
-                {getWindBearingStringForEach(forecast, xFunction)}
+                {getWindBearingStringForEach(forecast, xFunction, mainTextColor)}
 
                 {getDataBars(forecast, xFunction, yFunction, maxValue, 60)}
-                {getWindSpeedValues(forecast, xFunction)}
+                {getWindSpeedValues(forecast, xFunction, mainTextColor)}
             </G>
         </Svg>
     )
 };
 
-function getWindSpeedValues(forecast, xFunction){
+function getWindSpeedValues(forecast, xFunction, color){
     return (forecast.map(item => (
         <Text
             key={item.dt}
@@ -41,7 +45,7 @@ function getWindSpeedValues(forecast, xFunction){
             x={xFunction(item.dt)}
             y={-30}
             textAnchor="middle"
-            fill={COLORS.mainText}
+            fill={color}
             fontFamily="Neucha-Regular">
             {Math.round(item.wind_speed*36)/10}
         </Text>
@@ -92,7 +96,7 @@ function getWindArrow(item, xFunction) {
     />
 }
 
-function getWindBearingStringForEach(data, xFunction) {
+function getWindBearingStringForEach(data, xFunction, color) {
     return data.map(item => (
         <Text
             key={item.dt}
@@ -100,7 +104,7 @@ function getWindBearingStringForEach(data, xFunction) {
             x={xFunction(item.dt)}
             y={-190}
             textAnchor="middle"
-            fill={COLORS.gray}
+            fill={color}
             fontFamily="Neucha-Regular">
             {getWindDirectionString(item.wind_deg)}
         </Text>
@@ -128,4 +132,10 @@ function getWindDirectionString(windDirection) {
         return 'N';
 }
 
-export default DailyWindChart;
+function mapStateToProps(state) {
+    return {
+        theme: state.theme
+    }
+}
+
+export default connect(mapStateToProps)(DailyWindChart);

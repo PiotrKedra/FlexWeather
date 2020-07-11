@@ -104,7 +104,7 @@ class AnimatedMenu extends React.PureComponent {
                 <TO style={this.state.menu ? styles.outsideTouchableView : null}
                     onPress={()=> this.showOrHideMenu()}/>
 
-                <Animated.View style={[styles.headerOnScroll, animationStyle, {backgroundColor: this.props.theme.menuColor}]}>
+                <Animated.View style={[styles.headerOnScroll, animationStyle, {backgroundColor: this.props.weatherTheme.menuColor}]}>
                     {!this.state.menu &&
                     <View>
                         <TouchableOpacity style={styles.burgerMenuOnScroll} onPress={() => this.showOrHideMenu()}>

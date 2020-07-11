@@ -4,8 +4,10 @@ import * as d3 from "d3";
 import COLORS from "../../utility/ChartColors";
 import {mapToDayIcon, mapToNightIcon} from "../../utility/ForecastIconMapper";
 import {getDaysText, getFunctionX, getGrid} from "../DailyChartDrawService";
+import {connect} from "react-redux";
+import {main} from "d3/dist/package";
 
-const DailyGeneralChart = ({forecast, theme}) => {
+const DailyGeneralChart = ({forecast, weatherTheme, theme}) => {
 
     const minValue = d3.min(forecast, i => parseInt(i.temp.max));
     const maxValue = d3.max(forecast, i => parseInt(i.temp.max));
@@ -22,19 +24,21 @@ const DailyGeneralChart = ({forecast, theme}) => {
     maxValueRain = maxValueRain < 20 || maxValueRain === undefined ? 20 : maxValueRain;
     const yRainFunction = getFunctionY(minValueRain, maxValueRain, 100, 0);
 
+    const mainTextColor = theme.mainText;
+    const softTextColor = theme.softText;
+
     return (
         <Svg width={600} height={300}>
             <G y={300}>
-                {getDefinitions(theme.mainColor)}
+                {getDefinitions(weatherTheme.mainColor)}
                 {getRainBars(forecast, functionX, yRainFunction, minValueRain, 100)}
                 {generateGradientComponent(forecast, functionX, functionY)}
-                {generateLineComponents(forecast, functionX, functionY, theme.mainColor)}
-                {generateDotForEach(forecast, functionX, functionY, theme.mainColor)}
+                {generateLineComponents(forecast, functionX, functionY, weatherTheme.mainColor)}
+                {generateDotForEach(forecast, functionX, functionY, weatherTheme.mainColor)}
 
-                {generateVerticalGridLines(forecast, functionX)}
-                {getGrid(forecast, functionX, 150, 60)}
+                {getGrid(forecast, functionX, 150, 60, softTextColor)}
 
-                {getDaysText(forecast, functionX)}
+                {getDaysText(forecast, functionX, mainTextColor)}
 
                 {generateForecastImageForEach(forecast, functionX, -260, mapToDayIcon)}
                 {generateForecastImageForEach(forecast, functionX, -48, mapToNightIcon)}
@@ -42,8 +46,8 @@ const DailyGeneralChart = ({forecast, theme}) => {
                 {generateLineComponentsMin(forecast, functionX, functionMinY)}
 
 
-                {getDataTextForEachItemAboveBars(forecast, functionX, functionY, 'max', '°')}
-                {getDataTextForEachItemAboveBars(forecast, functionX, functionMinY, 'min', '°')}
+                {getDataTextForEachItemAboveBars(forecast, functionX, functionY, 'max', '°', mainTextColor)}
+                {getDataTextForEachItemAboveBars(forecast, functionX, functionMinY, 'min', '°', mainTextColor)}
                 {generateDotForEachMin(forecast, functionX, functionMinY)}
             </G>
         </Svg>
@@ -91,22 +95,7 @@ function generateGradientComponent(data, x, y){
     )
 }
 
-function generateVerticalGridLines(data, x) {
-    return (data.map(item => (
-        <Line
-            key={item.dt}
-            x1={x(item.dt)}
-            y1={-220}
-            x2={x(item.dt)}
-            y2={-80}
-            stroke={COLORS.gridColor}
-            strokeDasharray={[3, 3]}
-            strokeWidth="0.5"
-        />
-    )))
-}
-
-function getDataTextForEachItemAboveBars(data, x, y, key, sufix) {
+function getDataTextForEachItemAboveBars(data, x, y, key, sufix, color) {
     return (data.map(item => (
         <Text
             key={item.dt}
@@ -114,7 +103,7 @@ function getDataTextForEachItemAboveBars(data, x, y, key, sufix) {
             x={x(item.dt)}
             y={y(item.temp[key]) * -1 - 6}
             textAnchor="middle"
-            fill={COLORS.mainText}
+            fill={color}
             fontFamily="Neucha-Regular">
             {Math.round(item.temp[key]) + sufix}
         </Text>
@@ -213,4 +202,10 @@ function getFunctionY(minValue, maxValue, graphHeight, initialYCordOfChart) {
         .range(yRange);
 }
 
-export default DailyGeneralChart;
+function mapStateToProps(state) {
+    return {
+        theme: state.theme
+    }
+}
+
+export default connect(mapStateToProps)(DailyGeneralChart);

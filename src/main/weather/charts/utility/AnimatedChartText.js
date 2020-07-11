@@ -18,12 +18,13 @@ class AnimatedChartText extends React.PureComponent{
     }
 
     render(){
+        const textColor = this.props.selected ? '#000' : this.props.textColor;
         return (
             <Animated.View style={{width: this.state.animatedWidth, flexDirection: 'row', justifyContent: 'center'}}>
-                <CustomText style={{fontSize: 20, textAlign: 'left'}}>
+                <CustomText style={{fontSize: 20, textAlign: 'left', color: textColor}}>
                     {this.props.title}
                 </CustomText>
-                {this.props.selected && <CustomText style={{fontSize: 20}}>
+                {this.props.selected && <CustomText style={{fontSize: 20, color: textColor}}>
                     {this.props.selected && (' / (' + this.props.unit + ')')}
                 </CustomText>}
             </Animated.View>

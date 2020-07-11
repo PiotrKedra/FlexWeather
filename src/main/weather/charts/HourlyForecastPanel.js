@@ -13,35 +13,38 @@ class HourlyForecastPanel extends React.PureComponent {
     };
 
     render() {
+
+        const chartNotSelectedStyle = {backgroundColor: this.props.theme.softColor};
+        const mainTextColor = this.props.theme.mainText;
         const ChartView = React.lazy(() => import("./HourlyChartService"));
         return (
-            <View style={[styles.mainView, {backgroundColor: this.props.theme.panelColor}]}>
-                <Text style={styles.title}>
+            <View style={[styles.mainView, {backgroundColor: this.props.theme.mainColor}]}>
+                <Text style={[styles.title, {color: mainTextColor}]}>
                     Hourly forecast
                 </Text>
-                <Text style={{fontSize: 18, color: '#777', paddingLeft: '5%'}}>
+                <Text style={[styles.subtitle, {color: this.props.theme.softText}]}>
                     For next 48 hours
                 </Text>
                 <ScrollView style={styles.selectionView}
                             horizontal={true}>
-                    <TouchableOpacity style={[styles.chartSelectionButton, (this.state.currentChart==='temperature') ? {backgroundColor: this.props.theme.mainColor} : styles.chartNotSelected]}
+                    <TouchableOpacity style={[styles.chartSelectionButton, (this.state.currentChart==='temperature') ? {backgroundColor: this.props.weatherTheme.mainColor} : chartNotSelectedStyle]}
                                       onPress={() => this.setState({currentChart: 'temperature'})}>
-                        <AnimatedChartText selected={this.state.currentChart==='temperature'} title={'temperature'} unit={'°C'}/>
+                        <AnimatedChartText selected={this.state.currentChart==='temperature'} title={'temperature'} unit={'°C'} textColor={mainTextColor}/>
                     </TouchableOpacity>
-                    <TouchableOpacity style={[styles.chartSelectionButton, (this.state.currentChart==='wind') ? {backgroundColor: this.props.theme.mainColor} : styles.chartNotSelected]}
+                    <TouchableOpacity style={[styles.chartSelectionButton, (this.state.currentChart==='wind') ? {backgroundColor: this.props.weatherTheme.mainColor} : chartNotSelectedStyle]}
                                       onPress={() => this.setState({currentChart: 'wind'})}>
-                        <AnimatedChartText selected={this.state.currentChart==='wind'} title={'wind'} unit={'km/h'}/>
+                        <AnimatedChartText selected={this.state.currentChart==='wind'} title={'wind'} unit={'km/h'} textColor={mainTextColor}/>
                     </TouchableOpacity>
-                    <TouchableOpacity style={[styles.chartSelectionButton, (this.state.currentChart==='rainfall') ? {backgroundColor: this.props.theme.mainColor} : styles.chartNotSelected]}
+                    <TouchableOpacity style={[styles.chartSelectionButton, (this.state.currentChart==='rainfall') ? {backgroundColor: this.props.weatherTheme.mainColor} : chartNotSelectedStyle]}
                                       onPress={() => this.setState({currentChart: 'rainfall'})}>
-                        <AnimatedChartText selected={this.state.currentChart==='rainfall'} title={'rainfall'} unit={'mm'}/>
+                        <AnimatedChartText selected={this.state.currentChart==='rainfall'} title={'rainfall'} unit={'mm'} textColor={mainTextColor}/>
                     </TouchableOpacity>
-                    <TouchableOpacity style={[styles.chartSelectionButton, (this.state.currentChart==='humidity') ? {backgroundColor: this.props.theme.mainColor} : styles.chartNotSelected]}>
-                        <AnimatedChartText selected={this.state.currentChart==='humidity'} title={'humidity'} unit={'%'}/>
+                    <TouchableOpacity style={[styles.chartSelectionButton, (this.state.currentChart==='humidity') ? {backgroundColor: this.props.weatherTheme.mainColor} : chartNotSelectedStyle]}>
+                        <AnimatedChartText selected={this.state.currentChart==='humidity'} title={'humidity'} unit={'%'} textColor={mainTextColor}/>
                     </TouchableOpacity>
                 </ScrollView>
                 <Suspense fallback={<ChartLoading/>}>
-                    <ChartView currentChart={this.state.currentChart} hourlyForecast={this.props.hourlyForecast} theme={this.props.theme}/>
+                    <ChartView currentChart={this.state.currentChart} hourlyForecast={this.props.hourlyForecast} weatherTheme={this.props.weatherTheme}/>
                 </Suspense>
             </View>
         )
@@ -61,6 +64,10 @@ const styles = StyleSheet.create({
         color: 'rgb(33,33,33)',
         marginTop: 10,
     },
+    subtitle: {
+        fontSize: 18,
+        paddingLeft: '5%'
+    },
     selectionView: {
         paddingLeft: '5%',
         borderBottomWidth: 1,
@@ -77,9 +84,6 @@ const styles = StyleSheet.create({
         paddingVertical: 5,
         opacity: 0.8
     },
-    chartNotSelected: {
-        backgroundColor: 'rgba(240,240,240,1)',
-    },
     buttonText: {
         fontSize: 20
     },
@@ -88,6 +92,7 @@ const styles = StyleSheet.create({
 function mapStateToProps(state) {
     return {
         hourlyForecast: state.hourlyForecast,
+        weatherTheme: state.weatherTheme,
         theme: state.theme
     };
 }

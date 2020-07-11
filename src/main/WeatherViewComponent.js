@@ -13,8 +13,8 @@ class WeatherViewComponent extends React.PureComponent{
         return (
             <React.Fragment>
                 <View style={{marginHorizontal: '5%', width: '90%', marginTop: 60}}>
-                    <CustomText style={{fontSize: 60, color: this.props.theme.textColor}}>{Math.round(currentForecast.temp)}°</CustomText>
-                    <CustomText style={{fontSize: 20, color: this.props.theme.textColor}}>{this.props.theme.summary}</CustomText>
+                    <CustomText style={{fontSize: 60, color: this.props.weatherTheme.textColor}}>{Math.round(currentForecast.temp)}°</CustomText>
+                    <CustomText style={{fontSize: 20, color: this.props.weatherTheme.textColor}}>{this.props.weatherTheme.summary}</CustomText>
                 </View>
                 <DailyForecastPanel currentForecast={currentForecast} forecast={this.props.todayForecast}/>
                 <HourlyForecastPanel/>

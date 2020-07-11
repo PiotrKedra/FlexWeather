@@ -5,7 +5,7 @@ import * as d3 from "d3";
 import {mapToDayIcon} from "../utility/ForecastIconMapper";
 
 
-function getDaysText(data, xFunction) {
+function getDaysText(data, xFunction, color) {
     return (data.map(item => (
         <Text
             key={item.dt}
@@ -13,7 +13,7 @@ function getDaysText(data, xFunction) {
             x={xFunction(item.dt)}
             y={-270}
             textAnchor="middle"
-            fill={COLORS.mainText}
+            fill={color}
             fontFamily="Neucha-Regular">
             {getDay(item.dt)}
         </Text>
@@ -26,19 +26,19 @@ function getDay(timestamp){
     return days[date.getDay()];
 }
 
-function getHorizontalGridLine(y, shift=0){
+function getHorizontalGridLine(y, color, shift=0){
     return <Line
         x1={20+shift}
         y1={y}
         x2={580-shift}
         y2={y}
-        stroke={COLORS.gridColor}
+        stroke={color}
         strokeDasharray={[3, 3]}
         strokeWidth="0.5"
     />
 }
 
-function generateVerticalGridLines(data, x, y1, y2) {
+function generateVerticalGridLines(data, x, y1, y2, color) {
     return (data.map(item => (
         <Line
             key={item.dt}
@@ -46,20 +46,20 @@ function generateVerticalGridLines(data, x, y1, y2) {
             y1={y1}
             x2={x(item.dt)}
             y2={y2}
-            stroke={COLORS.gridColor}
+            stroke={color}
             strokeDasharray={[3, 3]}
             strokeWidth="0.5"
         />
     )))
 }
 
-function getGrid(data, xFunction, graphHeight, initialYCordOfChart) {
+function getGrid(data, xFunction, graphHeight, initialYCordOfChart, color) {
     return (
         <G>
-            {generateVerticalGridLines(data, xFunction, -graphHeight-initialYCordOfChart-10, -initialYCordOfChart+10)}
-            {getHorizontalGridLine(-(graphHeight + initialYCordOfChart))}
-            {getHorizontalGridLine(-(graphHeight/2 + initialYCordOfChart), 15)}
-            {getHorizontalGridLine(-initialYCordOfChart)}
+            {generateVerticalGridLines(data, xFunction, -graphHeight-initialYCordOfChart-10, -initialYCordOfChart+10, color)}
+            {getHorizontalGridLine(-(graphHeight + initialYCordOfChart), color)}
+            {getHorizontalGridLine(-(graphHeight/2 + initialYCordOfChart), color, 15)}
+            {getHorizontalGridLine(-initialYCordOfChart, color)}
         </G>
     )
 }

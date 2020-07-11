@@ -12,6 +12,7 @@ import getThemeEntity from "./theme/ThemeService";
 import LoadingComponent from "./components/LoadingComponent";
 import NoInternetConnectionComponent from "./components/NoInternetConnectionComponent";
 import RNAndroidLocationEnabler from "react-native-android-location-enabler";
+import {getDarkTheme, getLightTheme} from "./theme/Theme";
 
 const ACTIVE_LOCATION_STORAGE = '@active_location';
 const HOME_LOCATION_STORAGE = '@home_location';
@@ -47,6 +48,7 @@ class AppLauncher extends React.Component {
     }
     //todo re think how this listener should works
     // const unsubscribe = NetInfo.addEventListener(this.internetConnectionListener);
+    this.props.setTheme(getLightTheme());
     try{
       const isStorage = await AsyncStorage.getItem('@active_location');
       if(isStorage === null){
@@ -133,8 +135,8 @@ class AppLauncher extends React.Component {
 
   async loadInitialForecast(location){
     let initialForecast = await fetchRootForecast(location.latitude, location.longitude);
-    const theme = getThemeEntity(initialForecast);
-    await this.props.setInitialForecast(initialForecast, location, theme);
+    const weatherTheme = getThemeEntity(initialForecast);
+    await this.props.setInitialForecast(initialForecast, location, weatherTheme);
     this.props.navigation.replace('MainPage')
   }
 
@@ -155,8 +157,8 @@ class AppLauncher extends React.Component {
   async showForecastFromStorage() {
     const activeLocation = await AsyncStorage.getItem('@active_location');
     const lastForecast = JSON.parse(await AsyncStorage.getItem('@last_forecast'));
-    const theme = getThemeEntity(lastForecast);
-    this.props.setInitialForecast(lastForecast, JSON.parse(activeLocation), theme, false);
+    const weatherTheme = getThemeEntity(lastForecast);
+    this.props.setInitialForecast(lastForecast, JSON.parse(activeLocation), weatherTheme, false);
     this.props.navigation.replace('MainPage')
   }
 
@@ -179,7 +181,8 @@ function mapStateToProps(state) {
 
 function mapDispatcherToProps(dispatch) {
   return {
-    setInitialForecast: (rootForecast, location, theme, saveToStorage=true) => dispatch({type: 'ROOT_FORECAST', payload: {forecast: rootForecast, location: location, theme: theme, saveToStorage: saveToStorage}}),
+    setTheme: (theme) => dispatch({type: 'THEME', payload: theme}),
+    setInitialForecast: (rootForecast, location, weatherTheme, saveToStorage=true) => dispatch({type: 'ROOT_FORECAST', payload: {forecast: rootForecast, location: location, weatherTheme: weatherTheme, saveToStorage: saveToStorage}}),
   };
 }
 

@@ -5,6 +5,7 @@ import {
     Text, Rect, Defs, LinearGradient, Stop, Polygon, Line
 } from 'react-native-svg';
 import * as d3 from 'd3';
+import {connect} from 'react-redux';
 
 import COLORS from "../utility/ChartColors";
 import {
@@ -29,14 +30,17 @@ const RainfallChart = (props) => {
     const xFunction = getFunctionX(data, svgWidth);
     const yFunction = getFunctionY(minValue, maxValue, graphHeight, initialYCordOfChart);
 
+    const mainTextColor = props.theme.mainText;
+    const softTextColor = props.theme.softText;
+
     return (
         <Svg width={svgWidth} height={svgHeight}>
             <G y={svgHeight}>
                 {getDefinitions()}
-                {getGrid(svgWidth, svgHeight, graphHeight, initialYCordOfChart, xFunction, data)}
+                {getGrid(svgWidth, svgHeight, graphHeight, initialYCordOfChart, xFunction, data, softTextColor)}
 
                 {/*/!* day date text *!/*/}
-                {generateDateText(data, svgHeight)}
+                {generateDateText(data, svgHeight, softTextColor)}
 
                 {/*/!* forecast images*!/*/}
                 {generateForecastImageForEach(data, xFunction, graphHeight, initialYCordOfChart)}
@@ -45,8 +49,8 @@ const RainfallChart = (props) => {
                 {getRainfallBars(data, xFunction, yFunction)}
 
                 {/*/!* data values ( text for: hour, temperature, rainfall % ) *!/*/}
-                {generateDegreeTextForEachItem(data, xFunction, yFunction)}
-                {getTimeLabels(data,  xFunction, (initialYCordOfChart + graphHeight) * -1 - 70)}
+                {generateDegreeTextForEachItem(data, xFunction, yFunction, mainTextColor)}
+                {getTimeLabels(data,  xFunction, (initialYCordOfChart + graphHeight) * -1 - 70, mainTextColor)}
             </G>
         </Svg>
     )
@@ -97,7 +101,7 @@ function getRainfallBars(data, xFunction, yFunction){
     })
 }
 
-function generateDegreeTextForEachItem(data, x, y) {
+function generateDegreeTextForEachItem(data, x, y, color) {
     return (data.map(item => (
         <Text
             key={item.dt}
@@ -105,11 +109,17 @@ function generateDegreeTextForEachItem(data, x, y) {
             x={x(item.dt)}
             y={y(item.rain ? item.rain['1h'] : 0) * -1 - 6}
             textAnchor="middle"
-            fill={COLORS.mainText}
+            fill={color}
             fontFamily="Neucha-Regular">
             {Math.round((item.rain ? item.rain['1h'] : 0)*100)/100 + 'mm'}
         </Text>
     )))
 }
 
-export default RainfallChart;
+function mapStateToProps(state){
+    return {
+        theme: state.theme
+    }
+}
+
+export default connect(mapStateToProps)(RainfallChart);

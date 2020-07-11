@@ -4,39 +4,41 @@ import * as d3 from "d3";
 import {getDaysText, getForecastImagesForChart, getFunctionX, getGrid} from "../DailyChartDrawService";
 import {getFunctionY} from "../../svgcharts/utility/ChartDrawService";
 import COLORS from "../../utility/ChartColors";
+import {connect} from "react-redux";
 
 const SVG_WIDTH = 600;
 const SVG_HEIGHT = 300;
 const GRAPH_HEIGHT = 150;
 const INIT_Y_CORD = 60;
 
-const DailyRainfallCHart = ({forecast}) => {
-
-
+const DailyRainfallChart = ({forecast, theme}) => {
     const minValue = 0;
     const potentialMax = d3.max(forecast, d => d.rain);
     const maxValue = 15 > potentialMax ? 15 : potentialMax;
     const xFunction = getFunctionX(forecast, SVG_WIDTH);
     const yFunction = getFunctionY(minValue, maxValue, GRAPH_HEIGHT, INIT_Y_CORD);
 
+    const mainTextColor = theme.mainText;
+    const softTextColor = theme.softText;
+
     return (
         <Svg width={SVG_WIDTH} height={SVG_HEIGHT}>
             <G y={SVG_HEIGHT}>
                 {getDefinitions()}
-                {getGrid(forecast, xFunction, GRAPH_HEIGHT, INIT_Y_CORD)}
-                {getDaysText(forecast, xFunction)}
+                {getGrid(forecast, xFunction, GRAPH_HEIGHT, INIT_Y_CORD, softTextColor)}
+                {getDaysText(forecast, xFunction, mainTextColor)}
 
                 {getGradientForBars(forecast, xFunction, yFunction, INIT_Y_CORD)}
                 {getForecastImagesForChart(forecast, xFunction)}
 
                 {getRainfallBars(forecast, xFunction, yFunction)}
-                {getRainfallValues(forecast, xFunction)}
+                {getRainfallValues(forecast, xFunction, mainTextColor)}
             </G>
         </Svg>
     )
 };
 
-function getRainfallValues(forecast, xFunction){
+function getRainfallValues(forecast, xFunction, color){
     return (forecast.map(item => (
         <Text
             key={item.dt}
@@ -44,7 +46,7 @@ function getRainfallValues(forecast, xFunction){
             x={xFunction(item.dt)}
             y={-30}
             textAnchor="middle"
-            fill={COLORS.mainText}
+            fill={color}
             fontFamily="Neucha-Regular">
             {item.rain ? Math.round(item.rain*10)/10 : 0}
         </Text>
@@ -90,4 +92,10 @@ function getRainfallBars(data, xFunction, yFunction){
     })
 }
 
-export default DailyRainfallCHart;
+function mapStateToProps(state) {
+    return {
+        theme: state.theme
+    }
+}
+
+export default connect(mapStateToProps)(DailyRainfallChart);

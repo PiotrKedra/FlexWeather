@@ -6,11 +6,12 @@ import {
 } from "../../svgcharts/utility/ChartDrawService";
 import * as d3 from "d3";
 import {getDaysText, getForecastImagesForChart, getFunctionX, getGrid} from "../DailyChartDrawService";
+import {connect} from "react-redux";
 
 const SVG_WIDTH = 600;
 const SVG_HEIGHT = 300;
 
-const DailyUvIndexChart = ({forecast}) => {
+const DailyUvIndexChart = ({forecast, theme}) => {
 
     const minValue = 0;
     const potentialMax = d3.max(forecast, d => d.uvi);
@@ -18,24 +19,27 @@ const DailyUvIndexChart = ({forecast}) => {
     const xFunction = getFunctionX(forecast, SVG_WIDTH);
     const yFunction = getFunctionY(minValue, maxValue, 150, 60);
 
+    const mainTextColor = theme.mainText;
+    const softTextColor = theme.softText;
+
     return (
         <Svg width={SVG_WIDTH} height={SVG_HEIGHT}>
             <G y={SVG_HEIGHT}>
-                {getGrid(forecast, xFunction, 150, 60)}
+                {getGrid(forecast, xFunction, 150, 60, softTextColor)}
 
                 {getForecastImagesForChart(forecast, xFunction)}
-                {getDaysText(forecast, xFunction)}
+                {getDaysText(forecast, xFunction, mainTextColor)}
 
                 {/* data bars */}
                 {generateDataBars(forecast, xFunction, yFunction, 60)}
 
-                {drawUvIndexValues(forecast, xFunction)}
+                {drawUvIndexValues(forecast, xFunction, mainTextColor)}
             </G>
         </Svg>
     )
 };
 
-function drawUvIndexValues(forecast, xFunction){
+function drawUvIndexValues(forecast, xFunction, color){
     return (forecast.map(item => (
         <Text
             key={item.dt}
@@ -43,7 +47,7 @@ function drawUvIndexValues(forecast, xFunction){
             x={xFunction(item.dt)}
             y={-30}
             textAnchor="middle"
-            fill={COLORS.mainText}
+            fill={color}
             fontFamily="Neucha-Regular">
             {Math.round(item.uvi*10)/10}
         </Text>
@@ -80,4 +84,10 @@ function getUVIndexColor(uvIndex) {
         return UV_COLORS.uvExtreme;
 }
 
-export default DailyUvIndexChart;
+function mapStateToProps(state) {
+    return {
+        theme: state.theme
+    }
+}
+
+export default connect(mapStateToProps)(DailyUvIndexChart);

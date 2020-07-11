@@ -6,6 +6,7 @@ import {
     Svg,
     Text
 } from "react-native-svg";
+import {connect} from 'react-redux';
 import * as d3 from "d3";
 
 import {
@@ -30,24 +31,27 @@ const WindChart = (props) => {
     const xFunction = getFunctionX(data, svgWidth);
     const yFunction = getFunctionY(minValue, maxValue, graphHeight, initialYCordOfChart);
 
+    const mainTextColor = props.theme.mainText;
+    const softTextColor = props.theme.softText;
+
     return (
         <Svg width={svgWidth} height={svgHeight}>
             <G y={svgHeight}>
-                {getGrid(svgWidth, svgHeight, graphHeight, initialYCordOfChart, xFunction, data)}
-                {generateDateText(data, svgHeight)}
+                {getGrid(svgWidth, svgHeight, graphHeight, initialYCordOfChart, xFunction, data, softTextColor)}
+                {generateDateText(data, svgHeight, softTextColor)}
 
                 {getWindDirectionArrowsForEach(data, xFunction)}
                 {generateDataBars(data, xFunction, yFunction, maxValue, initialYCordOfChart)}
 
-                {getWindBearingStringForEach(data, xFunction)}
-                {getDataTextForEachItemAboveBars(data, xFunction, yFunction)}
-                {getTimeLabels(data, xFunction, svgHeight * -1 + 40, 20)}
+                {getWindBearingStringForEach(data, xFunction, mainTextColor)}
+                {getDataTextForEachItemAboveBars(data, xFunction, yFunction, mainTextColor)}
+                {getTimeLabels(data, xFunction, svgHeight * -1 + 40, mainTextColor)}
             </G>
         </Svg>
     )
 };
 
-function getDataTextForEachItemAboveBars(data, x, y) {
+function getDataTextForEachItemAboveBars(data, x, y, color) {
     return (data.map(item => (
         <Text
             key={item.dt}
@@ -55,7 +59,7 @@ function getDataTextForEachItemAboveBars(data, x, y) {
             x={x(item.dt)}
             y={y(item.wind_speed) * -1 - 6}
             textAnchor="middle"
-            fill={COLORS.mainText}
+            fill={color}
             fontFamily="Neucha-Regular">
             {Math.round(item.wind_speed*36)/10}
         </Text>
@@ -112,7 +116,7 @@ function getWindArrow(item, xFunction) {
     />
 }
 
-function getWindBearingStringForEach(data, xFunction) {
+function getWindBearingStringForEach(data, xFunction, color) {
     return data.map(item => (
         <Text
             key={item.dt}
@@ -120,7 +124,7 @@ function getWindBearingStringForEach(data, xFunction) {
             x={xFunction(item.dt)}
             y={-130}
             textAnchor="middle"
-            fill={COLORS.gray}
+            fill={color}
             fontFamily="Neucha-Regular">
             {getWindDirectionString(item.wind_deg)}
         </Text>
@@ -148,4 +152,10 @@ function getWindDirectionString(windDirection) {
         return 'N';
 }
 
-export default WindChart;
+function mapStateToProps(state){
+    return {
+        theme: state.theme
+    }
+}
+
+export default connect(mapStateToProps)(WindChart);

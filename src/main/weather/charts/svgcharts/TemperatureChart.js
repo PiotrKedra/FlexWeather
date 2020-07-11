@@ -1,5 +1,5 @@
 import React from 'react';
-import {View} from 'react-native';
+import {connect} from 'react-redux';
 import {Svg, G, Line, Circle, Text, Image, Polygon, Defs, LinearGradient, Stop, Rect} from 'react-native-svg';
 import * as d3 from 'd3';
 import IMAGES from "../../../../resource/ImagePath";
@@ -31,29 +31,32 @@ const TemperatureChart = (props) => {
     const xFunction = getFunctionX(data, svgWidth);
     const yFunction = getFunctionY(minValue, maxValue, graphHeight, initialYCordOfChart);
 
+    const mainTextColor = props.theme.mainText;
+    const softTextColor = props.theme.softText;
+
     return (
         <Svg width={svgWidth} height={svgHeight}>
             <G y={svgHeight}>
-                {getDefinitions(props.theme.mainColor)}
-                {getGrid(svgWidth, svgHeight, graphHeight, initialYCordOfChart, xFunction, data)}
+                {getDefinitions(props.weatherTheme.mainColor)}
+                {getGrid(svgWidth, svgHeight, graphHeight, initialYCordOfChart, xFunction, data, softTextColor)}
 
-                {generateSingleText('MAX ' + Math.round(maxValue) + DEGREE_SIGN, 13, -initialYCordOfChart - graphHeight - 2)}
-                {generateSingleText('MIN ' + Math.round(minValue) + DEGREE_SIGN, 13, -initialYCordOfChart - 2)}
-                {generateDateText(data, svgHeight)}
+                {generateSingleText('MAX ' + Math.round(maxValue) + DEGREE_SIGN, 13, -initialYCordOfChart - graphHeight - 2, softTextColor)}
+                {generateSingleText('MIN ' + Math.round(minValue) + DEGREE_SIGN, 13, -initialYCordOfChart - 2, softTextColor)}
+                {generateDateText(data, svgHeight, softTextColor)}
 
                 {/* forecast images*/}
                 {generateForecastImageForEach(data, xFunction, graphHeight, initialYCordOfChart)}
-                {generateRainfallImageForEach(data, xFunction)}
+                {generateRainfallImageForEach(data, xFunction, mainTextColor)}
 
                 {/* temperature path */}
-                {generateGradientComponent(data, xFunction, yFunction, initialYCordOfChart, props.theme.mainColor)}
-                {generateLineComponents(data, xFunction, yFunction, props.theme.mainColor)}
-                {generateDotForEach(data, xFunction, yFunction, props.theme.mainColor)}
+                {generateGradientComponent(data, xFunction, yFunction, initialYCordOfChart, props.weatherTheme.mainColor)}
+                {generateLineComponents(data, xFunction, yFunction, props.weatherTheme.mainColor)}
+                {generateDotForEach(data, xFunction, yFunction, props.weatherTheme.mainColor)}
 
                 {/* data values ( text for: hour, temperature, rainfall % ) */}
-                {getDataTextForEachItemAboveBars(data, xFunction, yFunction, 'temp', DEGREE_SIGN)}
-                {getRainData(data, xFunction)}
-                {getTimeLabels(data, xFunction, svgHeight*-1 + 40)}
+                {getDataTextForEachItemAboveBars(data, xFunction, yFunction, 'temp', DEGREE_SIGN, mainTextColor)}
+                {getRainData(data, xFunction, softTextColor)}
+                {getTimeLabels(data, xFunction, svgHeight*-1 + 40, mainTextColor)}
             </G>
         </Svg>
     );
@@ -68,7 +71,7 @@ function getDefinitions(color=COLORS.pathBlue) {
       </Defs>;
 }
 
-function generateRainfallImageForEach(data, x) {
+function generateRainfallImageForEach(data, x, color) {
   return (data.map(item => (
       <Image
           key={item.dt}
@@ -83,7 +86,7 @@ function generateRainfallImageForEach(data, x) {
   )))
 }
 
-function getRainData(data, xFunction) {
+function getRainData(data, xFunction, color) {
     return (data.map(item => (
         <Text
             key={item.dt}
@@ -91,7 +94,7 @@ function getRainData(data, xFunction) {
             x={xFunction(item.dt)}
             y={-20}
             textAnchor="start"
-            fill={COLORS.gray}
+            fill={color}
             fontFamily="Neucha-Regular">
             {item.rain ? item.rain['1h']+'mm' : '0mm'}
         </Text>
@@ -148,16 +151,22 @@ function generateDotForEach(data, x, y, color) {
         )))
 }
 
-function generateSingleText(textValue, x, y) {
+function generateSingleText(textValue, x, y, color) {
       return <Text
           fontSize="13"
           x={x}
           y={y}
           textAnchor="start"
-          fill={COLORS.gridColor}
+          fill={color}
           fontFamily="Neucha-Regular">
         {textValue}
       </Text>;
 }
 
-export default TemperatureChart;
+function mapStateToProps(state){
+    return {
+        theme: state.theme
+    }
+}
+
+export default connect(mapStateToProps)(TemperatureChart);

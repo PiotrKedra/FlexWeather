@@ -24,43 +24,43 @@ function getFunctionY(minValue, maxValue, graphHeight, initialYCordOfChart) {
         .range(yRange);
 }
 
-function getGrid(svgWidth, svgHeight, graphHeight, initialYCordOfChart, xFunction, data) {
+function getGrid(svgWidth, svgHeight, graphHeight, initialYCordOfChart, xFunction, data, color) {
     return (
         <G>
-            {generateVerticalBeginLine(svgHeight)}
-            {generateFullLengthLine(-initialYCordOfChart - graphHeight, svgWidth, 20)}
-            {generateFullLengthLine(-initialYCordOfChart - graphHeight / 2, svgWidth,50)}
-            {generateFullLengthLine(-initialYCordOfChart, svgWidth, 20)}
-            {generateVerticalGridLines(data, xFunction, graphHeight, initialYCordOfChart)}
+            {generateVerticalBeginLine(svgHeight, color)}
+            {generateFullLengthLine(-initialYCordOfChart - graphHeight, svgWidth, color, 20, )}
+            {generateFullLengthLine(-initialYCordOfChart - graphHeight / 2, svgWidth, color, 50)}
+            {generateFullLengthLine(-initialYCordOfChart, svgWidth, color, 20)}
+            {generateVerticalGridLines(data, xFunction, graphHeight, initialYCordOfChart, color)}
         </G>
     )
 }
 
-function generateVerticalBeginLine(svgHeight) {
+function generateVerticalBeginLine(svgHeight, color) {
     return <Line
         x1={10}
         y1={-20}
         x2={10}
         y2={-svgHeight}
-        stroke={COLORS.gridColor}
+        stroke={color}
         strokeDasharray={[3, 3]}
         strokeWidth="0.5"
     />;
 }
 
-function generateFullLengthLine(y, svgWidth, xPadding = 0) {
+function generateFullLengthLine(y, svgWidth, color, xPadding = 0) {
     return <Line
         x1={10 + xPadding}
         y1={y}
         x2={svgWidth - xPadding}
         y2={y}
-        stroke={COLORS.gridColor}
+        stroke={color}
         strokeDasharray={[3, 3]}
         strokeWidth="0.5"
     />;
 }
 
-function generateVerticalGridLines(data, x, graphHeight, initialYCordOfChart) {
+function generateVerticalGridLines(data, x, graphHeight, initialYCordOfChart, color) {
     return (data.map(item => (
         <Line
             key={item.dt}
@@ -68,7 +68,7 @@ function generateVerticalGridLines(data, x, graphHeight, initialYCordOfChart) {
             y1={-initialYCordOfChart + 10}
             x2={x(item.dt)}
             y2={-initialYCordOfChart - graphHeight - 10}
-            stroke={COLORS.gridColor}
+            stroke={color}
             strokeDasharray={[3, 3]}
             strokeWidth="0.5"
         />
@@ -89,13 +89,13 @@ function generateForecastImageForEach(data, x, graphHeight, initialYCordOfChart)
     ))
 }
 
-function generateDateText(data, svgHeight) {
+function generateDateText(data, svgHeight, color) {
     return <Text
         fontSize="20"
         x={13}
         y={-svgHeight}
         textAnchor="start"
-        fill={COLORS.gridColor}
+        fill={color}
         fontFamily="Neucha-Regular"
         transform="rotate(90, 3, -230)">
         {parseToDay(data[0].dt)}
@@ -107,7 +107,7 @@ function parseToDay(timestamp) {
     return days[new Date(timestamp*1000).getDay()];
 }
 
-function getTimeLabels(data, xFunction, y){
+function getTimeLabels(data, xFunction, y, color){
     return (data.map(item => (
         <Text
             key={item.dt}
@@ -115,7 +115,7 @@ function getTimeLabels(data, xFunction, y){
             x={xFunction(item.dt)}
             y={y}
             textAnchor="middle"
-            fill={COLORS.mainText}
+            fill={color}
             fontFamily="Neucha-Regular">
             {parseTime(item.dt)}
         </Text>
@@ -143,7 +143,7 @@ function generateTextForEachItem(data, itemKey, xFunction, xShift, y, fontSize, 
     )))
 }
 
-function getDataTextForEachItemAboveBars(data, x, y, key, sufix) {
+function getDataTextForEachItemAboveBars(data, x, y, key, sufix, color) {
     return (data.map(item => (
         <Text
             key={item.dt}
@@ -151,7 +151,7 @@ function getDataTextForEachItemAboveBars(data, x, y, key, sufix) {
             x={x(item.dt)}
             y={y(item[key]) * -1 - 6}
             textAnchor="middle"
-            fill={COLORS.mainText}
+            fill={color}
             fontFamily="Neucha-Regular">
             {Math.round(item[key]) + sufix}
         </Text>

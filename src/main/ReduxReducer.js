@@ -28,12 +28,16 @@ const reducer = (state = {}, action) => {
                 activeLocation: action.payload.location,
                 rootForecastPerDay: action.payload.forecast.daily,
                 hourlyForecast: action.payload.forecast.hourly,
-                theme: action.payload.theme
+                weatherTheme: action.payload.weatherTheme
             });
         case 'CURRENT_TIMESTAMP':
             return Object.assign({}, state, {
                 currentTimestamp: action.payload,
             });
+        case 'THEME':
+            return Object.assign({}, state, {
+                theme: action.payload
+            })
     }
     return state;
 };

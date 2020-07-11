@@ -8,7 +8,7 @@ import RainfallChart from "./svgcharts/RainfallChart";
 const ChartView = (props) => {
     return  (
         <ScrollView horizontal={true}>
-            {(props.currentChart === 'temperature') && <HourlyTemperatureChart hourlyForecast={props.hourlyForecast} theme={props.theme}/>}
+            {(props.currentChart === 'temperature') && <HourlyTemperatureChart hourlyForecast={props.hourlyForecast} weatherTheme={props.weatherTheme}/>}
             {(props.currentChart === 'wind') && <HourlyWindChart hourlyForecast={props.hourlyForecast}/>}
             {(props.currentChart === 'rainfall') && <HourlyRainfallChart hourlyForecast={props.hourlyForecast}/>}
         </ScrollView>
@@ -21,7 +21,7 @@ const HourlyTemperatureChart = (props) => {
         <TemperatureChart key={i++}
                           data={hourlyForecastPerDay}
                           dimensions={getDimensions(hourlyForecastPerDay.length)}
-                          theme={props.theme}
+                          weatherTheme={props.weatherTheme}
         />)
 };
 

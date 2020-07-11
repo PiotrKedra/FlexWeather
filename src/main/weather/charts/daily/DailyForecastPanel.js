@@ -14,78 +14,82 @@ class DailyForecastPanel extends React.PureComponent{
     };
 
     render() {
+
+        const imageStyle = [styles.image, {tintColor: this.props.theme.mainText}];
+        const valueTextStyle = [styles.valueText, {color: this.props.theme.mainText}];
+        const smallTitleTextStyle = [styles.smallTitleText, {color: this.props.theme.softText}];
+        const chartNotSelectedStyle = {backgroundColor: this.props.theme.softColor};
         return (
-            <View style={[styles.mainView, {backgroundColor: this.props.theme.panelColor}]}>
-                <CustomText style={styles.title}>
+            <View style={[styles.mainView, {backgroundColor: this.props.theme.mainColor}]}>
+                <CustomText style={[styles.title, {color: this.props.theme.mainText}]}>
                     Today forecast
                 </CustomText>
-                <CustomText style={{fontSize: 18, color: '#777', paddingLeft: '5%'}}>
+                <CustomText style={[styles.subtitle, {color: this.props.theme.softText}]}>
                     Details
                 </CustomText>
                 <View style={{flexDirection: 'row', paddingLeft: '5%', marginVertical: 20}}>
                     <View style={{flex: 1, flexDirection: 'row'}}>
-                        <Image style={{width: 45, height: 45}} source={require('../../../../../assets/images/details/temperature.png')}/>
+                        <Image style={imageStyle} source={require('../../../../../assets/images/details/temperature.png')}/>
                         <View style={{paddingLeft: 10}}>
-                            <CustomText style={{fontSize: 20}}>{Math.round(this.props.forecast[0].temp.max)}°/{Math.round(this.props.forecast[0].temp.min)}°</CustomText>
-                            <CustomText style={{fontSize: 17, color: '#666'}}>temperature</CustomText>
+                            <CustomText style={valueTextStyle}>{Math.round(this.props.forecast[0].temp.max)}°/{Math.round(this.props.forecast[0].temp.min)}°</CustomText>
+                            <CustomText style={smallTitleTextStyle}>temperature</CustomText>
                         </View>
                     </View>
                     <View style={{flex: 1, flexDirection: 'row'}}>
-                        <Image style={{width: 45, height: 45}} source={require('../../../../../assets/images/details/sensed-temperature.png')}/>
+                        <Image style={imageStyle} source={require('../../../../../assets/images/details/sensed-temperature.png')}/>
                         <View style={{paddingLeft: 10, flexShrink: 1}}>
-                            <CustomText style={{fontSize: 20}}>{Math.round(this.props.currentForecast.feels_like)}°</CustomText>
-                            <Text style={{fontFamily: 'Neucha-Regular', fontSize: 17, color: '#666'}}>sensed temperature</Text>
+                            <CustomText style={valueTextStyle}>{Math.round(this.props.currentForecast.feels_like)}°</CustomText>
+                            <Text style={[smallTitleTextStyle, {fontFamily: 'Neucha-Regular'}]}>sensed temperature</Text>
                         </View>
                     </View>
                 </View>
                 <View style={{flexDirection: 'row', paddingLeft: '5%', marginBottom: 20}}>
                     <View style={{flex: 1, flexDirection: 'row'}}>
-                        <Image style={{width: 45, height: 45}} source={require('../../../../../assets/images/details/rainfall.png')}/>
+                        <Image style={imageStyle} source={require('../../../../../assets/images/details/rainfall.png')}/>
                         <View style={{paddingLeft: 10}}>
-                            <CustomText style={{fontSize: 20}}>{this.props.forecast[0].rain ? this.props.forecast[0].rain : 0} mm</CustomText>
-                            <CustomText style={{fontSize: 17, color: '#666'}}>rainfall</CustomText>
+                            <CustomText style={valueTextStyle}>{this.props.forecast[0].rain ? this.props.forecast[0].rain : 0} mm</CustomText>
+                            <CustomText style={smallTitleTextStyle}>rainfall</CustomText>
                         </View>
                     </View>
                     <View style={{flex: 1, flexDirection: 'row'}}>
-                        <Image style={{width: 45, height: 45}} source={require('../../../../../assets/images/details/wind-speed.png')}/>
+                        <Image style={imageStyle} source={require('../../../../../assets/images/details/wind-speed.png')}/>
                         <View style={{paddingLeft: 10}}>
-                            <CustomText style={{fontSize: 20}}>{Math.round(this.props.currentForecast.wind_speed*36)/10} km/h</CustomText>
-                            <CustomText style={{fontSize: 17, color: '#666'}}>wind speed</CustomText>
+                            <CustomText style={valueTextStyle}>{Math.round(this.props.currentForecast.wind_speed*36)/10} km/h</CustomText>
+                            <CustomText style={smallTitleTextStyle}>wind speed</CustomText>
                         </View>
                     </View>
                 </View>
-                <CustomText style={styles.title}>
+                <CustomText style={[styles.title, {color: this.props.theme.mainText}]}>
                     Daily forecast
                 </CustomText>
-                <CustomText style={{fontSize: 18, color: '#777', paddingLeft: '5%'}}>
+                <CustomText style={[styles.subtitle, {color: this.props.theme.softText}]}>
                     For next 7 days
                 </CustomText>
                 <ScrollView style={styles.selectionView}
                             horizontal={true}>
-                    <TouchableOpacity style={[styles.chartSelectionButton, (this.state.currentChart==='general') ? {backgroundColor: this.props.theme.mainColor} : styles.chartNotSelected]}
+                    <TouchableOpacity style={[styles.chartSelectionButton, (this.state.currentChart==='general') ? {backgroundColor: this.props.weatherTheme.mainColor} : chartNotSelectedStyle]}
                                       onPress={() => this.setState({currentChart: 'general'})}>
 
-                        <AnimatedChartText selected={this.state.currentChart==='general'} title={'general'} unit={'°C'}/>
+                        <AnimatedChartText selected={this.state.currentChart==='general'} title={'general'} unit={'°C'} textColor={this.props.theme.mainText}/>
                     </TouchableOpacity>
-                    <TouchableOpacity style={[styles.chartSelectionButton, (this.state.currentChart==='wind') ? {backgroundColor: this.props.theme.mainColor} : styles.chartNotSelected]}
+                    <TouchableOpacity style={[styles.chartSelectionButton, (this.state.currentChart==='wind') ? {backgroundColor: this.props.weatherTheme.mainColor} : chartNotSelectedStyle]}
                                       onPress={() => this.setState({currentChart: 'wind'})}>
-                        <AnimatedChartText selected={this.state.currentChart==='wind'} title={'wind'} unit={'km/h'}/>
+                        <AnimatedChartText selected={this.state.currentChart==='wind'} title={'wind'} unit={'km/h'}  textColor={this.props.theme.mainText}/>
                     </TouchableOpacity>
-                    <TouchableOpacity style={[styles.chartSelectionButton, (this.state.currentChart==='rainfall') ? {backgroundColor: this.props.theme.mainColor} : styles.chartNotSelected]}
+                    <TouchableOpacity style={[styles.chartSelectionButton, (this.state.currentChart==='rainfall') ? {backgroundColor: this.props.weatherTheme.mainColor} : chartNotSelectedStyle]}
                                       onPress={() => this.setState({currentChart: 'rainfall'})}>
-                        <AnimatedChartText selected={this.state.currentChart==='rainfall'} title={'rainfall'} unit={'mm'}/>
+                        <AnimatedChartText selected={this.state.currentChart==='rainfall'} title={'rainfall'} unit={'mm'} textColor={this.props.theme.mainText}/>
                     </TouchableOpacity>
-                    <TouchableOpacity style={[styles.chartSelectionButton, (this.state.currentChart==='uv_index') ? {backgroundColor: this.props.theme.mainColor} : styles.chartNotSelected, {marginRight: 30}]}
+                    <TouchableOpacity style={[styles.chartSelectionButton, (this.state.currentChart==='uv_index') ? {backgroundColor: this.props.weatherTheme.mainColor} : chartNotSelectedStyle, {marginRight: 30}]}
                                       onPress={() => this.setState({currentChart: 'uv_index'})}>
-                        <CustomText style={styles.buttonText}>
+                        <CustomText style={[styles.buttonText, {color: (this.state.currentChart==='uv_index') ? '#000' : this.props.theme.mainText}]}>
                             uv index
                         </CustomText>
                     </TouchableOpacity>
                 </ScrollView>
                 <Suspense fallback={<ChartLoading/>}>
-                    <DailyChartService currentChart={this.state.currentChart} forecast={this.props.forecast} theme={this.props.theme}/>
+                    <DailyChartService currentChart={this.state.currentChart} forecast={this.props.forecast} weatherTheme={this.props.weatherTheme}/>
                 </Suspense>
-
             </View>
         )
     }
@@ -100,8 +104,21 @@ const styles = StyleSheet.create({
     title: {
         fontSize: 30,
         paddingLeft: '5%',
-        color: 'rgb(33,33,33)',
         marginTop: 10,
+    },
+    subtitle: {
+        fontSize: 18,
+        paddingLeft: '5%'
+    },
+    image: {
+        width: 45,
+        height: 45
+    },
+    valueText: {
+        fontSize: 20
+    },
+    smallTitleText: {
+        fontSize: 17
     },
     selectionView: {
         paddingLeft: '5%',
@@ -132,6 +149,7 @@ const styles = StyleSheet.create({
 
 function mapStateToProps(state) {
     return {
+        weatherTheme: state.weatherTheme,
         theme: state.theme
     };
 }

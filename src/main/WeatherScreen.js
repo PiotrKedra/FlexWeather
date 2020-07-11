@@ -57,7 +57,7 @@ class WeatherScreen extends React.Component {
       <View style={{ flex: 1 }}>
         <ImageBackground
           style={styles.imageBackground}
-          source={this.props.theme.background}
+          source={this.props.weatherTheme.background}
         >
           <GeneralStatusBar/>
 
@@ -76,22 +76,22 @@ class WeatherScreen extends React.Component {
                   }}
                   onPress={() => this.props.navigation.navigate('SearchScreen', {saveHomeLocation: false})}
               >
-                <Image style={{width: 26, height: 26, marginBottom: 2, marginRight: 5, tintColor: this.props.theme.textColor}} source={require('../../assets/images/icons/location-marker.png')}/>
-                <Text style={{fontSize: 30, color: this.props.theme.textColor}}>
+                <Image style={{width: 26, height: 26, marginBottom: 2, marginRight: 5, tintColor: this.props.weatherTheme.textColor}} source={require('../../assets/images/icons/location-marker.png')}/>
+                <Text style={{fontSize: 30, color: this.props.weatherTheme.textColor}}>
                   {this.props.activeLocation.city}
                 </Text>
               </TouchableOpacity>
             </Animated.View>
             <WeatherViewComponent currentForecast={this.props.currentForecast}
                                   todayForecast={this.props.forecast}
-                                  theme={this.props.theme}
+                                  weatherTheme={this.props.weatherTheme}
             />
             <View style={{flexDirection: 'row', marginHorizontal: '4%', marginVertical: 5}}>
-              <PoweredBy theme={this.props.theme}/>
-              <RefreshInfo theme={this.props.theme}/>
+              <PoweredBy weatherTheme={this.props.weatherTheme}/>
+              <RefreshInfo weatherTheme={this.props.weatherTheme}/>
             </View>
           </ScrollView>
-          <AnimatedMenu isScroll={this.state.scroll} theme={this.props.theme} location={this.props.activeLocation.city} navigation={this.props.navigation}/>
+          <AnimatedMenu isScroll={this.state.scroll} weatherTheme={this.props.weatherTheme} location={this.props.activeLocation.city} navigation={this.props.navigation}/>
           <NoInternetConnectionComponent/>
         </ImageBackground>
       </View>
@@ -112,7 +112,7 @@ function mapStateToProps(state) {
     activeLocation: state.activeLocation,
     days: state.days,
     forecast: state.rootForecastPerDay,
-    theme: state.theme
+    weatherTheme: state.weatherTheme
   };
 }
 
