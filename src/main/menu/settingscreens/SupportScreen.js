@@ -34,8 +34,7 @@ const SupportScreen = () => {
 };
 
 function sendMail() {
-    let url = 'mailto:pkedra.studio@gmail.com';
-    Linking.openURL(url);
+    Linking.openURL('mailto:pkedra.studio@gmail.com');
 }
 
 function redirectToStorePage(){

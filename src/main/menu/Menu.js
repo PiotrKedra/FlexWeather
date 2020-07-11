@@ -1,5 +1,5 @@
 import React from "react";
-import {View, TouchableOpacity, Image} from "react-native";
+import {View, TouchableOpacity, Image, Linking} from "react-native";
 import MenuLocationComponent from "./MenuLocationComponent";
 import MenuList from "./MenuList";
 import CustomText from "../components/CustomText";
@@ -20,15 +20,18 @@ const Menu = (props) => {
                     <Image style={{height: 30, width: 30}} source={require('../../../assets/images/icons/edit.png')}/>
                     <CustomText style={{fontSize: 25, marginHorizontal: 10}}>Appearance</CustomText>
                 </TouchableOpacity>
-                <TouchableOpacity style={{flexDirection: 'row', alignItems: 'center'}} onPress={() => props.navigation.navigate('SupportScreen')}>
+                <TouchableOpacity style={{flexDirection: 'row', alignItems: 'center'}}
+                                  onPress={() => props.navigation.navigate('SupportScreen')}>
                     <Image style={{height: 30, width: 30}} source={require('../../../assets/images/icons/edit.png')}/>
                     <CustomText style={{fontSize: 25, marginHorizontal: 10}}>Support</CustomText>
                 </TouchableOpacity>
-                <TouchableOpacity style={{flexDirection: 'row', alignItems: 'center'}}>
+                <TouchableOpacity style={{flexDirection: 'row', alignItems: 'center'}}
+                                  onPress={() => Linking.openURL('market://details?id=myandroidappid')}>
                     <Image style={{height: 30, width: 30}} source={require('../../../assets/images/icons/edit.png')}/>
                     <CustomText style={{fontSize: 25, marginHorizontal: 10}}>Rate the app</CustomText>
                 </TouchableOpacity>
-                <TouchableOpacity style={{flexDirection: 'row', alignItems: 'center'}} onPress={() => props.navigation.navigate('AboutScreen')}>
+                <TouchableOpacity style={{flexDirection: 'row', alignItems: 'center'}}
+                                  onPress={() => props.navigation.navigate('AboutScreen')}>
                     <Image style={{height: 30, width: 30}} source={require('../../../assets/images/icons/edit.png')}/>
                     <CustomText style={{fontSize: 25, marginHorizontal: 10}}>About</CustomText>
                 </TouchableOpacity>

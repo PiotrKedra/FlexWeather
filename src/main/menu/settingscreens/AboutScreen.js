@@ -17,11 +17,17 @@ const AboutScreen = () => {
             </View>
             <View style={styles.itemView}>
                 <Text style={styles.titleText}>contact</Text>
-                <Text style={[styles.contentText ,{textDecorationLine: 'underline'}]}>pkedra.studio@gmail.com</Text>
+                <Text style={[styles.contentText ,{textDecorationLine: 'underline'}]}
+                      onPress={() => Linking.openURL('mailto:pkedra.studio@gmail.com')}>
+                    pkedra.studio@gmail.com
+                </Text>
             </View>
             <View style={styles.itemView}>
                 <Text style={styles.titleText}>website</Text>
-                <Text style={[styles.contentText, {textDecorationLine: 'underline'}]} onPress={() => Linking.openURL('https://flexweather.github.io')}>flexweather.github.io</Text>
+                <Text style={[styles.contentText, {textDecorationLine: 'underline'}]}
+                      onPress={() => Linking.openURL('https://flexweather.github.io')}>
+                    flexweather.github.io
+                </Text>
             </View>
             <View style={[styles.itemView, {paddingBottom: 30}]}>
                 <Text style={styles.titleText}>created with</Text>
@@ -32,7 +38,10 @@ const AboutScreen = () => {
                 <Text style={styles.contentText}>  {'\u2022'} forca</Text>
                 <View style={{flexDirection: 'row'}}>
                     <Text style={styles.contentText}>  {'\u2022'} app icons by </Text>
-                    <Text style={[styles.contentText, {textDecorationLine: 'underline'}]} onPress={() => Linking.openURL('https://icons8.com/')}>icons8</Text>
+                    <Text style={[styles.contentText, {textDecorationLine: 'underline'}]}
+                          onPress={() => Linking.openURL('https://icons8.com/')}>
+                        icons8
+                    </Text>
                 </View>
             </View>
         </ScrollView>
