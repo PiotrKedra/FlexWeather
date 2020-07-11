@@ -1,5 +1,6 @@
 import 'react-native-gesture-handler';
 import React, {useEffect} from 'react';
+import {Dimensions} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {CardStyleInterpolators, createStackNavigator} from '@react-navigation/stack';
 import {createStore} from 'redux';
@@ -62,32 +63,29 @@ export default function App() {
                         }}/>
             <Stack.Screen name="AboutScreen"
                           component={AboutScreen}
-                          options={{
-                              title: null,
-                              headerStyle: {
-                                  backgroundColor: '#eee',
-                                  elevation: 0,
-                              },
-                              headerTitleStyle: {
-                                  fontWeight: 'bold',
-                              },
-                              cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS
-                          }}/>
+                          options={getSettingScreenOptions('ABOUT')}/>
           <Stack.Screen name="SupportScreen"
               component={SupportScreen}
-              options={{
-                  title: null,
-                  headerStyle: {
-                      backgroundColor: '#eee',
-                      elevation: 0,
-                  },
-                  headerTitleStyle: {
-                      fontWeight: 'bold',
-                  },
-                  cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS
-              }}/>
+              options={getSettingScreenOptions('SUPPORT')}/>
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>
   );
+}
+
+function getSettingScreenOptions(title){
+    return {
+        title: title,
+        headerLeft: null,
+        headerStyle: {
+            backgroundColor: '#eee',
+            elevation: 0,
+        },
+        headerTitleStyle: {
+            fontFamily: 'Neucha-Regular',
+            fontSize: 22,
+            paddingHorizontal: Dimensions.get('window').width/20
+        },
+        cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS
+    }
 }
