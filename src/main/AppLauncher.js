@@ -16,6 +16,7 @@ import {getDarkTheme, getLightTheme} from "./theme/Theme";
 
 const ACTIVE_LOCATION_STORAGE = '@active_location';
 const HOME_LOCATION_STORAGE = '@home_location';
+const THEME_STORAGE = '@theme';
 
 class AppLauncher extends React.Component {
 
@@ -48,7 +49,7 @@ class AppLauncher extends React.Component {
     }
     //todo re think how this listener should works
     // const unsubscribe = NetInfo.addEventListener(this.internetConnectionListener);
-    this.props.setTheme(getLightTheme());
+    this.setTheme();
     try{
       const isStorage = await AsyncStorage.getItem('@active_location');
       if(isStorage === null){
@@ -60,6 +61,28 @@ class AppLauncher extends React.Component {
       console.log(e);
     }
   };
+
+  async setTheme(){
+    try {
+      const value = await AsyncStorage.getItem(THEME_STORAGE);
+      console.log(value);
+      switch (value) {
+        case 'light':
+          this.props.setTheme(getLightTheme());
+          return;
+        case 'dark':
+          this.props.setTheme(getDarkTheme());
+          return;
+        case 'system':
+          this.props.setTheme(getLightTheme());
+          return;
+        default:
+          this.props.setTheme(getLightTheme());
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  }
 
   async normalAppLaunch(){
     if(await this.dataIsNotFresh()){
