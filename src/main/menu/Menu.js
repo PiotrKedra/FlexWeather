@@ -16,7 +16,8 @@ const Menu = (props) => {
                     <Image style={{height: 30, width: 30}} source={require('../../../assets/images/icons/edit.png')}/>
                     <CustomText style={{fontSize: 25, marginHorizontal: 10}}>Settings</CustomText>
                 </TouchableOpacity>
-                <TouchableOpacity style={{flexDirection: 'row', alignItems: 'center'}}>
+                <TouchableOpacity style={{flexDirection: 'row', alignItems: 'center'}}
+                                  onPress={() => props.navigation.navigate('AppearanceScreen')}>
                     <Image style={{height: 30, width: 30}} source={require('../../../assets/images/icons/edit.png')}/>
                     <CustomText style={{fontSize: 25, marginHorizontal: 10}}>Appearance</CustomText>
                 </TouchableOpacity>

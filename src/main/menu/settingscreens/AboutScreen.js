@@ -35,7 +35,7 @@ const AboutScreen = () => {
                 <Text style={styles.contentText}>  {'\u2022'} github</Text>
                 <Text style={styles.contentText}>  {'\u2022'} web storm</Text>
                 <Text style={styles.contentText}>  {'\u2022'} open weather map</Text>
-                <Text style={styles.contentText}>  {'\u2022'} forca</Text>
+                <Text style={styles.contentText}>  {'\u2022'} foreca</Text>
                 <View style={{flexDirection: 'row'}}>
                     <Text style={styles.contentText}>  {'\u2022'} app icons by </Text>
                     <Text style={[styles.contentText, {textDecorationLine: 'underline'}]}

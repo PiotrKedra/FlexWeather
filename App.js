@@ -14,6 +14,7 @@ import InitLocationSearchComponent from "./src/main/location/InitLocationSearchC
 import reducer from "./src/main/ReduxReducer";
 import AboutScreen from "./src/main/menu/settingscreens/AboutScreen";
 import SupportScreen from "./src/main/menu/settingscreens/SupportScreen";
+import AppearanceScreen from "./src/main/menu/settingscreens/AppearanceScreen";
 
 const store = createStore(reducer);
 
@@ -65,8 +66,11 @@ export default function App() {
                           component={AboutScreen}
                           options={getSettingScreenOptions('ABOUT')}/>
           <Stack.Screen name="SupportScreen"
-              component={SupportScreen}
-              options={getSettingScreenOptions('SUPPORT')}/>
+                        component={SupportScreen}
+                        options={getSettingScreenOptions('SUPPORT')}/>
+          <Stack.Screen name="AppearanceScreen"
+                        component={AppearanceScreen}
+                        options={getSettingScreenOptions('APPEARANCE')}/>
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>
