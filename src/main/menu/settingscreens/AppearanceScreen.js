@@ -1,5 +1,5 @@
 import React from "react";
-import {Dimensions, StyleSheet, View, ScrollView, Text, TouchableOpacity, ToastAndroid, Pressable} from "react-native";
+import {Dimensions, StyleSheet, View, ScrollView, Text, TouchableOpacity, ToastAndroid, Pressable, DevSettings} from "react-native";
 import {connect} from "react-redux";
 import AsyncStorage from "@react-native-community/async-storage";
 import {getDarkTheme, getLightTheme} from "../../theme/Theme";
@@ -41,7 +41,7 @@ class AppearanceScreen extends React.PureComponent {
         if(this.isThemeChanged()) {
             AsyncStorage.setItem('@theme', this.state.themeId);
             //todo update to latest (+0.62) react native and change it for 'DevSettings.reload()' to fully reload app
-            this.props.navigation.replace('AppLauncher');
+            DevSettings.reload();
         } else
             ToastAndroid.show('Nothing has changed.', ToastAndroid.SHORT)
     }

@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {View, PermissionsAndroid} from 'react-native';
+import {View, PermissionsAndroid, Appearance} from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import NetInfo from "@react-native-community/netinfo";
 
@@ -53,7 +53,7 @@ class AppLauncher extends React.Component {
     try{
       const isStorage = await AsyncStorage.getItem('@active_location');
       if(isStorage === null){
-        this.props.navigation.replace('FirstAppLaunch');
+        this.props.navigation.replace('SetupScreen');
       } else {
         this.normalAppLaunch();
       }
@@ -65,7 +65,6 @@ class AppLauncher extends React.Component {
   async setTheme(){
     try {
       const value = await AsyncStorage.getItem(THEME_STORAGE);
-      console.log(value);
       switch (value) {
         case 'light':
           this.props.setTheme(getLightTheme());
@@ -73,15 +72,20 @@ class AppLauncher extends React.Component {
         case 'dark':
           this.props.setTheme(getDarkTheme());
           return;
-        case 'system':
-          this.props.setTheme(getLightTheme());
-          return;
         default:
-          this.props.setTheme(getLightTheme());
+          this.props.setTheme(this.getSystemTheme());
       }
     } catch (e) {
       console.log(e);
     }
+  }
+
+  getSystemTheme(){
+    const colorScheme = Appearance.getColorScheme();
+    if (colorScheme === 'dark')
+      return getDarkTheme();
+    else
+      return getLightTheme();
   }
 
   async normalAppLaunch(){
@@ -174,7 +178,7 @@ class AppLauncher extends React.Component {
     } catch(e) {
       console.log(e);
     }
-    this.props.navigation.replace('FirstAppLaunch');
+    this.props.navigation.replace('SetupScreen');
   }
 
   async showForecastFromStorage() {

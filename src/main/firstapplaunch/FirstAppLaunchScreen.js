@@ -1,11 +1,11 @@
 import React from 'react';
 import {View, TouchableOpacity, Image, PermissionsAndroid, ToastAndroid} from "react-native";
-import CustomText from "./components/CustomText";
-import GeneralStatusBar from "./components/GeneralStatusBar";
+import CustomText from "../components/CustomText";
+import GeneralStatusBar from "../components/GeneralStatusBar";
 import Geolocation from "@react-native-community/geolocation";
 import RNAndroidLocationEnabler from 'react-native-android-location-enabler';
-import getLocationDetails from "./location/LocationApi";
-import LoadingComponent from "./components/LoadingComponent";
+import getLocationDetails from "../location/LocationApi";
+import LoadingComponent from "../components/LoadingComponent";
 
 
 class FirstAppLaunchScreen extends React.PureComponent {
@@ -48,7 +48,7 @@ class FirstAppLaunchScreen extends React.PureComponent {
     render() {
         return (
             <View style={{flex: 1}}>
-                <GeneralStatusBar opacity={0.1}/>
+                <GeneralStatusBar opacity={0}/>
                 <View style={{flex: 4, justifyContent: 'center', marginLeft: '10%'}}>
                     <CustomText style={{fontSize: 55, color: '#2c82c9'}}>Forecast?</CustomText>
                     <CustomText style={{fontSize: 55, color: '#2c82c9'}}>Just tell</CustomText>
@@ -56,7 +56,7 @@ class FirstAppLaunchScreen extends React.PureComponent {
                 </View>
                 <View style={{flex: 6, justifyContent: 'space-around', alignItems: 'center'}}>
                     <Image style={{width: 150, height: 150}}
-                           source={require('../../assets/images/first_app_launch_location.png')}
+                           source={require('../../../assets/images/first_app_launch_location.png')}
                     />
                     <View style={{justifyContent: 'center', alignItems: 'center', width: '100%'}}>
                         <TouchableOpacity style={{

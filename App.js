@@ -10,13 +10,14 @@ import AsyncStorage from '@react-native-community/async-storage';
 
 import AppLauncher from './src/main/AppLauncher';
 import WeatherScreen from "./src/main/WeatherScreen";
-import FirstAppLaunchScreen from "./src/main/FirstAppLaunchScreen";
+import FirstAppLaunchScreen from "./src/main/firstapplaunch/FirstAppLaunchScreen";
 import InitLocationSearchComponent from "./src/main/location/InitLocationSearchComponent";
 import reducer from "./src/main/ReduxReducer";
 import AboutScreen from "./src/main/menu/settingscreens/AboutScreen";
 import SupportScreen from "./src/main/menu/settingscreens/SupportScreen";
 import AppearanceScreen from "./src/main/menu/settingscreens/AppearanceScreen";
 import {getDarkTheme, getLightTheme} from "./src/main/theme/Theme";
+import SetupScreen from "./src/main/firstapplaunch/SetupScreen";
 
 const store = createStore(reducer);
 
@@ -47,6 +48,12 @@ export default function App() {
               cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS
             }}
           />
+            <Stack.Screen name="SetupScreen"
+                      component={SetupScreen}
+                      options={{
+                          headerShown: false,
+                          cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS
+                      }}/>
           <Stack.Screen name="FirstAppLaunch"
                         component={FirstAppLaunchScreen}
                         options={{
@@ -93,7 +100,7 @@ function getSettingScreenOptions(title, theme){
         headerLeft: null,
         headerStyle: {
             backgroundColor: theme.mainColor,
-            elevation: 0,
+            elevation: 1,
         },
         headerTitleStyle: {
             fontFamily: 'Neucha-Regular',

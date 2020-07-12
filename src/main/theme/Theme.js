@@ -2,7 +2,7 @@
 function getLightTheme(){
     return {
         id: 'light',
-        mainColor: '#ddd',
+        mainColor: '#eee',
         softColor: '#ccc',
         mainText: '#111',
         softText: '#777',
@@ -16,7 +16,7 @@ function getDarkTheme(){
         id: 'dark',
         mainColor: '#222',
         softColor: '#444',
-        mainText: '#bbb',
+        mainText: '#ccc',
         softText: '#777',
         backgroundColor: '#333',
         softBackgroundColor: '#555',
