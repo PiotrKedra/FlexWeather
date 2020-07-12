@@ -33,6 +33,7 @@ class WeatherScreen extends React.Component {
       Animated.timing(this.state.locationLeftPosition, {
         toValue: -200,
         duration: 400,
+        useNativeDriver: false
       }).start();
       this.setState({ scroll: true });
     }
@@ -40,6 +41,7 @@ class WeatherScreen extends React.Component {
       Animated.timing(this.state.locationLeftPosition, {
         toValue: Dimensions.get('window').width*0.03,
         duration: 400,
+        useNativeDriver: false
       }).start();
       this.setState({ scroll: false });
     }

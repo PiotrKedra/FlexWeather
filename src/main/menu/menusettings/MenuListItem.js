@@ -13,11 +13,13 @@ class MenuListItem extends React.PureComponent {
         const visibility = this.props.visibility;
         Animated.timing(this.state.height, {
             toValue: visibility ? 30 : 30 + 30 * this.props.quantityOfSettings,
-            duration: 300
+            duration: 300,
+            useNativeDriver: false
         }).start();
         Animated.timing(this.state.opacity, {
             toValue: visibility ? 0 : 1,
-            duration: 500
+            duration: 500,
+            useNativeDriver: false
         }).start();
         this.props.setVisibility(!visibility);
     }

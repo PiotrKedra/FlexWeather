@@ -28,13 +28,15 @@ class LastUpdateInfo extends React.Component {
         if (showInfo === false){
             Animated.timing(this.state.infoHeight, {
                 toValue: 90,
-                duration: 300
+                duration: 300,
+                useNativeDriver: false
             }).start();
             this.setState({showInfo: true});
         } else {
             Animated.timing(this.state.infoHeight, {
                 toValue: 25,
-                duration: 300
+                duration: 300,
+                useNativeDriver: false
             }).start();
             this.setState({showInfo: false});
         }

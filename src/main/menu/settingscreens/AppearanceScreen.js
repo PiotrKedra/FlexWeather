@@ -1,5 +1,5 @@
 import React from "react";
-import {Dimensions, StyleSheet, View, ScrollView, Text, TouchableOpacity, ToastAndroid} from "react-native";
+import {Dimensions, StyleSheet, View, ScrollView, Text, TouchableOpacity, ToastAndroid, Pressable} from "react-native";
 import {connect} from "react-redux";
 import AsyncStorage from "@react-native-community/async-storage";
 import {getDarkTheme, getLightTheme} from "../../theme/Theme";
@@ -53,12 +53,12 @@ class AppearanceScreen extends React.PureComponent {
             <ScrollView style={[styles.scrollView, {backgroundColor: this.state.mainColor}]}>
                 <View style={[styles.sectionView, {borderColor: this.state.softBackgroundColor}]}>
                     <Text style={[styles.titleText, {color: this.state.mainTextColor}]}>Theme</Text>
-                    <TouchableOpacity onPress={() => this.setTheme('light')}>
+                    <Pressable onPress={() => this.setTheme('light')} activeOpacity={0.2}>
                         <Text style={[styles.eleText, this.state.themeId==='light' ? selectedEleTextStyle : nonSelectedEleTextStyle]}>
                             light theme
                         </Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={() => this.setTheme('dark')}>
+                    </Pressable>
+                    <TouchableOpacity onPress={() => this.setTheme('dark')} activeOpacity={1}>
                         <Text style={[styles.eleText, this.state.themeId==='dark' ? selectedEleTextStyle : nonSelectedEleTextStyle]}>
                             dark theme
                         </Text>

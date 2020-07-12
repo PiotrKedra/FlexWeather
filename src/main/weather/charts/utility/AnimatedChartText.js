@@ -14,6 +14,7 @@ class AnimatedChartText extends React.PureComponent{
         Animated.timing(this.state.animatedWidth, {
             toValue: this.props.selected ? this.state.initWidth + this.state.extraWidth: this.state.initWidth,
             duration: 300,
+            useNativeDriver: false,
         }).start();
     }
 

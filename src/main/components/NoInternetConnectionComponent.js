@@ -13,7 +13,8 @@ class NoInternetConnectionComponent extends React.Component{
         const unsubscribe = NetInfo.addEventListener(state => {
             Animated.timing(this.state.animatedPosition, {
                 toValue: state.isConnected ? -30 : 0,
-                duration: 300
+                duration: 300,
+                useNativeDriver: false
             }).start();
         });
     }

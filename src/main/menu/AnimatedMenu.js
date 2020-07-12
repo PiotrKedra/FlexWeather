@@ -40,19 +40,23 @@ class AnimatedMenu extends React.PureComponent {
         Animated.parallel([
             Animated.timing(this.state.width, {
                 toValue: isScroll ? HEADER_WIDTH_OPEN : HEADER_WIDTH_CLOSE,
-                duration: 300
+                duration: 300,
+                useNativeDriver: false
             }),
             Animated.timing(this.state.height, {
                 toValue: isScroll ? HEADER_HEIGHT_OPEN : HEADER_HEIGHT_CLOSE,
-                duration: 300
+                duration: 300,
+                useNativeDriver: false
             }),
             Animated.timing(this.state.locationTextLeftPosition, {
                 toValue: isScroll ? Dimensions.get('window').width*0.2 : 300,
-                duration: 400
+                duration: 400,
+                useNativeDriver: false
             }),
             Animated.timing(this.state.locationTextOpacity, {
                 toValue: isScroll ? 1 : 0,
-                duration: 300
+                duration: 300,
+                useNativeDriver: false
             }),
         ]).start();
     }
@@ -64,22 +68,26 @@ class AnimatedMenu extends React.PureComponent {
             Animated.parallel([
                 Animated.timing(this.state.locationTextLeftPosition, {
                     toValue: menu ? Dimensions.get('window').width*0.2 : 300,
-                    duration: 400
+                    duration: 400,
+                    useNativeDriver: false
                 }),
                 Animated.timing(this.state.locationTextOpacity, {
                     toValue: menu ? 1 : 0,
-                    duration: 300
+                    duration: 300,
+                    useNativeDriver: false
                 }),
             ]).start();
         }
         Animated.parallel([
             Animated.timing(this.state.width, {
                 toValue: menu ? this.getWidthOnMenuClosing(isScroll) : HEADER_WIDTH_MENU_OPEN,
-                duration: 400
+                duration: 400,
+                useNativeDriver: false
             }),
             Animated.timing(this.state.height, {
                 toValue: menu ? this.getHeightOnMenuClosing(isScroll) : HEADER_HEIGHT_MENU_OPEN,
-                duration: 400
+                duration: 400,
+                useNativeDriver: false
             }),
         ]).start();
         this.setState({menu: !this.state.menu});

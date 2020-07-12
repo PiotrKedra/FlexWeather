@@ -16,15 +16,18 @@ class Switch extends React.PureComponent {
         Animated.parallel([
             Animated.timing(this.state.leftPosition, {
                 toValue: this.props.isEnabled ? 0 : 31,
-                duration: 300
+                duration: 300,
+                useNativeDriver: false
             }),
             Animated.timing(this.state.leftBorderRadius, {
                 toValue: this.props.isEnabled ? 15 : 0,
-                duration: 300
+                duration: 300,
+                useNativeDriver: false
             }),
             Animated.timing(this.state.rightBorderRadius, {
                 toValue: this.props.isEnabled ? 0 : 15,
-                duration: 300
+                duration: 300,
+                useNativeDriver: false
             })
         ]).start();
         this.props.setIsEnabled(!this.props.isEnabled);

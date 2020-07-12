@@ -19,7 +19,8 @@ class LoadingComponent extends React.PureComponent{
     animate() {
         Animated.timing(this.state.animatedTopPosition, {
             toValue: this.props.loading ? 125 : -50,
-            duration: 300
+            duration: 300,
+            useNativeDriver: false
         }).start();
     }
 

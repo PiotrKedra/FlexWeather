@@ -68,11 +68,13 @@ class LikeBobble extends React.Component{
         Animated.parallel([
             Animated.timing(this.state.yPosition, {
                 toValue: -70,
-                duration: 500
+                duration: 500,
+                useNativeDriver: false
             }),
             Animated.timing(this.state.opacity, {
                 toValue: 1,
-                duration: 400
+                duration: 400,
+                useNativeDriver: false
             })
         ]).start(() => {
             setTimeout(() => {
