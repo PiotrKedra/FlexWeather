@@ -64,8 +64,9 @@ export default function App() {
                         component={InitLocationSearchComponent}
                         options={{
                           title: null,
+                            headerTintColor: theme.mainText,
                           headerStyle: {
-                            backgroundColor: '#eee',
+                            backgroundColor: theme.mainColor,
                             elevation: 0,
                           },
                           headerTitleStyle: {

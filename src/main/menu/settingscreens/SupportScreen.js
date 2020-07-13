@@ -1,33 +1,36 @@
 import React from 'react';
 import {Dimensions, StyleSheet, View, Text, ScrollView, Linking, Image} from "react-native";
+import {connect} from "react-redux";
 
-const SupportScreen = () => {
+const SupportScreen = ({theme}) => {
+
+    const textStyle = [styles.text, {color: theme.mainText}];
     return (
-        <ScrollView style={styles.mainView}>
+        <ScrollView style={[styles.mainView, {backgroundColor: theme.mainColor}]}>
             <View style={styles.logoView}>
                 <Image style={styles.logoImage} source={require('../../../../assets/logo.png')}/>
             </View>
             <View style={{marginVertical: 20}}>
-                <Text style={[styles.text, {marginTop: 10}]}>Hi!</Text>
-                <Text style={[styles.text, {marginTop: 10}]}>Do you have any problem with the app? Or you just want to say how much you like it?</Text>
+                <Text style={[textStyle, {marginTop: 10}]}>Hi!</Text>
+                <Text style={[textStyle, {marginTop: 10}]}>Do you have any problem with the app? Or you just want to say how much you like it?</Text>
                 <Text style={{marginTop: 10}}>
-                    <Text style={styles.text}>
+                    <Text style={textStyle}>
                         {'Write to me through the opinion section in '}
                     </Text>
-                    <Text style={[styles.text, {textDecorationLine: 'underline'}]}
+                    <Text style={[textStyle, {textDecorationLine: 'underline'}]}
                           onPress={() => redirectToStorePage()}
                     >
                         google play
                     </Text>
-                    <Text style={styles.text}>{' or by sending mail to '}</Text>
-                    <Text style={[styles.text, {textDecorationLine: 'underline'}]}
+                    <Text style={textStyle}>{' or by sending mail to '}</Text>
+                    <Text style={[textStyle, {textDecorationLine: 'underline'}]}
                           onPress={() => sendMail()}
                     >
                         pkedra.studio@gmail.com
                     </Text>
-                    <Text style={styles.text}>.</Text>
+                    <Text style={textStyle}>.</Text>
                 </Text>
-                <Text style={[styles.text, {marginTop: 10}]}>I will write back for sure!</Text>
+                <Text style={[textStyle, {marginTop: 10}]}>I will write back for sure!</Text>
             </View>
         </ScrollView>
     )
@@ -63,4 +66,10 @@ const styles = StyleSheet.create({
     },
 });
 
-export default SupportScreen;
+function mapStateToProps(state){
+    return {
+        theme: state.theme
+    }
+}
+
+export default connect(mapStateToProps)(SupportScreen);

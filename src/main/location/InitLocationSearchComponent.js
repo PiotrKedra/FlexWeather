@@ -4,8 +4,9 @@ import CustomText from "../components/CustomText";
 import {searchForLocationsByQuery} from "./LocationAutocompleteApi";
 import AsyncStorage from "@react-native-community/async-storage";
 import SUGGESTED_LOCATIONS from "./SugestedLocations";
+import {connect} from "react-redux";
 
-const InitLocationSearchComponent = ({navigation, route}) => {
+const InitLocationSearchComponent = ({navigation, route, theme}) => {
 
     const [locationInput, changeLocationInput] = useState("");
     const [locations, changeLocations] = useState([]);
@@ -18,16 +19,17 @@ const InitLocationSearchComponent = ({navigation, route}) => {
         AsyncStorage.getItem('@history_locations').then(e => setHistoryLocations(e ? JSON.parse(e) : []));
     }, []);
 
+    const finalTheme = route.params.theme ? route.params.theme : theme;
     return (
-        <View style={{flex: 1, backgroundColor: '#eee'}}>
+        <View style={{flex: 1, backgroundColor: finalTheme.mainColor}}>
             <View style={styles.overflowView}>
                 <View style={styles.locationSearchViewInner}>
                     <Image
-                        style={styles.locationSearchViewSearchImage}
+                        style={[styles.locationSearchViewSearchImage, {tintColor: finalTheme.mainText}]}
                         source={require('../../../assets/images/icons/search2.png')}
                     />
                     <TextInput
-                        style={styles.locationSearchViewTextInput}
+                        style={[styles.locationSearchViewTextInput, {color: finalTheme.mainText}]}
                         placeholder="Search location"
                         onChangeText={text => searchForLocation(text, changeLocationInput, changeLocations)}
                         value={locationInput}
@@ -49,11 +51,11 @@ const InitLocationSearchComponent = ({navigation, route}) => {
                 {locationInput.length <= 3 ?
                     (
                         homeLocation ?
-                            renderHistoricalLocations(historyLocations, homeLocation, navigation)
+                            renderHistoricalLocations(historyLocations, homeLocation, navigation, finalTheme.mainText)
                             :
                             <React.Fragment>
                                 <CustomText style={{marginHorizontal: '5%', fontSize: 25, marginVertical: 5}}>Some suggestions:</CustomText>
-                                {SUGGESTED_LOCATIONS.map(item => renderLocationItem(item, navigation, route, true))}
+                                {SUGGESTED_LOCATIONS.map(item => renderLocationItem(item, navigation, finalTheme.mainText, route, true))}
                             </React.Fragment>
                     )
 
@@ -72,7 +74,7 @@ const InitLocationSearchComponent = ({navigation, route}) => {
                                 style={styles.locationItemImage}
                                 source={require('../../../assets/images/icons/location-marker.png')}
                             />
-                            <CustomText style={styles.locationItemText}>
+                            <CustomText style={[styles.locationItemText, {color: finalTheme.mainText}]}>
                                 {item.properties.name}, {item.properties.country}
                             </CustomText>
                         </TouchableOpacity>
@@ -83,7 +85,7 @@ const InitLocationSearchComponent = ({navigation, route}) => {
     )
 };
 
-function renderHistoricalLocations(historyLocations, homeLocation, navigation){
+function renderHistoricalLocations(historyLocations, homeLocation, navigation, color){
     return (
         <React.Fragment>
             <TouchableOpacity style={{
@@ -99,15 +101,16 @@ function renderHistoricalLocations(historyLocations, homeLocation, navigation){
                 <CustomText style={{
                     fontSize: 21,
                     flex: 9,
-                    marginHorizontal: 12
+                    marginHorizontal: 12,
+                    color: color,
                 }}>{homeLocation.city}, {homeLocation.country}</CustomText>
             </TouchableOpacity>
-            {historyLocations.map(l => renderLocationItem(l, navigation))}
+            {historyLocations.map(l => renderLocationItem(l, navigation, color))}
         </React.Fragment>
     )
 }
 
-function renderLocationItem(location, navigation, route, saveHomeLocation=false){
+function renderLocationItem(location, navigation, color, route, saveHomeLocation=false){
     return (
         <TouchableOpacity key={location.latitude + location.longitude}
                           style={styles.locationItem}
@@ -117,7 +120,7 @@ function renderLocationItem(location, navigation, route, saveHomeLocation=false)
                 style={styles.locationItemImage}
                 source={require('../../../assets/images/icons/location-marker.png')}
             />
-            <CustomText style={styles.locationItemText}>{location.city}, {location.country}</CustomText>
+            <CustomText style={[styles.locationItemText, {color: color}]}>{location.city}, {location.country}</CustomText>
         </TouchableOpacity>
     )
 }
@@ -219,4 +222,10 @@ const styles = StyleSheet.create({
     },
 });
 
-export default InitLocationSearchComponent;
+function mapStateToProps(state){
+    return {
+        theme: state.theme
+    }
+}
+
+export default connect(mapStateToProps)(InitLocationSearchComponent);

@@ -44,7 +44,6 @@ class AppLauncher extends React.Component {
 
   componentDidMount = async () => {
     if(this.props.route.params){
-      console.log(this.props.route.params);
       if(this.props.route.params.saveHomeLocation){
         try {
           AsyncStorage.setItem(THEME_STORAGE, this.props.route.params.themeId);
