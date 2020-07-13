@@ -44,6 +44,15 @@ class AppLauncher extends React.Component {
 
   componentDidMount = async () => {
     if(this.props.route.params){
+      console.log(this.props.route.params);
+      if(this.props.route.params.saveHomeLocation){
+        try {
+          AsyncStorage.setItem(THEME_STORAGE, this.props.route.params.themeId);
+        } catch (e) {
+          console.log(e)
+        }
+        this.props.setTheme(this.props.route.params.theme);
+      }
       this.loadForecastWithGivenLocation(this.props.route.params.location, this.props.route.params.saveHomeLocation);
       return;
     }

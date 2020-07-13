@@ -53,7 +53,7 @@ const InitLocationSearchComponent = ({navigation, route}) => {
                             :
                             <React.Fragment>
                                 <CustomText style={{marginHorizontal: '5%', fontSize: 25, marginVertical: 5}}>Some suggestions:</CustomText>
-                                {SUGGESTED_LOCATIONS.map(item => renderLocationItem(item, navigation, true))}
+                                {SUGGESTED_LOCATIONS.map(item => renderLocationItem(item, navigation, route, true))}
                             </React.Fragment>
                     )
 
@@ -63,7 +63,7 @@ const InitLocationSearchComponent = ({navigation, route}) => {
                                           style={styles.locationItem}
                                           onPress={() => {
                                               const location = parseLocation(item);
-                                              navigation.replace('AppLauncher', {location: location, saveHomeLocation: route.params.saveHomeLocation});
+                                              navigation.replace('AppLauncher', {location: location, saveHomeLocation: route.params.saveHomeLocation, themeId: route.params.themeId, theme: route.params.theme});
                                               if(!route.params.saveHomeLocation)
                                                   addToHistory(location, historyLocations);
                                           }}
@@ -107,11 +107,11 @@ function renderHistoricalLocations(historyLocations, homeLocation, navigation){
     )
 }
 
-function renderLocationItem(location, navigation, saveHomeLocation=false){
+function renderLocationItem(location, navigation, route, saveHomeLocation=false){
     return (
         <TouchableOpacity key={location.latitude + location.longitude}
                           style={styles.locationItem}
-                          onPress={() => navigation.replace('AppLauncher', {location: location, saveHomeLocation: saveHomeLocation})}
+                          onPress={() => navigation.replace('AppLauncher', {location: location, saveHomeLocation: saveHomeLocation, themeId: saveHomeLocation ? route.params.themeId : null, theme: saveHomeLocation ? route.params.theme : null})}
         >
             <Image
                 style={styles.locationItemImage}

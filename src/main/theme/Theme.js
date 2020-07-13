@@ -1,3 +1,4 @@
+import {Appearance} from "react-native";
 
 function getLightTheme(){
     return {
@@ -23,4 +24,11 @@ function getDarkTheme(){
     }
 }
 
-export {getLightTheme, getDarkTheme};
+function getSystemTheme() {
+    const scheme = Appearance.getColorScheme();
+    if (scheme === 'dark')
+        return getDarkTheme();
+    return getLightTheme();
+}
+
+export {getLightTheme, getDarkTheme, getSystemTheme};

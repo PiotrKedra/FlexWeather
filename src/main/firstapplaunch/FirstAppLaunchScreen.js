@@ -18,7 +18,7 @@ class FirstAppLaunchScreen extends React.PureComponent {
         const latitude = position.coords.latitude;
         const longitude = position.coords.longitude;
         getLocationDetails(longitude, latitude)
-            .then(location => this.props.navigation.replace('AppLauncher', {location: location, saveHomeLocation: true}));
+            .then(location => this.props.navigation.replace('AppLauncher', {location: location, themeId: this.props.route.params.themeId, theme: this.props.route.params.theme, saveHomeLocation: true}));
     }
 
     getLocation(granted) {
@@ -47,7 +47,7 @@ class FirstAppLaunchScreen extends React.PureComponent {
 
     render() {
         return (
-            <View style={{flex: 1}}>
+            <View style={{flex: 1, backgroundColor: this.props.route.params.theme.mainColor}}>
                 <GeneralStatusBar opacity={0}/>
                 <View style={{flex: 4, justifyContent: 'center', marginLeft: '10%'}}>
                     <CustomText style={{fontSize: 55, color: '#2c82c9'}}>Forecast?</CustomText>
@@ -55,7 +55,7 @@ class FirstAppLaunchScreen extends React.PureComponent {
                     <CustomText style={{fontSize: 55, color: '#2c82c9'}}>us where</CustomText>
                 </View>
                 <View style={{flex: 6, justifyContent: 'space-around', alignItems: 'center'}}>
-                    <Image style={{width: 150, height: 150}}
+                    <Image style={{width: 150, height: 150, tintColor: this.props.route.params.theme.mainText}}
                            source={require('../../../assets/images/first_app_launch_location.png')}
                     />
                     <View style={{justifyContent: 'center', alignItems: 'center', width: '100%'}}>
@@ -69,13 +69,13 @@ class FirstAppLaunchScreen extends React.PureComponent {
                         }}
                                           onPress={() => this.askForPermission()}
                         >
-                            <CustomText style={{fontSize: 25, color: '#ddd'}}>Current location</CustomText>
+                            <CustomText style={{fontSize: 25, color: this.props.route.params.theme.mainColor}}>Current location</CustomText>
                         </TouchableOpacity>
                         <TouchableOpacity
                             style={{justifyContent: 'center', alignItems: 'center', padding: 10, width: '80%'}}
-                            onPress={() => this.props.navigation.navigate('SearchScreen', {saveHomeLocation: true})}
+                            onPress={() => this.props.navigation.navigate('SearchScreen', {saveHomeLocation: true, themeId: this.props.route.params.themeId, theme: this.props.route.params.theme})}
                         >
-                            <CustomText style={{fontSize: 28, color: '#222'}}>Pick a location</CustomText>
+                            <CustomText style={{fontSize: 28, color: this.props.route.params.theme.mainText}}>Pick a location</CustomText>
                         </TouchableOpacity>
                     </View>
                 </View>
