@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import {Appearance, Pressable, StyleSheet, View} from 'react-native';
 import CustomModal from "./CustomModal";
 import Text from "../../components/CustomText";
-import CheckBox from "./CheckBox";
+import CheckBox from "../../components/CheckBox";
 import {getDarkTheme, getLightTheme} from "../../theme/Theme";
 
 const ThemeModal = ({isVisible, setVisible, themeId, theme, setTheme}) => {

@@ -4,7 +4,7 @@ import React from "react";
 const CheckBox = ({checked, color}) => {
     return (
         <View style={[styles.checkBoxOut, {borderColor: color}]}>
-            <View style={[styles.checkBoxIn, checked ? {backgroundColor: color} : null]}/>
+            {checked ? <View style={[styles.checkBoxIn, {backgroundColor: color}]}/> : null}
         </View>
     )
 };

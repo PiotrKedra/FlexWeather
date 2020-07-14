@@ -1,8 +1,9 @@
 import React from "react";
-import {Dimensions, StyleSheet, View, ScrollView, Text, TouchableOpacity, ToastAndroid, Pressable, DevSettings} from "react-native";
+import {Dimensions, StyleSheet, View, ScrollView, Text, TouchableOpacity, ToastAndroid, Pressable, DevSettings, Image} from "react-native";
 import {connect} from "react-redux";
 import AsyncStorage from "@react-native-community/async-storage";
-import {getDarkTheme, getLightTheme} from "../../theme/Theme";
+import {getDarkTheme, getLightTheme, getSystemTheme} from "../../theme/Theme";
+import CheckBox from "../../components/CheckBox";
 
 
 class AppearanceScreen extends React.PureComponent {
@@ -14,6 +15,7 @@ class AppearanceScreen extends React.PureComponent {
         softBackgroundColor: this.props.theme.softBackgroundColor,
         mainTextColor: this.props.theme.mainText,
         softTextColor: this.props.theme.softText,
+        iconColor: this.props.theme.iconColor
     };
 
     setTheme(theme){
@@ -23,13 +25,14 @@ class AppearanceScreen extends React.PureComponent {
         else if(theme==='dark')
             themeEntity = getDarkTheme();
         else if(theme==='system')
-            themeEntity = getLightTheme();
+            themeEntity = getSystemTheme();
         this.setState({
             themeId: theme,
             mainColor: themeEntity.mainColor,
             softBackgroundColor: themeEntity.softBackgroundColor,
             mainTextColor: themeEntity.mainText,
-            softTextColor: themeEntity.softText
+            softTextColor: themeEntity.softText,
+            iconColor: themeEntity.iconColor
         })
     }
 
@@ -40,7 +43,6 @@ class AppearanceScreen extends React.PureComponent {
     saveChanges(){
         if(this.isThemeChanged()) {
             AsyncStorage.setItem('@theme', this.state.themeId);
-            //todo update to latest (+0.62) react native and change it for 'DevSettings.reload()' to fully reload app
             DevSettings.reload();
         } else
             ToastAndroid.show('Nothing has changed.', ToastAndroid.SHORT)
@@ -52,27 +54,48 @@ class AppearanceScreen extends React.PureComponent {
         return (
             <ScrollView style={[styles.scrollView, {backgroundColor: this.state.mainColor}]}>
                 <View style={[styles.sectionView, {borderColor: this.state.softBackgroundColor}]}>
-                    <Text style={[styles.titleText, {color: this.state.mainTextColor}]}>Theme</Text>
-                    <Pressable onPress={() => this.setTheme('light')} activeOpacity={0.2}>
+                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                        <Image style={[styles.titleImage, {tintColor: this.state.iconColor}]} source={require('../../../../assets/images/icons/theme.png')}/>
+                        <Text style={[styles.titleText, {color: this.state.mainTextColor}]}>theme</Text>
+                    </View>
+                    <Pressable style={styles.pressable}
+                               android_ripple={{color: '#ddd'}}
+                               onPress={() => this.setTheme('light')}>
+                        <CheckBox checked={'light' === this.state.themeId} color={this.state.mainTextColor}/>
                         <Text style={[styles.eleText, this.state.themeId==='light' ? selectedEleTextStyle : nonSelectedEleTextStyle]}>
                             light theme
                         </Text>
                     </Pressable>
-                    <TouchableOpacity onPress={() => this.setTheme('dark')} activeOpacity={1}>
+                    <Pressable style={styles.pressable}
+                               android_ripple={{color: '#ddd'}}
+                               onPress={() => this.setTheme('dark')}>
+                        <CheckBox checked={'dark' === this.state.themeId} color={this.state.mainTextColor}/>
                         <Text style={[styles.eleText, this.state.themeId==='dark' ? selectedEleTextStyle : nonSelectedEleTextStyle]}>
                             dark theme
                         </Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={() => console.log('need to implement system theme')}>
+                    </Pressable>
+                    <Pressable style={styles.pressable}
+                               android_ripple={{color: '#ddd'}}
+                               onPress={() => this.setTheme('system')}>
+                        <CheckBox checked={'system' === this.state.themeId} color={this.state.mainTextColor}/>
                         <Text style={[styles.eleText, this.state.themeId==='system' ? selectedEleTextStyle : nonSelectedEleTextStyle]}>
-                            system theme
+                            system theme {'(' + getSystemTheme().id + ')'}
                         </Text>
-                    </TouchableOpacity>
+                    </Pressable>
                 </View>
                 <View style={[styles.sectionView, {borderColor: this.state.softBackgroundColor}]}>
-                    <Text style={[styles.titleText, {color: this.state.mainTextColor}]}>Font</Text>
-                    <Text style={[styles.eleText, selectedEleTextStyle]}>neucha</Text>
-                    <Text style={[styles.eleText, nonSelectedEleTextStyle]}>new font coming soon...</Text>
+                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                        <Image style={[styles.titleImage, {tintColor: this.state.iconColor}]} source={require('../../../../assets/images/icons/font.png')}/>
+                        <Text style={[styles.titleText, {color: this.state.mainTextColor}]}>font</Text>
+                    </View>
+                    <Pressable style={styles.pressable} android_ripple={{color: '#ddd'}}>
+                        <CheckBox checked={true} color={this.state.mainTextColor}/>
+                        <Text style={[styles.eleText, selectedEleTextStyle]}>neucha</Text>
+                    </Pressable>
+                    <Pressable style={styles.pressable} android_ripple={{color: '#ddd'}}>
+                        <CheckBox checked={false} color={this.state.mainTextColor}/>
+                        <Text style={[styles.eleText, nonSelectedEleTextStyle]}>new font coming soon...</Text>
+                    </Pressable>
                 </View>
                 <View style={styles.saveView}>
                     <TouchableOpacity style={[styles.saveButton, this.isThemeChanged() ? {backgroundColor: '#2C82C9'} : null]}
@@ -104,11 +127,12 @@ const styles = StyleSheet.create({
         fontFamily: 'Neucha-Regular',
         fontSize: 25
     },
+    titleImage: {width: 35, height: 35, marginRight: 10},
+    pressable: {flexDirection: 'row', alignItems: 'center', marginTop: 10, paddingHorizontal: WINDOW_WIDTH / 20},
     eleText: {
         fontFamily: 'Neucha-Regular',
         fontSize: 22,
-        paddingHorizontal: WINDOW_WIDTH / 20,
-        marginTop: 10,
+        marginLeft: 10,
     },
     saveView: {
         width: '100%',
