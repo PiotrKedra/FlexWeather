@@ -61,7 +61,7 @@ class AppLauncher extends React.Component {
     try{
       const isStorage = await AsyncStorage.getItem('@active_location');
       if(isStorage === null){
-        this.props.navigation.replace('SetupScreen');
+        this.props.navigation.replace('WelcomeScreen');
       } else {
         this.normalAppLaunch();
       }

@@ -24,7 +24,6 @@ class SetupScreen extends React.PureComponent{
     render() {
         return (
             <View style={{flex: 1, backgroundColor: this.state.theme.mainColor}}>
-                <ThemeModal isVisible={this.state.isThemeModal} setVisible={this.setIsThemeModal} themeId={this.state.themeId} theme={this.state.theme} setTheme={this.setTheme}/>
                 <ScrollView>
                     <GeneralStatusBar opacity={0}/>
                     <View style={{justifyContent: 'center', marginLeft: '10%', paddingBottom: 20, marginTop: 20}}>
@@ -99,6 +98,7 @@ class SetupScreen extends React.PureComponent{
                         <CustomText style={{fontSize: 30, color: '#2c82c9', paddingRight: Dimensions.get('window').width/10}}>next</CustomText>
                     </Pressable>
                 </View>
+                <ThemeModal isVisible={this.state.isThemeModal} setVisible={this.setIsThemeModal} themeId={this.state.themeId} theme={this.state.theme} setTheme={this.setTheme}/>
             </View>
         );
     }

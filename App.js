@@ -18,6 +18,8 @@ import SupportScreen from "./src/main/menu/settingscreens/SupportScreen";
 import AppearanceScreen from "./src/main/menu/settingscreens/AppearanceScreen";
 import {getDarkTheme, getLightTheme} from "./src/main/theme/Theme";
 import SetupScreen from "./src/main/firstapplaunch/SetupScreen";
+import SettingScreen from "./src/main/menu/settingscreens/SettingScreen";
+import WelcomeScreen from "./src/main/firstapplaunch/WelcomeScreen";
 
 const store = createStore(reducer);
 
@@ -48,6 +50,12 @@ export default function App() {
               cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS
             }}
           />
+            <Stack.Screen name="WelcomeScreen"
+                          component={WelcomeScreen}
+                          options={{
+                              headerShown: false,
+                              cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS
+                          }}/>
             <Stack.Screen name="SetupScreen"
                       component={SetupScreen}
                       options={{
@@ -80,7 +88,10 @@ export default function App() {
                           headerShown: false,
                           cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS
                         }}/>
-            <Stack.Screen name="AboutScreen"
+            <Stack.Screen name="SettingScreen"
+                          component={SettingScreen}
+                          options={getSettingScreenOptions('SETTINGS', theme)}/>
+          <Stack.Screen name="AboutScreen"
                           component={AboutScreen}
                           options={getSettingScreenOptions('ABOUT', theme)}/>
           <Stack.Screen name="SupportScreen"
