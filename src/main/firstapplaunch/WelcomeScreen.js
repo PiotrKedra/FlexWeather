@@ -40,7 +40,7 @@ class WelcomeScreen extends React.PureComponent{
                 <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
                     <View style={{flex: 2, justifyContent: 'center', alignItems: 'center'}}>
                         <Pressable style={{borderWidth: 2, borderRadius: 20, borderColor: '#ddd', justifyContent: 'center', alignItems: 'center', paddingHorizontal: 70, paddingVertical: 5}}
-                                   onPress={() => this.props.navigation.navigate('SetupScreen')}
+                                   onPress={() => this.props.navigation.navigate('SetupLocationScreen')}
                                    android_ripple={{color: 'rgba(250,250,250,0.2)'}}>
                             <CustomText style={{fontSize: 30, color: '#ddd'}}>let's begin</CustomText>
                         </Pressable>

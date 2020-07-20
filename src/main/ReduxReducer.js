@@ -1,7 +1,6 @@
 
 import AsyncStorage from "@react-native-community/async-storage";
 
-const IS_STORAGE = '@is_storage';
 const LAST_FORECAST_UPDATE_STORAGE = "@forecast_update_date";
 const ACTIVE_LOCATION_STORAGE = '@active_location';
 const LAST_FORECAST_STORAGE = '@last_forecast';
@@ -15,7 +14,6 @@ const reducer = (state = {}, action) => {
         case 'ROOT_FORECAST':
             if(action.payload.saveToStorage) {
                 try {
-                    AsyncStorage.setItem(IS_STORAGE, JSON.stringify(true));
                     AsyncStorage.setItem(LAST_FORECAST_UPDATE_STORAGE, JSON.stringify(new Date()));
                     AsyncStorage.setItem(ACTIVE_LOCATION_STORAGE, JSON.stringify(action.payload.location));
                     AsyncStorage.setItem(LAST_FORECAST_STORAGE, JSON.stringify(action.payload.forecast));

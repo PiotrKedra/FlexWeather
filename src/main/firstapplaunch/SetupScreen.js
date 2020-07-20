@@ -89,13 +89,13 @@ class SetupScreen extends React.PureComponent{
                 <View style={{flexDirection: 'row', paddingBottom: 15}}>
                     <View style={{flex: 1}}/>
                     <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-                        <CustomText style={{fontSize: 17, color: '#777'}}>2/3</CustomText>
+                        <CustomText style={{fontSize: 17, color: '#777'}}>3/3</CustomText>
                     </View>
                     <Pressable style={{flex: 1, justifyContent: 'center', alignItems: 'flex-end'}}
                                android_ripple={{color: '#ddd'}}
                                onPress={() => this.props.navigation.navigate('FirstAppLaunch', {themeId: this.state.themeId, theme: this.state.theme})}
                     >
-                        <CustomText style={{fontSize: 30, color: '#2c82c9', paddingRight: Dimensions.get('window').width/10}}>next</CustomText>
+                        <CustomText style={{fontSize: 30, color: '#2c82c9', paddingRight: Dimensions.get('window').width/10}}>begin</CustomText>
                     </Pressable>
                 </View>
                 <ThemeModal isVisible={this.state.isThemeModal} setVisible={this.setIsThemeModal} themeId={this.state.themeId} theme={this.state.theme} setTheme={this.setTheme}/>

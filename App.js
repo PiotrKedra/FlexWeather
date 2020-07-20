@@ -20,6 +20,8 @@ import {getDarkTheme, getLightTheme} from "./src/main/theme/Theme";
 import SetupScreen from "./src/main/firstapplaunch/SetupScreen";
 import SettingScreen from "./src/main/menu/settingscreens/SettingScreen";
 import WelcomeScreen from "./src/main/firstapplaunch/WelcomeScreen";
+import SetupLocationScreen from "./src/main/firstapplaunch/SetupLocationScreen";
+import CurrentLocationScreen from "./src/main/firstapplaunch/CurrentLocationScreen";
 
 const store = createStore(reducer);
 
@@ -47,14 +49,12 @@ export default function App() {
             component={AppLauncher}
             options={{
               headerShown: false,
-              cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS
             }}
           />
             <Stack.Screen name="WelcomeScreen"
                           component={WelcomeScreen}
                           options={{
                               headerShown: false,
-                              cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS
                           }}/>
             <Stack.Screen name="SetupScreen"
                       component={SetupScreen}
@@ -68,6 +68,18 @@ export default function App() {
                           headerShown: false,
                           cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS
                         }}/>
+            <Stack.Screen name="SetupLocationScreen"
+                          component={SetupLocationScreen}
+                          options={{
+                              headerShown: false,
+                              cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS
+                          }}/>
+          <Stack.Screen name="CurrentLocationScreen"
+                          component={CurrentLocationScreen}
+                          options={{
+                              headerShown: false,
+                              cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS
+                          }}/>
           <Stack.Screen name="SearchScreen"
                         component={InitLocationSearchComponent}
                         options={{
