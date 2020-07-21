@@ -22,6 +22,7 @@ import SettingScreen from "./src/main/menu/settingscreens/SettingScreen";
 import WelcomeScreen from "./src/main/firstapplaunch/WelcomeScreen";
 import SetupLocationScreen from "./src/main/firstapplaunch/SetupLocationScreen";
 import CurrentLocationScreen from "./src/main/firstapplaunch/CurrentLocationScreen";
+import ManualLocationScreen from "./src/main/firstapplaunch/ManualLocationScreen";
 
 const store = createStore(reducer);
 
@@ -70,6 +71,12 @@ export default function App() {
                         }}/>
             <Stack.Screen name="SetupLocationScreen"
                           component={SetupLocationScreen}
+                          options={{
+                              headerShown: false,
+                              cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS
+                          }}/>
+          <Stack.Screen name="ManualLocationScreen"
+                          component={ManualLocationScreen}
                           options={{
                               headerShown: false,
                               cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS

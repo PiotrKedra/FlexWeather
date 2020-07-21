@@ -132,7 +132,7 @@ class CurrentLocationScreen extends React.PureComponent{
                         </Pressable>
                         <Pressable
                             style={{justifyContent: 'center', alignItems: 'center', padding: 10, width: '80%'}}
-                            onPress={() => navigation.navigate('CurrentLocationScreen')}
+                            onPress={() => navigation.navigate('ManualLocationScreen')}
                         >
                             <CustomText style={{fontSize: 28, color: theme.mainText}}>pick a another</CustomText>
                         </Pressable>

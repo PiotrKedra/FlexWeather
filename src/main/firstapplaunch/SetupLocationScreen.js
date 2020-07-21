@@ -11,15 +11,15 @@ const SetupLocationScreen = ({navigation}) => {
     return (
         <View style={{backgroundColor: theme.mainColor, flex: 1}}>
             <GeneralStatusBar opacity={0}/>
-            <View style={{flex: 2, justifyContent: 'center', marginLeft: '10%', paddingBottom: 20, marginTop: 20}}>
+            <View style={{flex: 2, justifyContent: 'center', marginLeft: '10%', paddingBottom: 20, marginTop: 40}}>
                 <CustomText style={{fontSize: 40, color: theme.mainText}}>Need your location</CustomText>
                 <CustomText style={{fontSize: 20, color: theme.softText}}>Allow us to get it or search for it.</CustomText>
             </View>
-            <View style={{flex: 6, justifyContent: 'space-around', alignItems: 'center'}}>
-                <Image style={{width: 150, height: 150, tintColor: theme.mainText}}
+            <View style={{flex: 4, justifyContent: 'space-around', alignItems: 'center'}}>
+                <Image style={{width: 180, height: 180, tintColor: theme.mainText}}
                        source={require('../../../assets/images/first_app_launch_location.png')}
                 />
-                <View style={{justifyContent: 'center', alignItems: 'center', width: '100%'}}>
+                <View style={{justifyContent: 'center', alignItems: 'center', width: '100%', marginTop: 70}}>
                     <Pressable style={{
                         backgroundColor: '#2c82c9',
                         borderRadius: 3,
@@ -34,13 +34,13 @@ const SetupLocationScreen = ({navigation}) => {
                     </Pressable>
                     <Pressable
                         style={{justifyContent: 'center', alignItems: 'center', padding: 10, width: '80%'}}
-                        onPress={() => navigation.navigate('CurrentLocationScreen')}
+                        onPress={() => navigation.navigate('ManualLocationScreen')}
                     >
                         <CustomText style={{fontSize: 28, color: theme.mainText}}>pick a location</CustomText>
                     </Pressable>
                 </View>
             </View>
-            <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+            <View style={{flex: 1, justifyContent: 'flex-end', alignItems: 'center', marginBottom: 20}}>
                 <CustomText style={{fontSize: 17, color: '#777'}}>2/3</CustomText>
             </View>
         </View>
