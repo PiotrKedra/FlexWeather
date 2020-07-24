@@ -14,9 +14,6 @@ const ManualLocationScreen = ({navigation}) => {
     const [locationInput, changeLocationInput] = useState("");
     const [locations, changeLocations] = useState([]);
 
-    console.log(locationInput.length);
-    console.log(locations.length);
-
     return (
         <View style={{flex: 1, backgroundColor: theme.mainColor}}>
             <GeneralStatusBar opacity={0}/>
@@ -45,7 +42,6 @@ const ManualLocationScreen = ({navigation}) => {
             </View>
             {locationInput.length < 3 ?
                 <React.Fragment>
-                    {console.log('sugested')}
                     <CustomText style={{marginHorizontal: '5%', fontSize: 25, marginVertical: 5}}>Some suggestions:</CustomText>
                     {SUGGESTED_LOCATIONS.map(item => renderLocationItem(item, navigation, theme.mainText))}
                 </React.Fragment>
@@ -76,7 +72,6 @@ function parseLocation(location){
 }
 
 function renderLocationItem(location, navigation, color){
-    console.log('rendered');
     return (
         <TouchableOpacity key={location.latitude + location.longitude}
                           style={styles.locationItem}
