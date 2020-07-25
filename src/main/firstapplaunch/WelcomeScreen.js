@@ -29,15 +29,20 @@ class WelcomeScreen extends React.PureComponent{
     render() {
 
         return (
-            <View style={{flex: 1, paddingHorizontal: '10%', backgroundColor: '#2C82C9'}}>
+            <View style={{flex: 1, backgroundColor: '#2C82C9'}}>
                 <GeneralStatusBar opacity={0}/>
-                <Animated.Image style={{width: 150, height: 150, position: 'absolute', top: 50, left: this.state.upImagePosition}} source={require('../../../assets/icon-cloud.png')}/>
-                <Animated.Image style={{width: 150, height: 150, position: 'absolute', top: WINDOW_HEIGHT/2, right: this.state.downImagePosition}} source={require('../../../assets/icon-cloud.png')}/>
-                <View style={{flex: 3, justifyContent: 'center', alignItems: 'center'}}>
+                <View style={{flex: 1}}/>
+                <View style={{flex: 2}}>
+                    <Animated.Image style={{width: 150, height: 150, left: this.state.upImagePosition}} source={require('../../../assets/icon-cloud.png')}/>
+                </View>
+                <View style={{flex: 2, justifyContent: 'center', alignItems: 'center', paddingHorizontal: '10%'}}>
                     <CustomText style={{fontSize: 40, color: '#ddd'}}>Flex Weather</CustomText>
                     <Text style={{fontSize: 20, fontFamily: 'Neucha-Regular', textAlign: 'center', color: '#ddd'}}>Flexible weather forecast put into clear and lovely design.</Text>
                 </View>
-                <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+                <View style={{flex: 2, alignItems: 'flex-end'}}>
+                    <Animated.Image style={{width: 150, height: 150, right: this.state.downImagePosition}} source={require('../../../assets/icon-cloud.png')}/>
+                </View>
+                <View style={{flex: 2, justifyContent: 'center', alignItems: 'center'}}>
                     <View style={{flex: 2, justifyContent: 'center', alignItems: 'center'}}>
                         <Pressable style={{borderWidth: 2, borderRadius: 20, borderColor: '#ddd', justifyContent: 'center', alignItems: 'center', paddingHorizontal: 70, paddingVertical: 5}}
                                    onPress={() => this.props.navigation.navigate('SetupLocationScreen')}
