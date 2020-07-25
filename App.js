@@ -10,7 +10,6 @@ import AsyncStorage from '@react-native-community/async-storage';
 
 import AppLauncher from './src/main/AppLauncher';
 import WeatherScreen from "./src/main/WeatherScreen";
-import FirstAppLaunchScreen from "./src/main/firstapplaunch/FirstAppLaunchScreen";
 import InitLocationSearchComponent from "./src/main/location/InitLocationSearchComponent";
 import reducer from "./src/main/ReduxReducer";
 import AboutScreen from "./src/main/menu/settingscreens/AboutScreen";
@@ -63,12 +62,6 @@ export default function App() {
                           headerShown: false,
                           cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS
                       }}/>
-          <Stack.Screen name="FirstAppLaunch"
-                        component={FirstAppLaunchScreen}
-                        options={{
-                          headerShown: false,
-                          cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS
-                        }}/>
             <Stack.Screen name="SetupLocationScreen"
                           component={SetupLocationScreen}
                           options={{

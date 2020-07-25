@@ -57,7 +57,7 @@ async function searchForLocation(query, changeLocationInput, changeLocations){
     changeLocationInput(query);
     if(query.length >= 3) {
         const locations = await searchForLocationsByQuery(query);
-        locations.forEach((ele, i) => locations[i] = parseLocation(ele))
+        locations.forEach((ele, i) => locations[i] = parseLocation(ele));
         changeLocations(locations);
     }
 }
@@ -88,8 +88,8 @@ function renderLocationItem(location, navigation, color){
 
 function saveLocation(location, navigation){
     try {
-        // AsyncStorage.setItem('@home_location', JSON.stringify(location));
-        // AsyncStorage.setItem('@active_location', JSON.stringify(location));
+        AsyncStorage.setItem('@home_location', JSON.stringify(location));
+        AsyncStorage.setItem('@active_location', JSON.stringify(location));
         navigation.navigate('SetupScreen');
     } catch (e) {
         ToastAndroid.show('Something went wrong', ToastAndroid.SHORT)

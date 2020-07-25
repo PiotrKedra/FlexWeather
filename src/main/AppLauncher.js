@@ -27,7 +27,7 @@ class AppLauncher extends React.Component {
   };
 
   internetConnectionListener = async (state) => {
-    if(this.state.afterFirstLaunch && state.isConnected && await this.dataIsNotFresh()){
+    if(this.state.afterFirstLaunch && state.isConnected && (await this.dataIsFresh())===false){
       try {
         const value = await AsyncStorage.getItem(ACTIVE_LOCATION_STORAGE);
         if(value !== null) {
@@ -97,21 +97,22 @@ class AppLauncher extends React.Component {
   }
 
   async normalAppLaunch(){
-    if(await this.dataIsNotFresh()){
+    if(await this.dataIsFresh()){
+      await this.showForecastFromStorage();
+    } else {
       if(await this.isInternetConnection()){
         this.tryToLoadDataFromInternet();
       }
-    } else {
-      await this.showForecastFromStorage();
     }
   }
 
-  async dataIsNotFresh() {
+  async dataIsFresh() {
     try {
-      const lastUpdate = await AsyncStorage.getItem('@forecast_update_date').then(date => new Date(JSON.parse(date)));
-      return (new Date() - lastUpdate) > 3600000;
+      const lastUpdate = await AsyncStorage.getItem('@forecast_update_date');
+      console.log((new Date() - new Date(JSON.parse(lastUpdate))) < 3600000);
+      return (new Date() - new Date(JSON.parse(lastUpdate))) < 3600000;
     } catch (e) {
-      return true;
+      return false;
     }
   }
 
@@ -120,14 +121,9 @@ class AppLauncher extends React.Component {
   }
 
   async tryToLoadDataFromInternet() {
+
     try {
-      const granted = await PermissionsAndroid.request(
-          PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,{
-            'title': 'Location Access Required',
-            'message': 'This App needs to Access your location'
-          }
-      );
-      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+      if (await PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION)) {
         await RNAndroidLocationEnabler.promptForEnableLocationIfNeeded({interval: 10000, fastInterval: 5000})
             .then(() => {
               Geolocation.getCurrentPosition(

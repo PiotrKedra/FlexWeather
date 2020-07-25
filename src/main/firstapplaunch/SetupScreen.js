@@ -1,18 +1,40 @@
 import React from "react";
-import {ScrollView, View, Image, Pressable, StyleSheet, Dimensions, ToastAndroid, Appearance} from "react-native";
+import {
+    ScrollView,
+    View,
+    Image,
+    Pressable,
+    StyleSheet,
+    Dimensions,
+    ToastAndroid,
+    BackHandler
+} from "react-native";
 import GeneralStatusBar from "../components/GeneralStatusBar";
 import CustomText from "../components/CustomText";
 import {getSystemTheme} from "../theme/Theme";
 import ThemeModal from "./setupmodals/ThemeModal";
 import AsyncStorage from "@react-native-community/async-storage";
 
+
 class SetupScreen extends React.PureComponent{
 
     state = {
         themeId: 'system',
         theme: getSystemTheme(),
-        isThemeModal: false
+        isThemeModal: false,
+        onBackPress: () => {
+            this.props.navigation.navigate('SetupLocationScreen');
+            return true;
+        }
     };
+
+    componentDidMount() {
+        BackHandler.addEventListener('hardwareBackPress', this.state.onBackPress);
+    }
+
+    componentWillUnmount(){
+        BackHandler.removeEventListener('hardwareBackPress', this.state.onBackPress);
+    }
 
     setTheme = (themeId, theme) => {
         try{
