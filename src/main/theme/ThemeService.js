@@ -13,9 +13,9 @@ const ICON_MAPPER = [
     {name: '50d', background: BACKGORUND.cloud, mainColor: '#f97a78', textColor: '#190906', menuColor: '#C0F4FE', panelColor: '#EEE'},
 ];
 
-const NIGHT_THEME_COLOR = '#202060';
+const NIGHT_THEME_COLOR = '#000000';
 const NIGHT_MENU_COLOR = '#653760';
-const NIGHT_TEXT_COLOR = '#CAC2B5';
+const NIGHT_TEXT_COLOR = '#EEE';
 const NIGHT_PANEL_COLOR = '#ccc';
 
 function getThemeEntity(forecast){

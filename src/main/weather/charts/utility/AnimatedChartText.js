@@ -19,7 +19,7 @@ class AnimatedChartText extends React.PureComponent{
     }
 
     render(){
-        const textColor = this.props.selected ? '#000' : this.props.textColor;
+        const textColor = this.props.selected ? this.props.selectedTextColor : this.props.textColor;
         return (
             <Animated.View style={{width: this.state.animatedWidth, flexDirection: 'row', justifyContent: 'center'}}>
                 <CustomText style={{fontSize: 20, textAlign: 'left', color: textColor}}>
