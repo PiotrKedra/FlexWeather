@@ -14,7 +14,7 @@ const INIT_Y_CORD = 60;
 const DailyRainfallChart = ({forecast, theme}) => {
     const minValue = 0;
     const potentialMax = d3.max(forecast, d => d.rain);
-    const maxValue = 15 > potentialMax ? 15 : potentialMax;
+    const maxValue = 15 < potentialMax ? potentialMax : 15;
     const xFunction = getFunctionX(forecast, SVG_WIDTH);
     const yFunction = getFunctionY(minValue, maxValue, GRAPH_HEIGHT, INIT_Y_CORD);
 
