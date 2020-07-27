@@ -1,4 +1,4 @@
-package com.flexweather;
+package piotrkedra.flexweather;
 
 import android.app.Application;
 import android.content.Context;
