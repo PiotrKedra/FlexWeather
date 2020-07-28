@@ -2,6 +2,8 @@ import React from 'react';
 import {Dimensions, StyleSheet, View, Text, ScrollView, Linking, Image} from "react-native";
 import {connect} from "react-redux";
 
+const GOOGLE_PLAY_URL = 'market://details?id=piotrkedra.flexweather';
+
 const SupportScreen = ({theme}) => {
 
     const textStyle = [styles.text, {color: theme.mainText}];
@@ -37,7 +39,7 @@ const SupportScreen = ({theme}) => {
 };
 
 function sendMail() {
-    Linking.openURL('mailto:pkedra.studio@gmail.com');
+    Linking.openURL(GOOGLE_PLAY_URL);
 }
 
 function redirectToStorePage(){
@@ -71,5 +73,7 @@ function mapStateToProps(state){
         theme: state.theme
     }
 }
+
+export {GOOGLE_PLAY_URL};
 
 export default connect(mapStateToProps)(SupportScreen);
