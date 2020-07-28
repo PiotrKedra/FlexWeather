@@ -7,7 +7,7 @@ import {
     StyleSheet,
     Dimensions,
     ToastAndroid,
-    BackHandler
+    BackHandler, DevSettings
 } from "react-native";
 import GeneralStatusBar from "../components/GeneralStatusBar";
 import CustomText from "../components/CustomText";
@@ -30,10 +30,6 @@ class SetupScreen extends React.PureComponent{
 
     componentDidMount() {
         BackHandler.addEventListener('hardwareBackPress', this.state.onBackPress);
-    }
-
-    componentWillUnmount(){
-        BackHandler.removeEventListener('hardwareBackPress', this.state.onBackPress);
     }
 
     setTheme = (themeId, theme) => {
@@ -121,7 +117,7 @@ class SetupScreen extends React.PureComponent{
                     </View>
                     <Pressable style={{flex: 1, justifyContent: 'center', alignItems: 'flex-end'}}
                                android_ripple={{color: '#ddd'}}
-                               onPress={() => this.props.navigation.navigate('AppLauncher')}
+                               onPress={() => DevSettings.reload()}
                     >
                         <CustomText style={{fontSize: 30, color: '#2c82c9', paddingRight: Dimensions.get('window').width/10}}>begin</CustomText>
                     </Pressable>

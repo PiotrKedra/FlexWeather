@@ -8,7 +8,7 @@ import {
   Animated,
   Image,
   Dimensions,
-  TouchableOpacity
+  TouchableOpacity, BackHandler
 } from 'react-native';
 import { connect } from 'react-redux';
 
