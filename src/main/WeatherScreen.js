@@ -27,6 +27,10 @@ class WeatherScreen extends React.Component {
     locationLeftPosition: new Animated.Value(Dimensions.get('window').width*0.03)
   };
 
+  componentDidMount() {
+    BackHandler.addEventListener('hardwareBackPress', () => false);
+  }
+
   onScrollNotTopMinimizeHeader = event => {
     const y = event.nativeEvent.contentOffset.y;
     if (y >= 10 && this.state.scroll === false) {

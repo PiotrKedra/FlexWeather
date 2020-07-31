@@ -4,6 +4,7 @@ import {connect} from "react-redux";
 import AsyncStorage from "@react-native-community/async-storage";
 import {getDarkTheme, getLightTheme, getSystemTheme} from "../../theme/Theme";
 import CheckBox from "../../components/CheckBox";
+import {CommonActions} from "@react-navigation/routers";
 
 
 class AppearanceScreen extends React.PureComponent {
@@ -43,7 +44,12 @@ class AppearanceScreen extends React.PureComponent {
     saveChanges(){
         if(this.isThemeChanged()) {
             AsyncStorage.setItem('@theme', this.state.themeId);
-            DevSettings.reload();
+            this.props.navigation.dispatch(
+                CommonActions.reset({
+                    routes: [{name: 'AppLauncher'}],
+                    index: 0
+                })
+            )
         } else
             ToastAndroid.show('Nothing has changed.', ToastAndroid.SHORT)
     }

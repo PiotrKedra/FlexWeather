@@ -109,7 +109,6 @@ class AppLauncher extends React.Component {
   async dataIsFresh() {
     try {
       const lastUpdate = await AsyncStorage.getItem('@forecast_update_date');
-      console.log((new Date() - new Date(JSON.parse(lastUpdate))) < 3600000);
       return (new Date() - new Date(JSON.parse(lastUpdate))) < 3600000;
     } catch (e) {
       return false;
