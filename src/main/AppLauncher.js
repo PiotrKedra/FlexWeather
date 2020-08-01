@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {View, PermissionsAndroid, Appearance} from 'react-native';
+import {View, PermissionsAndroid, Appearance, ToastAndroid} from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import NetInfo from "@react-native-community/netinfo";
 
@@ -13,10 +13,19 @@ import LoadingComponent from "./components/LoadingComponent";
 import NoInternetConnectionComponent from "./components/NoInternetConnectionComponent";
 import RNAndroidLocationEnabler from "react-native-android-location-enabler";
 import {getDarkTheme, getLightTheme} from "./theme/Theme";
+import { setJSExceptionHandler, setNativeExceptionHandler } from 'react-native-exception-handler';
 
 const ACTIVE_LOCATION_STORAGE = '@active_location';
 const HOME_LOCATION_STORAGE = '@home_location';
 const THEME_STORAGE = '@theme';
+
+setJSExceptionHandler((error, isFatal) => {
+  alert(error);
+});
+
+setNativeExceptionHandler((error) => {
+  alert(error);
+});
 
 class AppLauncher extends React.Component {
 
@@ -63,10 +72,10 @@ class AppLauncher extends React.Component {
       if(isStorage === null){
         this.props.navigation.replace('WelcomeScreen');
       } else {
-        this.normalAppLaunch();
+        await this.normalAppLaunch();
       }
     } catch(e) {
-      console.log(e);
+      ToastAndroid.show('Problem with app launching', ToastAndroid.SHORT);
     }
   };
 
@@ -97,22 +106,21 @@ class AppLauncher extends React.Component {
   }
 
   async normalAppLaunch(){
-    if(await this.dataIsFresh()){
+    if (await this.dataIsFresh()) {
       await this.showForecastFromStorage();
     } else {
-      if(await this.isInternetConnection()){
+      if (await this.isInternetConnection()) {
         this.tryToLoadDataFromInternet();
       }
     }
   }
 
   async dataIsFresh() {
-    try {
-      const lastUpdate = await AsyncStorage.getItem('@forecast_update_date');
-      return (new Date() - new Date(JSON.parse(lastUpdate))) < 3600000;
-    } catch (e) {
+    const lastUpdate = await AsyncStorage.getItem('@forecast_update_date');
+    if(!lastUpdate)
       return false;
-    }
+    const lastUpdateDate = new Date(JSON.parse(lastUpdate));
+    return (new Date() - lastUpdateDate) < 3600000;
   }
 
   async isInternetConnection() {
@@ -128,18 +136,15 @@ class AppLauncher extends React.Component {
               Geolocation.getCurrentPosition(
                   (position) => this.loadForecastWithGivenPosition(position),
                   (error) => {
-                    console.log(error);
+                    ToastAndroid.show('couldnt get location', ToastAndroid.SHORT);
                     this.loadForecastUsingLocationInStorage();
                   },
                   {enableHighAccuracy: false, timeout: 15000, maximumAge: 10000}
               );
-            })
-      } else {
-        this.loadForecastUsingLocationInStorage();
+            });
       }
     } catch (err) {
       this.loadForecastUsingLocationInStorage();
-      console.log(err);
     }
   }
 
