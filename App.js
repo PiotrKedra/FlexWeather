@@ -11,7 +11,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import AppLauncher from './src/main/AppLauncher';
 import WeatherScreen from "./src/main/WeatherScreen";
 import InitLocationSearchComponent from "./src/main/location/InitLocationSearchComponent";
-import reducer from "./src/main/ReduxReducer";
+import store from "./src/main/ReduxStore";
 import AboutScreen from "./src/main/menu/settingscreens/AboutScreen";
 import SupportScreen from "./src/main/menu/settingscreens/SupportScreen";
 import AppearanceScreen from "./src/main/menu/settingscreens/AppearanceScreen";
@@ -22,8 +22,6 @@ import WelcomeScreen from "./src/main/firstapplaunch/WelcomeScreen";
 import SetupLocationScreen from "./src/main/firstapplaunch/SetupLocationScreen";
 import CurrentLocationScreen from "./src/main/firstapplaunch/CurrentLocationScreen";
 import ManualLocationScreen from "./src/main/firstapplaunch/ManualLocationScreen";
-
-const store = createStore(reducer);
 
 const Stack = createStackNavigator();
 

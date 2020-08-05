@@ -1,5 +1,6 @@
 
 import AsyncStorage from "@react-native-community/async-storage";
+import {createStore} from "redux";
 
 const LAST_FORECAST_UPDATE_STORAGE = "@forecast_update_date";
 const ACTIVE_LOCATION_STORAGE = '@active_location';
@@ -40,4 +41,6 @@ const reducer = (state = {}, action) => {
     return state;
 };
 
-export default reducer;
+const store = createStore(reducer);
+
+export default store;

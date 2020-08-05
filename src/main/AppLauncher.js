@@ -21,7 +21,7 @@ const THEME_STORAGE = '@theme';
 
 setJSExceptionHandler((error, isFatal) => {
   alert(error);
-});
+}, true);
 
 setNativeExceptionHandler((error) => {
   alert(error);

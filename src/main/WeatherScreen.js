@@ -19,6 +19,7 @@ import PoweredBy from "./components/PoweredBy";
 import WeatherViewComponent from "./WeatherViewComponent";
 import RefreshInfo from "./components/RefreshInfo";
 import NoInternetConnectionComponent from "./components/NoInternetConnectionComponent";
+import getLocation from "./location/LocationService";
 
 class WeatherScreen extends React.Component {
   state = {
@@ -27,7 +28,9 @@ class WeatherScreen extends React.Component {
     locationLeftPosition: new Animated.Value(Dimensions.get('window').width*0.03)
   };
 
-  componentDidMount() {
+  async componentDidMount() {
+    console.log('mount');
+    console.log(await getLocation());
     BackHandler.addEventListener('hardwareBackPress', () => false);
   }
 
