@@ -14,6 +14,7 @@ import NoInternetConnectionComponent from "./components/NoInternetConnectionComp
 import RNAndroidLocationEnabler from "react-native-android-location-enabler";
 import {getDarkTheme, getLightTheme} from "./theme/Theme";
 import { setJSExceptionHandler, setNativeExceptionHandler } from 'react-native-exception-handler';
+import getLocation from "./location/LocationService";
 
 const ACTIVE_LOCATION_STORAGE = '@active_location';
 const HOME_LOCATION_STORAGE = '@home_location';
@@ -116,6 +117,7 @@ class AppLauncher extends React.Component {
   }
 
   async dataIsFresh() {
+    return false;
     const lastUpdate = await AsyncStorage.getItem('@forecast_update_date');
     if(!lastUpdate)
       return false;
@@ -128,24 +130,15 @@ class AppLauncher extends React.Component {
   }
 
   async tryToLoadDataFromInternet() {
-
-    try {
-      if (await PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION)) {
-        await RNAndroidLocationEnabler.promptForEnableLocationIfNeeded({interval: 10000, fastInterval: 5000})
-            .then(() => {
-              Geolocation.getCurrentPosition(
-                  (position) => this.loadForecastWithGivenPosition(position),
-                  (error) => {
-                    ToastAndroid.show('couldnt get location', ToastAndroid.SHORT);
-                    this.loadForecastUsingLocationInStorage();
-                  },
-                  {enableHighAccuracy: false, timeout: 15000, maximumAge: 10000}
-              );
-            });
-      }
-    } catch (err) {
-      this.loadForecastUsingLocationInStorage();
-    }
+    console.log('starting normal launch')
+    const location = await getLocation();
+    console.log('got location')
+    const forecast = await fetchRootForecast(location.latitude, location.longitude);
+    console.log('got forecast')
+    const weatherTheme = getThemeEntity(forecast);
+    await this.props.setInitialForecast(forecast, location, weatherTheme);
+    console.log('moving to main page')
+    this.props.navigation.replace('MainPage')
   }
 
   async loadForecastWithGivenLocation(location, saveHomeLocation=false){

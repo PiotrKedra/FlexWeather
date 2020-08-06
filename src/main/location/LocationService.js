@@ -49,14 +49,13 @@ const getLocationDetails = async (longitude, latitude) => {
             country: 'undefined',
         }
     }
-
 };
 
-function getStorageLocation() {
+async function getStorageLocation() {
     try {
-        return AsyncStorage.getItem('@active_location');
+        return await AsyncStorage.getItem('@active_location');
     } catch (e){
-        return AsyncStorage.getItem('@home_location');
+        return await AsyncStorage.getItem('@home_location');
     }
 }
 
