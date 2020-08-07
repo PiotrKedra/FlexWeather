@@ -12,13 +12,13 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 
-import Text from '../main/components/CustomText';
-import AnimatedMenu from './menu/AnimatedMenu';
-import GeneralStatusBar from "./components/GeneralStatusBar";
-import PoweredBy from "./components/PoweredBy";
-import WeatherViewComponent from "./WeatherViewComponent";
-import RefreshInfo from "./components/RefreshInfo";
-import NoInternetConnectionComponent from "./components/NoInternetConnectionComponent";
+import Text from '../components/CustomText';
+import AnimatedMenu from '../menu/AnimatedMenu';
+import GeneralStatusBar from "../components/GeneralStatusBar";
+import PoweredBy from "../components/PoweredBy";
+import WeatherViewComponent from "./WeatherPanels";
+import RefreshInfo from "../components/RefreshInfo";
+import NoInternetConnectionComponent from "../components/NoInternetConnectionComponent";
 
 class WeatherScreen extends React.Component {
   state = {
@@ -81,7 +81,7 @@ class WeatherScreen extends React.Component {
                   }}
                   onPress={() => this.props.navigation.navigate('SearchScreen', {saveHomeLocation: false})}
               >
-                <Image style={{width: 26, height: 26, marginBottom: 2, marginRight: 5, tintColor: this.props.weatherTheme.textColor}} source={require('../../assets/images/icons/location-marker.png')}/>
+                <Image style={{width: 26, height: 26, marginBottom: 2, marginRight: 5, tintColor: this.props.weatherTheme.textColor}} source={require('../../../assets/images/icons/location-marker.png')}/>
                 <Text style={{fontSize: 30, color: this.props.weatherTheme.textColor}}>
                   {this.props.activeLocation.city}
                 </Text>

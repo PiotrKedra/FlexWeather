@@ -1,8 +1,8 @@
 import React from "react";
 import {Svg, G, Rect, Defs, LinearGradient, Stop, Text} from "react-native-svg";
 import * as d3 from "d3";
-import {getDaysText, getForecastImagesForChart, getFunctionX, getGrid} from "../DailyChartDrawService";
-import {getFunctionY} from "../../svgcharts/utility/ChartDrawService";
+import {getDaysText, getForecastImagesForChart, getFunctionX, getGrid} from "./utility/DailyChartDrawService";
+import {getFunctionY} from "../../hourly/svgcharts/utility/ChartDrawService";
 import COLORS from "../../utility/ChartColors";
 import {connect} from "react-redux";
 

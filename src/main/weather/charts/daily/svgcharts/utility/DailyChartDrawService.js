@@ -1,8 +1,7 @@
 import {G, Image, Line, Text} from "react-native-svg";
-import COLORS from "../utility/ChartColors";
 import React from "react";
 import * as d3 from "d3";
-import {mapToDayIcon} from "../utility/ForecastIconMapper";
+import {mapToDayIcon} from "../../../utility/ForecastIconMapper";
 
 
 function getDaysText(data, xFunction, color) {

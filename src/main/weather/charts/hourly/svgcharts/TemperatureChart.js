@@ -2,8 +2,8 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {Svg, G, Line, Circle, Text, Image, Polygon, Defs, LinearGradient, Stop, Rect} from 'react-native-svg';
 import * as d3 from 'd3';
-import IMAGES from "../../../../resource/ImagePath";
-import COLORS from "../utility/ChartColors";
+import IMAGES from "../../../../../resource/ImagePath";
+import COLORS from "../../utility/ChartColors";
 import {
     getFunctionX,
     getFunctionY,

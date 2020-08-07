@@ -1,9 +1,9 @@
 import React, {Suspense} from 'react';
 import {View, ScrollView, TouchableOpacity, StyleSheet} from 'react-native';
-import Text from "../../components/CustomText";
+import Text from "../../../components/CustomText";
 import { connect } from 'react-redux';
-import ChartLoading from "./utility/ChartLoading";
-import AnimatedChartText from "./utility/AnimatedChartText";
+import ChartLoading from "../utility/ChartLoading";
+import AnimatedChartText from "../utility/AnimatedChartText";
 
 
 class HourlyForecastPanel extends React.PureComponent {

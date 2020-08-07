@@ -3,9 +3,9 @@ import {Svg, G, Text, Rect} from "react-native-svg";
 import COLORS, {UV_COLORS} from "../../utility/ChartColors";
 import {
     getFunctionY,
-} from "../../svgcharts/utility/ChartDrawService";
+} from "../../hourly/svgcharts/utility/ChartDrawService";
 import * as d3 from "d3";
-import {getDaysText, getForecastImagesForChart, getFunctionX, getGrid} from "../DailyChartDrawService";
+import {getDaysText, getForecastImagesForChart, getFunctionX, getGrid} from "./utility/DailyChartDrawService";
 import {connect} from "react-redux";
 
 const SVG_WIDTH = 600;

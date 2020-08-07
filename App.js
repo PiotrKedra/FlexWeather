@@ -9,7 +9,7 @@ import SplashScreen from 'react-native-splash-screen';
 import AsyncStorage from '@react-native-community/async-storage';
 
 import AppLauncher from './src/main/AppLauncher';
-import WeatherScreen from "./src/main/WeatherScreen";
+import WeatherScreen from "./src/main/weather/WeatherScreen";
 import InitLocationSearchComponent from "./src/main/location/InitLocationSearchComponent";
 import store from "./src/main/ReduxStore";
 import AboutScreen from "./src/main/menu/settingscreens/AboutScreen";

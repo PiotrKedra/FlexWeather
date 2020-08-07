@@ -2,8 +2,8 @@ import React from "react";
 import * as d3 from "d3";
 import {G, Image, Line, Text} from "react-native-svg";
 
-import COLORS from "../../utility/ChartColors";
-import mapDataToIcon, {mapToDayIcon, mapToHourlyIcon} from "../../utility/ForecastIconMapper";
+import COLORS from "../../../utility/ChartColors";
+import mapDataToIcon, {mapToDayIcon, mapToHourlyIcon} from "../../../utility/ForecastIconMapper";
 
 function getFunctionX(data, svgWidth) {
     const xDomain = data.map(item => item.dt);

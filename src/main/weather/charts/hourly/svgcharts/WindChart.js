@@ -16,7 +16,7 @@ import {
     generateDateText,
     getTimeLabels,
 } from "./utility/ChartDrawService";
-import COLORS from "../utility/ChartColors";
+import COLORS from "../../utility/ChartColors";
 
 const WindChart = (props) => {
 

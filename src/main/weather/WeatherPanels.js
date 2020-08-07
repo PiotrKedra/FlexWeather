@@ -1,12 +1,12 @@
 import React, {Fragment} from 'react';
 import {View} from 'react-native';
-import HourlyForecastPanel from "./weather/charts/HourlyForecastPanel";
-import DailyForecastPanel from "./weather/charts/daily/DailyForecastPanel";
-import CustomText from "./components/CustomText";
-import TodayDetailPanel from "./weather/detailpanel/TodayDetailPanel";
+import HourlyForecastPanel from "./charts/hourly/HourlyForecastPanel";
+import DailyForecastPanel from "./charts/daily/DailyForecastPanel";
+import CustomText from "../components/CustomText";
+import TodayDetailPanel from "./detailpanel/TodayDetailPanel";
 import {connect} from "react-redux";
 
-const WeatherViewComponent = ({currentForecast, weatherTheme}) => {
+const WeatherPanels = ({currentForecast, weatherTheme}) => {
 
     return (
         <React.Fragment>
@@ -38,4 +38,4 @@ function mapStateToProps(state) {
     };
 }
 
-export default connect(mapStateToProps)(WeatherViewComponent);
+export default connect(mapStateToProps)(WeatherPanels);
