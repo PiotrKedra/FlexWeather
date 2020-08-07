@@ -5,13 +5,11 @@ import AsyncStorage from '@react-native-community/async-storage';
 import NetInfo from "@react-native-community/netinfo";
 
 import fetchRootForecast from './weather/api/ForecastApi';
-import Geolocation from '@react-native-community/geolocation';
 import getLocationDetails from "./location/LocationApi";
 import GeneralStatusBar from "./components/GeneralStatusBar";
 import getThemeEntity from "./theme/ThemeService";
 import LoadingComponent from "./components/LoadingComponent";
 import NoInternetConnectionComponent from "./components/NoInternetConnectionComponent";
-import RNAndroidLocationEnabler from "react-native-android-location-enabler";
 import {getDarkTheme, getLightTheme} from "./theme/Theme";
 import { setJSExceptionHandler, setNativeExceptionHandler } from 'react-native-exception-handler';
 import getLocation from "./location/LocationService";
@@ -21,7 +19,8 @@ const HOME_LOCATION_STORAGE = '@home_location';
 const THEME_STORAGE = '@theme';
 
 setJSExceptionHandler((error, isFatal) => {
-  alert(error);
+  console.log('### IS FATAL ERROR: ' + isFatal);
+  console.log(error);
 }, true);
 
 setNativeExceptionHandler((error) => {

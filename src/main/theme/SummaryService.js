@@ -1,4 +1,8 @@
-function getSummary(main, description){
+function getSummary(forecast){
+    if(forecast.current === undefined)
+        return 'undefined';
+    const main = forecast.current.weather[0].main;
+    const description = forecast.current.weather[0].description;
     switch(main) {
         case 'Thunderstorm':
             return handleThunderstormDescription(description);

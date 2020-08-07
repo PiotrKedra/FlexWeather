@@ -66,7 +66,6 @@ class WeatherScreen extends React.Component {
           source={this.props.weatherTheme.background}
         >
           <GeneralStatusBar/>
-
           <ScrollView
             contentContainerStyle={{alignItems: 'center', paddingTop: 50}}
             onScroll={this.onScrollNotTopMinimizeHeader}
@@ -89,7 +88,7 @@ class WeatherScreen extends React.Component {
               </TouchableOpacity>
             </Animated.View>
             <WeatherViewComponent currentForecast={this.props.currentForecast}
-                                  todayForecast={this.props.forecast}
+                                  dailyForecast={this.props.dailyForecast}
                                   weatherTheme={this.props.weatherTheme}
             />
             <View style={{flexDirection: 'row', marginHorizontal: '4%', marginVertical: 5}}>
@@ -117,7 +116,7 @@ function mapStateToProps(state) {
     currentForecast: state.currentForecast,
     activeLocation: state.activeLocation,
     days: state.days,
-    forecast: state.rootForecastPerDay,
+    dailyForecast: state.rootForecastPerDay,
     weatherTheme: state.weatherTheme
   };
 }

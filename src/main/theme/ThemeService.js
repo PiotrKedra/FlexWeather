@@ -19,6 +19,7 @@ const NIGHT_TEXT_COLOR = '#EEE';
 const NIGHT_PANEL_COLOR = '#ccc';
 
 function getThemeEntity(forecast){
+    console.log(forecast)
     const theme = getTheme(forecast.current);
     return {
         background: theme.background,
@@ -26,11 +27,15 @@ function getThemeEntity(forecast){
         textColor: theme.textColor,
         menuColor: theme.menuColor,
         panelColor: theme.panelColor,
-        summary: getSummary(forecast.current.weather[0].main, forecast.current.weather[0].description),
+        summary: getSummary(forecast),
     };
 }
 
 function getTheme(current){
+    if(current === undefined){
+        console.log('no theme (no forecast)')
+        return ICON_MAPPER[0];
+    }
     if(new Date() < new Date(current.sunrise*1000) || new Date(current.sunset*1000) < new Date()){
         return {
             background: BACKGORUND.night,
