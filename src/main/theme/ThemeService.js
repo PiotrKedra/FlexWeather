@@ -19,7 +19,6 @@ const NIGHT_TEXT_COLOR = '#EEE';
 const NIGHT_PANEL_COLOR = '#ccc';
 
 function getThemeEntity(forecast){
-    console.log(forecast)
     const theme = getTheme(forecast.current);
     return {
         background: theme.background,
