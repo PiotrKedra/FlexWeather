@@ -1,42 +1,45 @@
 import React from "react";
-import {ScrollView} from "react-native";
+import {ScrollView, View} from "react-native";
 
 import TemperatureChart from "./svgcharts/TemperatureChart";
 import WindChart from "./svgcharts/WindChart";
 import RainfallChart from "./svgcharts/RainfallChart";
+import {connect} from "react-redux";
 
-const ChartView = (props) => {
-    return  (
-        <ScrollView horizontal={true}>
-            {(props.currentChart === 'temperature') && <HourlyTemperatureChart hourlyForecast={props.hourlyForecast} weatherTheme={props.weatherTheme}/>}
-            {(props.currentChart === 'wind') && <HourlyWindChart hourlyForecast={props.hourlyForecast}/>}
-            {(props.currentChart === 'rainfall') && <HourlyRainfallChart hourlyForecast={props.hourlyForecast}/>}
-        </ScrollView>
-    )
+const ChartView = ({currentChart, hourlyForecast}) => {
+    return  hourlyForecast === undefined ?
+        <View style={{height: 240}}/>
+        :
+        (
+            <ScrollView horizontal={true}>
+                {(currentChart === 'temperature') && <HourlyTemperatureChart hourlyForecast={hourlyForecast}/>}
+                {(currentChart === 'wind') && <HourlyWindChart hourlyForecast={hourlyForecast}/>}
+                {(currentChart === 'rainfall') && <HourlyRainfallChart hourlyForecast={hourlyForecast}/>}
+            </ScrollView>
+        )
 };
 
-const HourlyTemperatureChart = (props) => {
+const HourlyTemperatureChart = ({hourlyForecast}) => {
     let i = 0;
-    return parseHourlyForecast(props.hourlyForecast).map(hourlyForecastPerDay =>
+    return parseHourlyForecast(hourlyForecast).map(hourlyForecastPerDay =>
         <TemperatureChart key={i++}
                           data={hourlyForecastPerDay}
                           dimensions={getDimensions(hourlyForecastPerDay.length)}
-                          weatherTheme={props.weatherTheme}
         />)
 };
 
-function HourlyWindChart(props){
+function HourlyWindChart({hourlyForecast}){
     let i = 0;
-    return parseHourlyForecast(props.hourlyForecast).map(hourlyForecastPerDay =>
+    return parseHourlyForecast(hourlyForecast).map(hourlyForecastPerDay =>
         <WindChart key={i++}
                    data={hourlyForecastPerDay}
                    dimensions={getDimensions(hourlyForecastPerDay.length, 80, 30)}
         />)
 }
 
-function HourlyRainfallChart(props){
+function HourlyRainfallChart({hourlyForecast}){
     let i = 0;
-    return parseHourlyForecast(props.hourlyForecast).map(hourlyForecastPerDay =>
+    return parseHourlyForecast(hourlyForecast).map(hourlyForecastPerDay =>
         <RainfallChart key={i++}
                        data={hourlyForecastPerDay}
                        dimensions={getDimensions(hourlyForecastPerDay.length)}
@@ -73,4 +76,10 @@ function getDimensions(elementLength, graphHeight=70, initialYCordOfChart=60) {
     }
 }
 
-export default ChartView;
+function mapStateToProps(state) {
+    return {
+        hourlyForecast: state.hourlyForecast,
+    };
+}
+
+export default connect(mapStateToProps)(ChartView);

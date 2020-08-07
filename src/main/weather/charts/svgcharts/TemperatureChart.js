@@ -165,7 +165,8 @@ function generateSingleText(textValue, x, y, color) {
 
 function mapStateToProps(state){
     return {
-        theme: state.theme
+        theme: state.theme,
+        weatherTheme: state.weatherTheme,
     }
 }
 

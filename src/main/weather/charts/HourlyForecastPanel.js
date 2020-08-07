@@ -44,7 +44,7 @@ class HourlyForecastPanel extends React.PureComponent {
                     </TouchableOpacity>
                 </ScrollView>
                 <Suspense fallback={<ChartLoading/>}>
-                    <ChartView currentChart={this.state.currentChart} hourlyForecast={this.props.hourlyForecast} weatherTheme={this.props.weatherTheme}/>
+                    <ChartView currentChart={this.state.currentChart}/>
                 </Suspense>
             </View>
         )
@@ -97,4 +97,4 @@ function mapStateToProps(state) {
     };
 }
 
-export default connect(mapStateToProps, {})(HourlyForecastPanel);
+export default connect(mapStateToProps)(HourlyForecastPanel);

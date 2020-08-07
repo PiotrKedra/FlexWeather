@@ -25,7 +25,7 @@ const WeatherViewComponent = ({currentForecast, weatherTheme}) => {
                 }
             </View>
             {/*<DailyForecastPanel currentForecast={currentForecast} forecast={this.props.dailyForecast}/>*/}
-            {/*<HourlyForecastPanel/>*/}
+            <HourlyForecastPanel/>
             <TodayDetailPanel/>
         </React.Fragment>
     )
