@@ -204,7 +204,9 @@ function getFunctionY(minValue, maxValue, graphHeight, initialYCordOfChart) {
 
 function mapStateToProps(state) {
     return {
-        theme: state.theme
+        forecast: state.rootForecastPerDay,
+        theme: state.theme,
+        weatherTheme: state.weatherTheme
     }
 }
 

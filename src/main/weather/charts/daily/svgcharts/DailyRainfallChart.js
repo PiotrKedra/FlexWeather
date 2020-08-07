@@ -94,6 +94,7 @@ function getRainfallBars(data, xFunction, yFunction){
 
 function mapStateToProps(state) {
     return {
+        forecast: state.rootForecastPerDay,
         theme: state.theme
     }
 }

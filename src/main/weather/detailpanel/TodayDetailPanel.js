@@ -16,7 +16,7 @@ const TodayDetailPanel = ({forecast, theme}) => {
             </Text>
             {
                 forecast === undefined ?
-                    <NonDataList/>
+                    <NonDataList rows={5}/>
                     :
                     <DetailsList/>
             }

@@ -134,6 +134,7 @@ function getWindDirectionString(windDirection) {
 
 function mapStateToProps(state) {
     return {
+        forecast: state.rootForecastPerDay,
         theme: state.theme
     }
 }

@@ -1,21 +1,31 @@
 import React from "react";
-import {ScrollView} from "react-native";
+import {ScrollView, View} from "react-native";
 import DailyGeneralChart from "./svgcharts/DailyGeneralChart";
-import DailyRainfallCHart from "./svgcharts/DailyRainfallChart";
+import DailyRainfallChart from "./svgcharts/DailyRainfallChart";
 import DailyUvIndexChart from "./svgcharts/DailyUvIndexChart";
 import DailyWindChart from "./svgcharts/DailyWindChart";
+import {connect} from "react-redux";
 
 
-const DailyChartService = ({currentChart, forecast, weatherTheme}) => {
+const DailyChartService = ({currentChart, dailyForecast}) => {
 
-    return (
-        <ScrollView horizontal={true}>
-            {currentChart==='general' && <DailyGeneralChart forecast={forecast} weatherTheme={weatherTheme}/>}
-            {currentChart==='wind' && <DailyWindChart forecast={forecast}/>}
-            {currentChart==='rainfall' && <DailyRainfallCHart forecast={forecast}/>}
-            {currentChart==='uv_index' && <DailyUvIndexChart forecast={forecast}/>}
-        </ScrollView>
-    )
+    return dailyForecast === undefined ?
+        <View style={{height: 300}}/>
+        :
+        (
+            <ScrollView horizontal={true}>
+                {currentChart==='general' && <DailyGeneralChart/>}
+                {currentChart==='wind' && <DailyWindChart/>}
+                {currentChart==='rainfall' && <DailyRainfallChart/>}
+                {currentChart==='uv_index' && <DailyUvIndexChart/>}
+            </ScrollView>
+        )
 };
 
-export default DailyChartService
+function mapStateToProps(state){
+    return {
+        dailyForecast: state.rootForecastPerDay
+    }
+}
+
+export default connect(mapStateToProps)(DailyChartService);

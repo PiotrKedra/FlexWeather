@@ -1,11 +1,11 @@
 import React, {Fragment} from "react";
 import {StyleSheet, View} from "react-native";
 
-const NonDataList = () => {
-    const five = [...Array(5).keys()];
+const NonDataList = ({rows}) => {
+    const rowsArray = [...Array(rows).keys()];
     return (
         <Fragment>
-            {five.map(i => row(i))}
+            {rowsArray.map(i => row(i))}
         </Fragment>
     )
 }

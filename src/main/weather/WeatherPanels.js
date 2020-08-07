@@ -1,7 +1,7 @@
 import React, {Fragment} from 'react';
 import {View} from 'react-native';
 import HourlyForecastPanel from "./charts/hourly/HourlyForecastPanel";
-import DailyForecastPanel from "./charts/daily/DailyForecastPanel";
+import DailyForecastPanel from "./mainpanel/DailyForecastPanel";
 import CustomText from "../components/CustomText";
 import TodayDetailPanel from "./detailpanel/TodayDetailPanel";
 import {connect} from "react-redux";
@@ -24,7 +24,7 @@ const WeatherPanels = ({currentForecast, weatherTheme}) => {
                         </Fragment>
                 }
             </View>
-            {/*<DailyForecastPanel currentForecast={currentForecast} forecast={this.props.dailyForecast}/>*/}
+            <DailyForecastPanel/>
             <HourlyForecastPanel/>
             <TodayDetailPanel/>
         </React.Fragment>
