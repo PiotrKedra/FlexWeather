@@ -3,15 +3,15 @@ import {Image, StyleSheet, TextInput, TouchableOpacity, View, ScrollView} from "
 import CustomText from "../components/CustomText";
 import {searchForLocationsByQuery} from "./LocationAutocompleteApi";
 import AsyncStorage from "@react-native-community/async-storage";
-import SUGGESTED_LOCATIONS from "./SugestedLocations";
 import {connect} from "react-redux";
+import {CommonActions} from "@react-navigation/native";
 
 const InitLocationSearchComponent = ({navigation, route, theme}) => {
 
     const [locationInput, changeLocationInput] = useState("");
     const [locations, changeLocations] = useState([]);
 
-    const [homeLocation, setHomeLocation] = useState(null);
+    const [homeLocation, setHomeLocation] = useState({});
     const [historyLocations, setHistoryLocations] = useState([]);
 
     useEffect(() => {
@@ -19,7 +19,7 @@ const InitLocationSearchComponent = ({navigation, route, theme}) => {
         AsyncStorage.getItem('@history_locations').then(e => setHistoryLocations(e ? JSON.parse(e) : []));
     }, []);
 
-    const finalTheme = route.params.theme ? route.params.theme : theme;
+    const finalTheme = theme;
     return (
         <View style={{flex: 1, backgroundColor: finalTheme.mainColor}}>
             <View style={styles.overflowView}>
@@ -47,27 +47,21 @@ const InitLocationSearchComponent = ({navigation, route, theme}) => {
             </View>
 
             <ScrollView style={styles.scrollView} keyboardShouldPersistTaps="always">
-
                 {locationInput.length <= 3 ?
-                    (
-                        homeLocation ?
-                            renderHistoricalLocations(historyLocations, homeLocation, navigation, finalTheme.mainText)
-                            :
-                            <React.Fragment>
-                                <CustomText style={{marginHorizontal: '5%', fontSize: 25, marginVertical: 5}}>Some suggestions:</CustomText>
-                                {SUGGESTED_LOCATIONS.map(item => renderLocationItem(item, navigation, finalTheme.mainText, route, true))}
-                            </React.Fragment>
-                    )
-
+                    renderHistoricalLocations(historyLocations, homeLocation, navigation, finalTheme.mainText)
                     :
                     locations.map(item => (
                         <TouchableOpacity key={item.properties.osm_id}
                                           style={styles.locationItem}
                                           onPress={() => {
                                               const location = parseLocation(item);
-                                              navigation.replace('AppLauncher', {location: location, saveHomeLocation: route.params.saveHomeLocation, themeId: route.params.themeId, theme: route.params.theme});
-                                              if(!route.params.saveHomeLocation)
-                                                  addToHistory(location, historyLocations);
+                                              navigation.dispatch(
+                                                      CommonActions.reset({
+                                                          routes: [{name: 'AppLauncher', params: {location: location}}],
+                                                          index: 0,
+                                                      })
+                                                  )
+                                              addToHistory(location, historyLocations);
                                           }}
                         >
                             <Image
@@ -92,7 +86,12 @@ function renderHistoricalLocations(historyLocations, homeLocation, navigation, c
                 padding: 5,
                 flexDirection: 'row',
             }}
-                              onPress={() => navigation.replace('AppLauncher', {location: homeLocation, saveHomeLocation: false})}
+                              onPress={() => navigation.dispatch(
+                                  CommonActions.reset({
+                                      routes: [{name: 'AppLauncher', params: {location: homeLocation}}],
+                                      index: 0,
+                                  })
+                              )}
             >
                 <Image
                     style={{width: 25, height: 25, marginHorizontal: 5, marginLeft: 8, tintColor: '#2c82c9'}}
@@ -110,11 +109,16 @@ function renderHistoricalLocations(historyLocations, homeLocation, navigation, c
     )
 }
 
-function renderLocationItem(location, navigation, color, route, saveHomeLocation=false){
+function renderLocationItem(location, navigation, color){
     return (
         <TouchableOpacity key={location.latitude + location.longitude}
                           style={styles.locationItem}
-                          onPress={() => navigation.replace('AppLauncher', {location: location, saveHomeLocation: saveHomeLocation, themeId: saveHomeLocation ? route.params.themeId : null, theme: saveHomeLocation ? route.params.theme : null})}
+                          onPress={() => navigation.dispatch(
+                              CommonActions.reset({
+                                  routes: [{name: 'AppLauncher', params: {location: location}}],
+                                  index: 0,
+                              })
+                          )}
         >
             <Image
                 style={styles.locationItemImage}

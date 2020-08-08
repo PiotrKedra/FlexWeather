@@ -1,11 +1,9 @@
 import React from "react";
-import {Dimensions, StyleSheet, View, ScrollView, Text, TouchableOpacity, ToastAndroid, Pressable, DevSettings, Image} from "react-native";
+import {Dimensions, StyleSheet, View, ScrollView, Text, TouchableOpacity, ToastAndroid, Pressable, Image} from "react-native";
 import {connect} from "react-redux";
 import AsyncStorage from "@react-native-community/async-storage";
-import {getDarkTheme, getLightTheme, getSystemTheme} from "../../theme/Theme";
+import getStorageTheme, {getDarkTheme, getLightTheme, getSystemTheme} from "../../theme/Theme";
 import CheckBox from "../../components/CheckBox";
-import {CommonActions} from "@react-navigation/routers";
-
 
 class AppearanceScreen extends React.PureComponent {
 
@@ -41,15 +39,11 @@ class AppearanceScreen extends React.PureComponent {
         return this.state.themeId !== this.state.storageThemeId;
     }
 
-    saveChanges(){
+    async saveChanges(){
         if(this.isThemeChanged()) {
-            AsyncStorage.setItem('@theme', this.state.themeId);
-            this.props.navigation.dispatch(
-                CommonActions.reset({
-                    routes: [{name: 'AppLauncher'}],
-                    index: 0
-                })
-            )
+            await AsyncStorage.setItem('@theme', this.state.themeId);
+            this.props.setTheme(await getStorageTheme());
+            this.props.navigation.goBack();
         } else
             ToastAndroid.show('Nothing has changed.', ToastAndroid.SHORT)
     }
@@ -161,4 +155,10 @@ function mapStateToProps(state){
     }
 }
 
-export default connect(mapStateToProps)(AppearanceScreen);
+function mapDispatcherToProps(dispatch) {
+    return {
+        setTheme: (theme) => dispatch({type: 'THEME', payload: theme}),
+    };
+}
+
+export default connect(mapStateToProps, mapDispatcherToProps)(AppearanceScreen);

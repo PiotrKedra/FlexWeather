@@ -18,7 +18,7 @@ const NIGHT_MENU_COLOR = '#653760';
 const NIGHT_TEXT_COLOR = '#EEE';
 const NIGHT_PANEL_COLOR = '#ccc';
 
-function getThemeEntity(forecast){
+function getWeatherTheme(forecast){
     const theme = getTheme(forecast.current);
     return {
         background: theme.background,
@@ -49,4 +49,4 @@ function getTheme(current){
     return theme === undefined ? ICON_MAPPER[0] : theme;
 }
 
-export default getThemeEntity;
+export default getWeatherTheme;

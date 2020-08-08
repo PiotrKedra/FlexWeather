@@ -60,8 +60,9 @@ class CurrentLocationScreen extends React.PureComponent{
 
     saveLocation(){
         try {
-            AsyncStorage.setItem('@home_location', JSON.stringify(this.state.location));
-            AsyncStorage.setItem('@active_location', JSON.stringify(this.state.location));
+            const stringLocation = JSON.stringify(this.state.location);
+            AsyncStorage.setItem('@home_location', stringLocation);
+            AsyncStorage.setItem('@active_location', stringLocation);
             this.props.navigation.navigate('SetupScreen');
         } catch (e) {
             ToastAndroid.show('Something went wrong', ToastAndroid.SHORT)

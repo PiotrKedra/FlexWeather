@@ -1,4 +1,23 @@
 import {Appearance} from "react-native";
+import AsyncStorage from "@react-native-community/async-storage";
+
+const THEME_STORAGE = '@theme';
+
+async function getStorageTheme(){
+    try {
+        const value = await AsyncStorage.getItem(THEME_STORAGE);
+        switch (value) {
+            case 'light':
+                return getLightTheme()
+            case 'dark':
+                return getDarkTheme();
+            default:
+                return getSystemTheme();
+        }
+    } catch (e) {
+        return getSystemTheme();
+    }
+}
 
 function getLightTheme(){
     return {
@@ -34,3 +53,5 @@ function getSystemTheme() {
 }
 
 export {getLightTheme, getDarkTheme, getSystemTheme};
+
+export default getStorageTheme;

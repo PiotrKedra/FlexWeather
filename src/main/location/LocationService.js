@@ -53,9 +53,9 @@ const getLocationDetails = async (longitude, latitude) => {
 
 async function getStorageLocation() {
     try {
-        return await AsyncStorage.getItem('@active_location');
+        return JSON.parse(await AsyncStorage.getItem('@active_location'));
     } catch (e){
-        return await AsyncStorage.getItem('@home_location');
+        return JSON.parse(await AsyncStorage.getItem('@home_location'));
     }
 }
 

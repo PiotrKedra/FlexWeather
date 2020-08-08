@@ -1,22 +1,17 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {View, PermissionsAndroid, Appearance, ToastAndroid} from 'react-native';
+import {View} from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
-import NetInfo from "@react-native-community/netinfo";
 
 import fetchRootForecast from './weather/api/ForecastApi';
-import getLocationDetails from "./location/LocationApi";
 import GeneralStatusBar from "./components/GeneralStatusBar";
-import getThemeEntity from "./theme/ThemeService";
+import getWeatherTheme from "./theme/ThemeService";
 import LoadingComponent from "./components/LoadingComponent";
 import NoInternetConnectionComponent from "./components/NoInternetConnectionComponent";
-import {getDarkTheme, getLightTheme} from "./theme/Theme";
+import getStorageTheme from "./theme/Theme";
 import { setJSExceptionHandler, setNativeExceptionHandler } from 'react-native-exception-handler';
 import getLocation from "./location/LocationService";
-
-const ACTIVE_LOCATION_STORAGE = '@active_location';
-const HOME_LOCATION_STORAGE = '@home_location';
-const THEME_STORAGE = '@theme';
+import hasDistanceChanged from "./location/DistanceCalculator";
 
 setJSExceptionHandler((error, isFatal) => {
   console.log('### IS FATAL ERROR: ' + isFatal);
@@ -35,88 +30,48 @@ class AppLauncher extends React.Component {
     afterFirstLaunch: false,
   };
 
-  internetConnectionListener = async (state) => {
-    if(this.state.afterFirstLaunch && state.isConnected && (await this.dataIsFresh())===false){
-      try {
-        const value = await AsyncStorage.getItem(ACTIVE_LOCATION_STORAGE);
-        if(value !== null) {
-          const location = JSON.parse(value);
-          this.loadInitialForecast(location);
-          return;
-        }
-      } catch(e) {
-        console.log(e);
-      }
-    }
-    this.setState({afterFirstLaunch: true})
-  };
-
   componentDidMount = async () => {
-    if(this.props.route.params){
-      if(this.props.route.params.saveHomeLocation){
-        try {
-          AsyncStorage.setItem(THEME_STORAGE, this.props.route.params.themeId);
-        } catch (e) {
-          console.log(e)
-        }
-        this.props.setTheme(this.props.route.params.theme);
-      }
-      this.loadForecastWithGivenLocation(this.props.route.params.location, this.props.route.params.saveHomeLocation);
-      return;
-    }
     //todo re think how this listener should works
     // const unsubscribe = NetInfo.addEventListener(this.internetConnectionListener);
-    this.setTheme();
-    try{
-      const isStorage = await AsyncStorage.getItem('@active_location');
-      if(isStorage === null){
-        this.props.navigation.replace('WelcomeScreen');
-      } else {
-        await this.normalAppLaunch();
-      }
-    } catch(e) {
-      ToastAndroid.show('Problem with app launching', ToastAndroid.SHORT);
-    }
+    await this.setTheme();
+    if(await this.isStorageClear())
+      this.props.navigation.replace('WelcomeScreen');
+    else
+      await this.normalAppLaunch();
   };
 
   async setTheme(){
-    try {
-      const value = await AsyncStorage.getItem(THEME_STORAGE);
-      switch (value) {
-        case 'light':
-          this.props.setTheme(getLightTheme());
-          return;
-        case 'dark':
-          this.props.setTheme(getDarkTheme());
-          return;
-        default:
-          this.props.setTheme(this.getSystemTheme());
-      }
-    } catch (e) {
-      console.log(e);
-    }
+    this.props.setTheme(await getStorageTheme());
   }
 
-  getSystemTheme(){
-    const colorScheme = Appearance.getColorScheme();
-    if (colorScheme === 'dark')
-      return getDarkTheme();
-    else
-      return getLightTheme();
+  async isStorageClear(){
+    try {
+      const isStorage = await AsyncStorage.getItem('@active_location');
+      return isStorage === null;
+    } catch (e){
+      return true;
+    }
   }
 
   async normalAppLaunch(){
-    if (await this.dataIsFresh()) {
-      await this.showForecastFromStorage();
-    } else {
-      if (await this.isInternetConnection()) {
-        this.tryToLoadDataFromInternet();
-      }
-    }
+    const location = await this.getProperLocation();
+    if (await this.shouldLoadDataFromStorage(location))
+      await this.showForecastFromStorage(location);
+    else
+      await this.tryToLoadDataFromInternet(location);
+  }
+
+  async getProperLocation(){
+    if(this.props.route.params)
+      return this.props.route.params.location;
+    return await getLocation();
+  }
+
+  async shouldLoadDataFromStorage(location) {
+    return await this.dataIsFresh() && await hasDistanceChanged(location);
   }
 
   async dataIsFresh() {
-    return false;
     const lastUpdate = await AsyncStorage.getItem('@forecast_update_date');
     if(!lastUpdate)
       return false;
@@ -124,70 +79,46 @@ class AppLauncher extends React.Component {
     return (new Date() - lastUpdateDate) < 3600000;
   }
 
-  async isInternetConnection() {
-    return await NetInfo.fetch().then(state => state.isConnected);
-  }
-
-  async tryToLoadDataFromInternet() {
-    console.log('starting normal launch')
-    const location = await getLocation();
-    console.log('got location')
-    const forecast = await fetchRootForecast(location.latitude, location.longitude);
-    console.log('got forecast')
-    const weatherTheme = getThemeEntity(forecast);
-    await this.props.setInitialForecast(forecast, location, weatherTheme);
-    console.log('moving to main page')
-    this.props.navigation.replace('MainPage')
-  }
-
-  async loadForecastWithGivenLocation(location, saveHomeLocation=false){
-    if(saveHomeLocation) this.saveHomeLocation(location);
-    this.loadInitialForecast(location)
-  }
-
-  async loadForecastWithGivenPosition(position){
-    const latitude = position.coords.latitude;
-    const longitude = position.coords.longitude;
-    const location = await getLocationDetails(longitude, latitude);
-    this.loadInitialForecast(location)
-  }
-
-  saveHomeLocation(location){
-      try {
-          AsyncStorage.setItem(HOME_LOCATION_STORAGE, JSON.stringify(location));
-      } catch (e) {
-          console.log(e);
-      }
-  }
-
-  async loadInitialForecast(location){
-    let initialForecast = await fetchRootForecast(location.latitude, location.longitude);
-    const weatherTheme = getThemeEntity(initialForecast);
-    await this.props.setInitialForecast(initialForecast, location, weatherTheme);
-    this.props.navigation.replace('MainPage')
-  }
-
-  async loadForecastUsingLocationInStorage(){
-    try {
-      const value = await AsyncStorage.getItem(ACTIVE_LOCATION_STORAGE);
-      if(value !== null) {
-        const location = JSON.parse(value);
-        this.loadInitialForecast(location);
-        return;
-      }
-    } catch(e) {
-      console.log(e);
-    }
-    this.props.navigation.replace('SetupScreen');
-  }
-
-  async showForecastFromStorage() {
-    const activeLocation = await AsyncStorage.getItem('@active_location');
+  async showForecastFromStorage(location) {
     const lastForecast = JSON.parse(await AsyncStorage.getItem('@last_forecast'));
-    const weatherTheme = getThemeEntity(lastForecast);
-    this.props.setInitialForecast(lastForecast, JSON.parse(activeLocation), weatherTheme, false);
+    const weatherTheme = getWeatherTheme(lastForecast);
+    this.props.setInitialForecast(lastForecast, JSON.parse(location), weatherTheme, false);
     this.props.navigation.replace('MainPage')
   }
+
+  async tryToLoadDataFromInternet(location) {
+    const forecast = await fetchRootForecast(location.latitude, location.longitude);
+    const weatherTheme = getWeatherTheme(forecast);
+    await this.props.setInitialForecast(forecast, location, weatherTheme);
+    this.props.navigation.replace('MainPage')
+  }
+
+  // internetConnectionListener = async (state) => {
+  //   if(this.state.afterFirstLaunch && state.isConnected && (await this.dataIsFresh())===false){
+  //     try {
+  //       const value = await AsyncStorage.getItem(ACTIVE_LOCATION_STORAGE);
+  //       if(value !== null) {
+  //         const location = JSON.parse(value);
+  //         await this.loadInitialForecast(location);
+  //         return;
+  //       }
+  //     } catch(e) {
+  //       console.log(e);
+  //     }
+  //   }
+  //   this.setState({afterFirstLaunch: true})
+  // };
+  //
+  // async isInternetConnection() {
+  //   return await NetInfo.fetch().then(state => state.isConnected);
+  // }
+  //
+  // async loadInitialForecast(location){
+  //   let initialForecast = await fetchRootForecast(location.latitude, location.longitude);
+  //   const weatherTheme = getWeatherTheme(initialForecast);
+  //   await this.props.setInitialForecast(initialForecast, location, weatherTheme);
+  //   this.props.navigation.replace('MainPage')
+  // }
 
   render() {
     return (

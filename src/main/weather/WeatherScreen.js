@@ -16,7 +16,7 @@ import Text from '../components/CustomText';
 import AnimatedMenu from '../menu/AnimatedMenu';
 import GeneralStatusBar from "../components/GeneralStatusBar";
 import PoweredBy from "../components/PoweredBy";
-import WeatherViewComponent from "./WeatherPanels";
+import WeatherPanels from "./WeatherPanels";
 import RefreshInfo from "../components/RefreshInfo";
 import NoInternetConnectionComponent from "../components/NoInternetConnectionComponent";
 
@@ -87,10 +87,7 @@ class WeatherScreen extends React.Component {
                 </Text>
               </TouchableOpacity>
             </Animated.View>
-            <WeatherViewComponent currentForecast={this.props.currentForecast}
-                                  dailyForecast={this.props.dailyForecast}
-                                  weatherTheme={this.props.weatherTheme}
-            />
+            <WeatherPanels/>
             <View style={{flexDirection: 'row', marginHorizontal: '4%', marginVertical: 5}}>
               <PoweredBy weatherTheme={this.props.weatherTheme}/>
               <RefreshInfo weatherTheme={this.props.weatherTheme}/>
@@ -113,10 +110,7 @@ class WeatherScreen extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    currentForecast: state.currentForecast,
     activeLocation: state.activeLocation,
-    days: state.days,
-    dailyForecast: state.rootForecastPerDay,
     weatherTheme: state.weatherTheme
   };
 }

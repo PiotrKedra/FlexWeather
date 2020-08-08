@@ -88,8 +88,9 @@ function renderLocationItem(location, navigation, color){
 
 function saveLocation(location, navigation){
     try {
-        AsyncStorage.setItem('@home_location', JSON.stringify(location));
-        AsyncStorage.setItem('@active_location', JSON.stringify(location));
+        const stringLocation = JSON.stringify(location);
+        AsyncStorage.setItem('@home_location', stringLocation);
+        AsyncStorage.setItem('@active_location', stringLocation);
         navigation.navigate('SetupScreen');
     } catch (e) {
         ToastAndroid.show('Something went wrong', ToastAndroid.SHORT)
