@@ -27,7 +27,7 @@ class CurrentLocationScreen extends React.PureComponent{
             .then(() => {
                 Geolocation.getCurrentPosition(
                     (position) => this.showLocation(position),
-                    () => ToastAndroid.show('Could\'n get your location', ToastAndroid.SHORT),
+                    () => ToastAndroid.show('Couldn\'t get your location', ToastAndroid.SHORT),
                     {enableHighAccuracy: false, timeout: 5000, maximumAge: 10000}
                 );})
             .catch(() => {
