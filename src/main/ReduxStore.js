@@ -33,7 +33,6 @@ const reducer = (state = {}, action) => {
                 AsyncStorage.setItem(LAST_FORECAST_UPDATE_STORAGE, JSON.stringify(new Date()));
                 AsyncStorage.setItem(LAST_FORECAST_STORAGE, JSON.stringify(action.payload.forecast));
             } catch (e) {}
-            console.log('refreshed XD')
             return Object.assign({}, state, {
                 currentForecast: action.payload.forecast.current,
                 rootForecastPerDay: action.payload.forecast.daily,

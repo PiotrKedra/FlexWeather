@@ -1,11 +1,7 @@
-import React, {Suspense} from 'react';
-import {View, StyleSheet, TouchableOpacity, ScrollView, Image, Text} from 'react-native';
+import React from 'react';
+import {View, StyleSheet} from 'react-native';
 
-import CustomText from '../../components/CustomText'
 import {connect} from "react-redux";
-import ChartLoading from "../charts/utility/ChartLoading";
-import AnimatedChartText from "../charts/utility/AnimatedChartText";
-import DailyChartService from "../charts/daily/DailyChartService";
 import MainDetailsPanel from "./maindetails/MainDetailsPanel";
 import DailyChartForecastPanel from "../charts/daily/DailyChartForecastPanel";
 

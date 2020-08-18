@@ -2,6 +2,7 @@ import React from 'react';
 import {View} from "react-native";
 import CustomText from "./CustomText";
 import AsyncStorage from "@react-native-community/async-storage";
+import {connect} from "react-redux";
 
 class RefreshInfo extends React.Component{
 
@@ -29,8 +30,11 @@ class RefreshInfo extends React.Component{
 
     render() {
         return (
-            <View style={{flex: 1, alignItems: 'flex-end'}}>
-                <CustomText style={{fontSize: 13, color: this.props.weatherTheme.textColor}}>
+            <View style={{flex: 1, flexDirection: 'row', alignItems: 'flex-end', paddingLeft: '5%', paddingTop: 10}}>
+                <View style={{width: 18, height: 18, borderRadius: 9, borderWidth: 1, borderColor: this.props.theme.softText, justifyContent: 'center', alignItems: 'center'}}>
+                    <CustomText style={{fontSize: 14, color: this.props.theme.softText}}>!</CustomText>
+                </View>
+                <CustomText style={{marginLeft: 10, fontSize: 15, color: this.props.theme.softText}}>
                     Last update {this.state.dateUpdate}
                 </CustomText>
             </View>
@@ -38,4 +42,10 @@ class RefreshInfo extends React.Component{
     }
 }
 
-export default RefreshInfo;
+function mapStateToProps(state) {
+    return {
+        theme: state.theme
+    };
+}
+
+export default connect(mapStateToProps)(RefreshInfo);

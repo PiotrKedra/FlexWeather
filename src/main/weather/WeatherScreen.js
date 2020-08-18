@@ -108,7 +108,6 @@ class WeatherScreen extends React.Component {
             <WeatherPanels/>
             <View style={{flexDirection: 'row', marginHorizontal: '4%', marginVertical: 5}}>
               <PoweredBy weatherTheme={this.props.weatherTheme}/>
-              <RefreshInfo weatherTheme={this.props.weatherTheme}/>
             </View>
           </ScrollView>
           <AnimatedMenu isScroll={this.state.scroll} weatherTheme={this.props.weatherTheme} location={this.props.activeLocation.city} navigation={this.props.navigation}/>

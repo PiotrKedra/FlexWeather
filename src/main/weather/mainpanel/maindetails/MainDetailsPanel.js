@@ -4,10 +4,12 @@ import CustomText from "../../../components/CustomText";
 import {connect} from "react-redux";
 import NonDataList from "../../detailpanel/NonDataList";
 import MainDetailsList from "./MainDetailsList";
+import RefreshInfo from "../../../components/RefreshInfo";
 
 const MainDetailsPanel = ({currentForecast, theme}) => {
     return (
         <Fragment>
+            <RefreshInfo/>
             <CustomText style={[styles.title, {color: theme.mainText}]}>
                 Today forecast
             </CustomText>
