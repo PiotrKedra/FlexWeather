@@ -38,6 +38,12 @@ export default function App() {
                 setTheme(getDarkTheme());
         });
   });
+
+    const forFade = ({ current }) => ({
+        cardStyle: {
+            opacity: current.progress,
+        },
+    });
   return (
     <Provider store={store}>
       <NavigationContainer>
@@ -47,12 +53,14 @@ export default function App() {
             component={AppLauncher}
             options={{
               headerShown: false,
+                cardStyleInterpolator: forFade,
             }}
           />
             <Stack.Screen name="WelcomeScreen"
                           component={WelcomeScreen}
                           options={{
                               headerShown: false,
+                              cardStyleInterpolator: forFade,
                           }}/>
             <Stack.Screen name="SetupScreen"
                       component={SetupScreen}

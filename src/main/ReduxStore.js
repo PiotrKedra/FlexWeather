@@ -28,9 +28,17 @@ const reducer = (state = {}, action) => {
                 hourlyForecast: action.payload.forecast.hourly,
                 weatherTheme: action.payload.weatherTheme
             });
-        case 'CURRENT_TIMESTAMP':
+        case 'FORECAST_REFRESH':
+            try {
+                AsyncStorage.setItem(LAST_FORECAST_UPDATE_STORAGE, JSON.stringify(new Date()));
+                AsyncStorage.setItem(LAST_FORECAST_STORAGE, JSON.stringify(action.payload.forecast));
+            } catch (e) {}
+            console.log('refreshed XD')
             return Object.assign({}, state, {
-                currentTimestamp: action.payload,
+                currentForecast: action.payload.forecast.current,
+                rootForecastPerDay: action.payload.forecast.daily,
+                hourlyForecast: action.payload.forecast.hourly,
+                weatherTheme: action.payload.weatherTheme
             });
         case 'THEME':
             return Object.assign({}, state, {

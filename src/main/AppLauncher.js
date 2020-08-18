@@ -12,6 +12,7 @@ import getStorageTheme from "./theme/Theme";
 import { setJSExceptionHandler, setNativeExceptionHandler } from 'react-native-exception-handler';
 import getLocation from "./location/LocationService";
 import hasDistanceChanged from "./location/DistanceCalculator";
+import LauncherLoadingComponent from "./components/LauncherLoadingComponent";
 
 setJSExceptionHandler((error, isFatal) => {
   console.log('### IS FATAL ERROR: ' + isFatal);
@@ -123,18 +124,11 @@ class AppLauncher extends React.Component {
   render() {
     return (
       <View style={{flex: 1, backgroundColor: '#2C82C9'}}>
-        <GeneralStatusBar/>
-        <LoadingComponent loading={true}/>
+        <GeneralStatusBar opacity={0}/>
+        <LauncherLoadingComponent loading={true}/>
         <NoInternetConnectionComponent/>
       </View>)
   }
-}
-
-function mapStateToProps(state) {
-  return {
-    activeLocation: state.activeLocation,
-    homeLocation: state.homeLocation,
-  };
 }
 
 function mapDispatcherToProps(dispatch) {
@@ -145,6 +139,6 @@ function mapDispatcherToProps(dispatch) {
 }
 
 export default connect(
-  mapStateToProps,
-  mapDispatcherToProps,
+    null,
+    mapDispatcherToProps,
 )(AppLauncher);

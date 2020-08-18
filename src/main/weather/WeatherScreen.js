@@ -8,7 +8,7 @@ import {
   Animated,
   Image,
   Dimensions,
-  TouchableOpacity, BackHandler
+  TouchableOpacity, BackHandler, RefreshControl,
 } from 'react-native';
 import { connect } from 'react-redux';
 
@@ -19,12 +19,15 @@ import PoweredBy from "../components/PoweredBy";
 import WeatherPanels from "./WeatherPanels";
 import RefreshInfo from "../components/RefreshInfo";
 import NoInternetConnectionComponent from "../components/NoInternetConnectionComponent";
+import fetchRootForecast from "./api/ForecastApi";
+import getWeatherTheme from "../theme/ThemeService";
 
 class WeatherScreen extends React.Component {
   state = {
     scroll: false,
     fontLoaded: false,
-    locationLeftPosition: new Animated.Value(Dimensions.get('window').width*0.03)
+    locationLeftPosition: new Animated.Value(Dimensions.get('window').width*0.03),
+    refreshing: false,
   };
 
   async componentDidMount() {
@@ -51,6 +54,13 @@ class WeatherScreen extends React.Component {
     }
   };
 
+  async refresh(){
+    this.setState({refreshing: true});
+    let forecast = await fetchRootForecast(this.props.activeLocation.latitude, this.props.activeLocation.longitude);
+    await this.props.refreshForecast(forecast, getWeatherTheme(forecast));
+    this.setState({refreshing: false});
+  }
+
   render = () => {
     let locationStyle = {
       position: 'absolute',
@@ -70,6 +80,14 @@ class WeatherScreen extends React.Component {
             contentContainerStyle={{alignItems: 'center', paddingTop: 50}}
             onScroll={this.onScrollNotTopMinimizeHeader}
             nestedScrollEnabled={true}
+            refreshControl={
+              <RefreshControl refreshing={this.state.refreshing}
+                              onRefresh={()=> this.refresh()}
+                              colors={[this.props.weatherTheme.mainColor]}
+                              progressBackgroundColor={this.props.theme.mainColor}
+                              progressViewOffset={75}
+              />
+            }
           >
             <Animated.View style={[styles.locationView, locationStyle]}>
               <TouchableOpacity
@@ -111,11 +129,18 @@ class WeatherScreen extends React.Component {
 function mapStateToProps(state) {
   return {
     activeLocation: state.activeLocation,
-    weatherTheme: state.weatherTheme
+    weatherTheme: state.weatherTheme,
+    theme: state.theme
   };
 }
 
-export default connect(mapStateToProps)(WeatherScreen);
+function mapDispatcherToProps(dispatch) {
+  return {
+    refreshForecast: (forecast, weatherTheme) => dispatch({type: 'FORECAST_REFRESH', payload: {forecast: forecast, weatherTheme: weatherTheme}}),
+  };
+}
+
+export default connect(mapStateToProps, mapDispatcherToProps)(WeatherScreen);
 
 const styles = StyleSheet.create({
   imageBackground: {
