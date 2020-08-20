@@ -5,7 +5,9 @@ import LottieView from "lottie-react-native";
 class LauncherLoadingComponent extends React.PureComponent{
 
     state = {
-        animatedOpacity: new Animated.Value(0)
+        animatedOpacity: new Animated.Value(0),
+        finalOpacity: 0.6,
+        duration: 1500,
     };
 
     componentDidMount() {
@@ -18,7 +20,7 @@ class LauncherLoadingComponent extends React.PureComponent{
 
     animate() {
         Animated.timing(this.state.animatedOpacity, {
-            toValue: 0.6,
+            toValue: this.state.finalOpacity,
             duration: 1500,
             useNativeDriver: false
         }).start();
@@ -28,7 +30,7 @@ class LauncherLoadingComponent extends React.PureComponent{
         return (
             <Animated.View style={{
                 position: 'absolute',
-                top: Dimensions.get('window').height/2 - 40,
+                top: '50%',
                 right: Dimensions.get('window').width/2 - 40,
                 justifyContent: 'center',
                 alignItems: 'center',

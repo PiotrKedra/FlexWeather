@@ -6,7 +6,6 @@ import AsyncStorage from '@react-native-community/async-storage';
 import fetchRootForecast from './weather/api/ForecastApi';
 import GeneralStatusBar from "./components/GeneralStatusBar";
 import getWeatherTheme from "./theme/ThemeService";
-import LoadingComponent from "./components/LoadingComponent";
 import NoInternetConnectionComponent from "./components/NoInternetConnectionComponent";
 import getStorageTheme from "./theme/Theme";
 import { setJSExceptionHandler, setNativeExceptionHandler } from 'react-native-exception-handler';
@@ -125,7 +124,7 @@ class AppLauncher extends React.Component {
     return (
       <View style={{flex: 1, backgroundColor: '#2C82C9'}}>
         <GeneralStatusBar opacity={0}/>
-        <LauncherLoadingComponent loading={true}/>
+        <LauncherLoadingComponent/>
         <NoInternetConnectionComponent/>
       </View>)
   }

@@ -1,101 +1,125 @@
-import React, {useState} from "react";
-import {Image, StyleSheet, TextInput, ToastAndroid, TouchableOpacity, View} from "react-native";
+import React from "react";
+import {Dimensions, Image, StyleSheet, TextInput, ToastAndroid, TouchableOpacity, View} from "react-native";
 import {getSystemTheme} from "../theme/Theme";
 import {searchForLocationsByQuery} from "../location/LocationAutocompleteApi";
 import GeneralStatusBar from "../components/GeneralStatusBar";
 import CustomText from "../components/CustomText";
 import SUGGESTED_LOCATIONS from "../location/SugestedLocations";
 import AsyncStorage from "@react-native-community/async-storage";
+import LottieView from "lottie-react-native";
 
+class ManualLocationScreen extends React.PureComponent {
 
-const ManualLocationScreen = ({navigation}) => {
+    state = {
+        locationInput: '',
+        locations: [],
+        fetchingTasks: 0,
+        theme: getSystemTheme()
+    }
 
-    const theme = getSystemTheme();
-    const [locationInput, changeLocationInput] = useState("");
-    const [locations, changeLocations] = useState([]);
-
-    return (
-        <View style={{flex: 1, backgroundColor: theme.mainColor}}>
-            <GeneralStatusBar opacity={0}/>
-            <View style={styles.overflowView}>
-                <View style={styles.locationSearchViewInner}>
-                    <Image
-                        style={[styles.locationSearchViewSearchImage, {tintColor: theme.mainText}]}
-                        source={require('../../../assets/images/icons/search2.png')}
-                    />
-                    <TextInput
-                        style={[styles.locationSearchViewTextInput, {color: theme.mainText}]}
-                        placeholder="Search location"
-                        onChangeText={text => searchForLocation(text, changeLocationInput, changeLocations)}
-                        value={locationInput}
-                        autoFocus={true}
-                    />
-                    <TouchableOpacity style={styles.locationSearchCancelButton}
-                                      onPress={() => {changeLocationInput(""); changeLocations([])}}
-                    >
+    render() {
+        return (
+            <View style={{flex: 1, backgroundColor: this.state.theme.mainColor}}>
+                <GeneralStatusBar opacity={0}/>
+                {
+                    this.state.fetchingTasks !== 0
+                    &&
+                    <View style={{position: 'absolute', top: '50%', left: Dimensions.get('window').width / 2 - 42}}>
+                    <LottieView style={{height: 80,}}
+                    source={require('../../../assets/lottie/loading')}
+                    autoPlay
+                    loop/>
+                    </View>
+                }
+                <View style={styles.overflowView}>
+                    <View style={styles.locationSearchViewInner}>
                         <Image
-                            style={styles.locationSearchCancelImage}
-                            source={require('../../../assets/images/icons/cancel.png')}
+                            style={[styles.locationSearchViewSearchImage, {tintColor: this.state.theme.mainText}]}
+                            source={require('../../../assets/images/icons/search2.png')}
                         />
-                    </TouchableOpacity>
+                        <TextInput
+                            style={[styles.locationSearchViewTextInput, {color: this.state.theme.mainText}]}
+                            placeholder="Search location"
+                            onChangeText={text => this.searchForLocation(text)}
+                            value={this.state.locationInput}
+                            autoFocus={true}
+                        />
+                        <TouchableOpacity style={styles.locationSearchCancelButton}
+                                          onPress={() => {this.setState({
+                                              locationInput: "",
+                                              locations: []
+                                          })}}
+                        >
+                            <Image
+                                style={styles.locationSearchCancelImage}
+                                source={require('../../../assets/images/icons/cancel.png')}
+                            />
+                        </TouchableOpacity>
+                    </View>
                 </View>
+                {this.state.locationInput.length < 3 ?
+                    <React.Fragment>
+                        <CustomText style={{marginHorizontal: '5%', fontSize: 25, marginVertical: 5}}>Some
+                            suggestions:</CustomText>
+                        {SUGGESTED_LOCATIONS.map(item => this.renderLocationItem(item, this.state.theme.mainText))}
+                    </React.Fragment>
+                    :
+                    this.state.locations.map(item => this.renderLocationItem(item, this.state.theme.mainText))
+                }
             </View>
-            {locationInput.length < 3 ?
-                <React.Fragment>
-                    <CustomText style={{marginHorizontal: '5%', fontSize: 25, marginVertical: 5}}>Some suggestions:</CustomText>
-                    {SUGGESTED_LOCATIONS.map(item => renderLocationItem(item, navigation, theme.mainText))}
-                </React.Fragment>
-                :
-                locations.map(item => renderLocationItem(item, navigation, theme.mainText))
-            }
+        )
+    }
 
-        </View>
-    )
-};
+    async searchForLocation(query){
+        this.setState({locationInput: query});
+        if(query.length >= 3) {
+            this.setState({fetchingTasks: this.state.fetchingTasks + 1})
+            const locations = await searchForLocationsByQuery(query);
+            locations.forEach((ele, i) => locations[i] = this.parseLocation(ele));
+            this.setState({locations: locations});
+            this.setState({fetchingTasks: this.state.fetchingTasks - 1})
+        } else {
+            this.setState({locations: []});
+        }
+    }
 
-async function searchForLocation(query, changeLocationInput, changeLocations){
-    changeLocationInput(query);
-    if(query.length >= 3) {
-        const locations = await searchForLocationsByQuery(query);
-        locations.forEach((ele, i) => locations[i] = parseLocation(ele));
-        changeLocations(locations);
+    parseLocation(location){
+        return {
+            longitude: location.geometry.coordinates[0],
+            latitude: location.geometry.coordinates[1],
+            city: location.properties.name,
+            country: location.properties.country,
+        }
+    }
+
+    renderLocationItem(location, color){
+        return (
+            <TouchableOpacity key={location.latitude + location.longitude}
+                              style={styles.locationItem}
+                              onPress={() => this.saveLocation(location)}
+            >
+                <Image
+                    style={styles.locationItemImage}
+                    source={require('../../../assets/images/icons/location-marker.png')}
+                />
+                <CustomText style={[styles.locationItemText, {color: color}]}>{location.city}, {location.country}</CustomText>
+            </TouchableOpacity>
+        )
+    }
+
+    saveLocation(location){
+        try {
+            const stringLocation = JSON.stringify(location);
+            AsyncStorage.setItem('@home_location', stringLocation);
+            AsyncStorage.setItem('@active_location', stringLocation);
+            this.props.navigation.navigate('SetupScreen');
+        } catch (e) {
+            ToastAndroid.show('Something went wrong', ToastAndroid.SHORT)
+        }
     }
 }
 
-function parseLocation(location){
-    return {
-        longitude: location.geometry.coordinates[0],
-        latitude: location.geometry.coordinates[1],
-        city: location.properties.name,
-        country: location.properties.country,
-    }
-}
 
-function renderLocationItem(location, navigation, color){
-    return (
-        <TouchableOpacity key={location.latitude + location.longitude}
-                          style={styles.locationItem}
-                          onPress={() => saveLocation(location, navigation)}
-        >
-            <Image
-                style={styles.locationItemImage}
-                source={require('../../../assets/images/icons/location-marker.png')}
-            />
-            <CustomText style={[styles.locationItemText, {color: color}]}>{location.city}, {location.country}</CustomText>
-        </TouchableOpacity>
-    )
-}
-
-function saveLocation(location, navigation){
-    try {
-        const stringLocation = JSON.stringify(location);
-        AsyncStorage.setItem('@home_location', stringLocation);
-        AsyncStorage.setItem('@active_location', stringLocation);
-        navigation.navigate('SetupScreen');
-    } catch (e) {
-        ToastAndroid.show('Something went wrong', ToastAndroid.SHORT)
-    }
-}
 
 const styles = StyleSheet.create({
     overflowView: {
