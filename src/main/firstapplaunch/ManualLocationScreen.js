@@ -64,10 +64,21 @@ class ManualLocationScreen extends React.PureComponent {
                         {SUGGESTED_LOCATIONS.map(item => this.renderLocationItem(item, this.state.theme.mainText))}
                     </React.Fragment>
                     :
-                    this.state.locations.map(item => this.renderLocationItem(item, this.state.theme.mainText))
+                    this.renderLocationResult()
                 }
             </View>
         )
+    }
+
+    renderLocationResult(){
+        if(this.state.fetchingTasks === 0 && this.state.locations.length === 0)
+            return (
+                <CustomText style={{marginHorizontal: '5%', fontSize: 25, marginVertical: 5}}>
+                    We could not find any location
+                </CustomText>
+            )
+        return this.state.locations
+            .map(item => this.renderLocationItem(item, this.state.theme.mainText))
     }
 
     async searchForLocation(query){
