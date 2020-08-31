@@ -1,16 +1,16 @@
-import {BACKGORUND} from "../../resource/ImagePath";
+import {BACKGROUND} from "../../resource/ImagePath";
 import getSummary from "./SummaryService";
 
 const ICON_MAPPER = [
-    {name: '01d', background: BACKGORUND.sun, mainColor: '#FCB941', textColor: '#191206', menuColor: '#BFD5FE', panelColor: '#EEE'},
-    {name: '02d', background: BACKGORUND.cloud, mainColor: '#f97a78', textColor: '#190906', menuColor: '#C0F4FE', panelColor: '#EEE'},
-    {name: '03d', background: BACKGORUND.cloud, mainColor: '#f97a78', textColor: '#190906', menuColor: '#C0F4FE', panelColor: '#EEE'},
-    {name: '04d', background: BACKGORUND.cloud, mainColor: '#f97a78', textColor: '#190906', menuColor: '#C0F4FE', panelColor: '#EEE'},
-    {name: '09d', background: BACKGORUND.rain, mainColor: '#2C82C9', textColor: '#040d14', menuColor: '#E6B68E', panelColor: '#EEE'},
-    {name: '10d', background: BACKGORUND.rain, mainColor: '#2C82C9', textColor: '#040d14', menuColor: '#E6B68E', panelColor: '#EEE'},
-    {name: '11d', background: BACKGORUND.rain, mainColor: '#2C82C9', textColor: '#040d14', menuColor: '#E6B68E', panelColor: '#EEE'},
-    {name: '13d', background: BACKGORUND.snow, mainColor: '#8dafe4', textColor: '#0e1116', menuColor: '#E4C28D', panelColor: '#EEE'},
-    {name: '50d', background: BACKGORUND.cloud, mainColor: '#f97a78', textColor: '#190906', menuColor: '#C0F4FE', panelColor: '#EEE'},
+    {name: '01d', background: BACKGROUND.sun, mainColor: '#FCB941', textColor: '#191206', menuColor: '#BFD5FE', panelColor: '#EEE'},
+    {name: '02d', background: BACKGROUND.cloud, mainColor: '#f97a78', textColor: '#190906', menuColor: '#C0F4FE', panelColor: '#EEE'},
+    {name: '03d', background: BACKGROUND.cloud, mainColor: '#f97a78', textColor: '#190906', menuColor: '#C0F4FE', panelColor: '#EEE'},
+    {name: '04d', background: BACKGROUND.cloud, mainColor: '#f97a78', textColor: '#190906', menuColor: '#C0F4FE', panelColor: '#EEE'},
+    {name: '09d', background: BACKGROUND.rain, mainColor: '#2C82C9', textColor: '#040d14', menuColor: '#E6B68E', panelColor: '#EEE'},
+    {name: '10d', background: BACKGROUND.rain, mainColor: '#2C82C9', textColor: '#040d14', menuColor: '#E6B68E', panelColor: '#EEE'},
+    {name: '11d', background: BACKGROUND.rain, mainColor: '#2C82C9', textColor: '#040d14', menuColor: '#E6B68E', panelColor: '#EEE'},
+    {name: '13d', background: BACKGROUND.snow, mainColor: '#8dafe4', textColor: '#0e1116', menuColor: '#E4C28D', panelColor: '#EEE'},
+    {name: '50d', background: BACKGROUND.cloud, mainColor: '#f97a78', textColor: '#190906', menuColor: '#C0F4FE', panelColor: '#EEE'},
 ];
 
 const NIGHT_THEME_COLOR = '#000000';
@@ -37,7 +37,7 @@ function getTheme(current){
     }
     if(new Date() < new Date(current.sunrise*1000) || new Date(current.sunset*1000) < new Date()){
         return {
-            background: BACKGORUND.night,
+            background: BACKGROUND.night,
             mainColor: NIGHT_THEME_COLOR,
             textColor: NIGHT_TEXT_COLOR,
             menuColor: NIGHT_MENU_COLOR,

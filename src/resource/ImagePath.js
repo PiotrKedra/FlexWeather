@@ -7,7 +7,7 @@ const IMAGES = {
 
 };
 
-const BACKGORUND = {
+const BACKGROUND = {
     sun: require('../../assets/images/background/sun-background.jpg'),
     cloud: require('../../assets/images/background/cloud-background.jpg'),
     rain: require('../../assets/images/background/rain-background.jpg'),
@@ -46,6 +46,6 @@ const FORECAST_ICONS = {
     wind: require('../../assets/images/forecast/wind.png'),
 };
 
-export { BACKGORUND, FORECAST_ICONS, FORECAST_ICONS2};
+export { BACKGROUND, FORECAST_ICONS, FORECAST_ICONS2};
 
 export default IMAGES;
