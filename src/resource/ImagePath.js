@@ -1,10 +1,6 @@
 
 const IMAGES = {
-
     rainfallIcon: require('../../assets/images/rain-umbrella.png'),
-    sunCloudIcon: require('../../assets/images/sun-cloud.png'),
-    infoIcon: require('../../assets/images/info.png'),
-
 };
 
 const BACKGROUND = {
