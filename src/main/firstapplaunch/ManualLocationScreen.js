@@ -86,20 +86,10 @@ class ManualLocationScreen extends React.PureComponent {
         if(query.length >= 3) {
             this.setState({fetchingTasks: this.state.fetchingTasks + 1})
             const locations = await searchForLocationsByQuery(query);
-            locations.forEach((ele, i) => locations[i] = this.parseLocation(ele));
             this.setState({locations: locations});
             this.setState({fetchingTasks: this.state.fetchingTasks - 1})
         } else {
             this.setState({locations: []});
-        }
-    }
-
-    parseLocation(location){
-        return {
-            longitude: location.geometry.coordinates[0],
-            latitude: location.geometry.coordinates[1],
-            city: location.properties.name,
-            country: location.properties.country,
         }
     }
 

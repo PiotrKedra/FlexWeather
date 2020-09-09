@@ -10,7 +10,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 
 import AppLauncher from './src/main/AppLauncher';
 import WeatherScreen from "./src/main/weather/WeatherScreen";
-import InitLocationSearchComponent from "./src/main/location/InitLocationSearchComponent";
+import SearchScreen from "./src/main/location/SearchScreen";
 import store from "./src/main/ReduxStore";
 import AboutScreen from "./src/main/menu/settingscreens/AboutScreen";
 import SupportScreen from "./src/main/menu/settingscreens/SupportScreen";
@@ -87,7 +87,7 @@ export default function App() {
                               cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS
                           }}/>
           <Stack.Screen name="SearchScreen"
-                        component={InitLocationSearchComponent}
+                        component={SearchScreen}
                         options={{
                           title: null,
                             headerTintColor: theme.mainText,
