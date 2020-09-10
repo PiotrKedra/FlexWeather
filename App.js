@@ -3,7 +3,6 @@ import React, {useEffect, useState} from 'react';
 import {Dimensions} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {CardStyleInterpolators, createStackNavigator} from '@react-navigation/stack';
-import {createStore} from 'redux';
 import {Provider} from 'react-redux';
 import SplashScreen from 'react-native-splash-screen';
 import AsyncStorage from '@react-native-community/async-storage';
