@@ -36,3 +36,8 @@ allprojects {
         maven { url 'https://jitpack.io' }
     }
 }
+
+// automatic symbol file for GooglePlay to debug and analyze app crashes
+// https://support.google.com/googleplay/android-developer/answer/9848633?hl=pl
+android.defaultConfig.ndk.debugSymbolLevel = 'FULL'
+

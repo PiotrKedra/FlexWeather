@@ -207,8 +207,3 @@ task copyDownloadableDepsToLibs(type: Copy) {
 }
 
 apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesAppBuildGradle(project)
-
-
-// automatic symbol file for GooglePlay to debug and analyze app crashes
-// https://support.google.com/googleplay/android-developer/answer/9848633?hl=pl
-android.defaultConfig.ndk.debugSymbolLevel = 'FULL'
