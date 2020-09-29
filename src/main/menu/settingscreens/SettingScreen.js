@@ -2,6 +2,7 @@ import React from "react";
 import {Image, Pressable, ScrollView, StyleSheet, ToastAndroid, View} from "react-native";
 import CustomText from "../../components/CustomText";
 import {connect} from "react-redux";
+import WeatherUnitsSettings from "./weatherunits/WeatherUnitsSettings";
 
 const SettingScreen = ({theme}) => {
 
@@ -30,47 +31,7 @@ const SettingScreen = ({theme}) => {
                     </View>
                 </Pressable>
             </View>
-            <View>
-                <View style={{flexDirection: 'row', borderBottomWidth: 1, borderColor: theme.softBackgroundColor, alignItems: 'center'}}>
-                    <CustomText style={{fontSize: 20, color: '#2c82c9'}}>weather units</CustomText>
-                </View>
-                <Pressable style={styles.settingView}
-                           onPress={() => ToastAndroid.show('coming soon...', ToastAndroid.SHORT)}
-                           android_ripple={{color: '#ddd'}}>
-                    <Image style={[styles.settingIcon, {tintColor: theme.iconColor}]} source={require('../../../../assets/images/details/temperature.png')}/>
-                    <View>
-                        <CustomText style={[styles.settingTitle, {color: theme.mainText}]}>temperature</CustomText>
-                        <CustomText style={[styles.settingInfo, {color: theme.softText}]}>°C</CustomText>
-                    </View>
-                </Pressable>
-                <Pressable style={styles.settingView}
-                           onPress={() => ToastAndroid.show('coming soon...', ToastAndroid.SHORT)}
-                           android_ripple={{color: '#ddd'}}>
-                    <Image style={[styles.settingIcon, {tintColor: theme.iconColor}]} source={require('../../../../assets/images/details/wind-speed.png')}/>
-                    <View>
-                        <CustomText style={[styles.settingTitle, {color: theme.mainText}]}>wind</CustomText>
-                        <CustomText style={[styles.settingInfo, {color: theme.softText}]}>km/h</CustomText>
-                    </View>
-                </Pressable>
-                <Pressable style={styles.settingView}
-                           onPress={() => ToastAndroid.show('coming soon...', ToastAndroid.SHORT)}
-                           android_ripple={{color: '#ddd'}}>
-                    <Image style={[styles.settingIcon, {tintColor: theme.iconColor}]} source={require('../../../../assets/images/details/pressure.png')}/>
-                    <View>
-                        <CustomText style={[styles.settingTitle, {color: theme.mainText}]}>pressure</CustomText>
-                        <CustomText style={[styles.settingInfo, {color: theme.softText}]}>m</CustomText>
-                    </View>
-                </Pressable>
-                <Pressable style={styles.settingView}
-                           onPress={() => ToastAndroid.show('coming soon...', ToastAndroid.SHORT)}
-                           android_ripple={{color: '#ddd'}}>
-                    <Image style={[styles.settingIcon, {tintColor: theme.iconColor}]} source={require('../../../../assets/images/details/visibility.png')}/>
-                    <View>
-                        <CustomText style={[styles.settingTitle, {color: theme.mainText}]}>visibility</CustomText>
-                        <CustomText style={[styles.settingInfo, {color: theme.softText}]}>m</CustomText>
-                    </View>
-                </Pressable>
-            </View>
+            <WeatherUnitsSettings/>
             <View style={{marginBottom: 30}}>
                 <View>
                     <CustomText style={{fontSize: 20, color: '#2c82c9', paddingBottom: 5, borderBottomWidth: 1, borderColor: theme.softBackgroundColor}}>weather</CustomText>

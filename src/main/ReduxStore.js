@@ -4,6 +4,7 @@ import {createStore} from "redux";
 const LAST_FORECAST_UPDATE_STORAGE = "@forecast_update_date";
 const ACTIVE_LOCATION_STORAGE = '@active_location';
 const LAST_FORECAST_STORAGE = '@last_forecast';
+const WEATHER_UNITS_SETTINGS = '@weather_units';
 
 const reducer = (state = {}, action) => {
     switch (action.type) {
@@ -42,6 +43,15 @@ const reducer = (state = {}, action) => {
         case 'THEME':
             return Object.assign({}, state, {
                 theme: action.payload
+            })
+        case 'WEATHER_UNITS':
+            try {
+                AsyncStorage.setItem(WEATHER_UNITS_SETTINGS, JSON.stringify(action.payload));
+            } catch (e){
+                console.log(e);
+            }
+            return Object.assign({}, state, {
+                weatherUnits: action.payload
             })
     }
     return state;

@@ -59,6 +59,7 @@ class AppLauncher extends React.Component {
       await this.showForecastFromStorage(location);
     else
       await this.tryToLoadDataFromInternet(location);
+    this.props.setWeatherUnits(JSON.parse(await AsyncStorage.getItem('@weather_units')));
   }
 
   async getProperLocation(){
@@ -134,6 +135,7 @@ function mapDispatcherToProps(dispatch) {
   return {
     setTheme: (theme) => dispatch({type: 'THEME', payload: theme}),
     setInitialForecast: (rootForecast, location, weatherTheme, saveToStorage=true) => dispatch({type: 'ROOT_FORECAST', payload: {forecast: rootForecast, location: location, weatherTheme: weatherTheme, saveToStorage: saveToStorage}}),
+    setWeatherUnits: (weatherUnits) => dispatch({type: 'WEATHER_UNITS', payload: weatherUnits}),
   };
 }
 
