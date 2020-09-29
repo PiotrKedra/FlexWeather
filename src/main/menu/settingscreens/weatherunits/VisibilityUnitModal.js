@@ -4,14 +4,11 @@ import {Pressable, StyleSheet, View} from "react-native";
 import CheckBox from "../../../components/CheckBox";
 import React from "react";
 import {connect} from "react-redux";
+import {KILOMETERS, METERS, MILES} from "./UnitsValues";
 
 const VisibilityUnitModal = ({isVisible, setVisible, theme, weatherUnits, setWeatherUnits}) => {
 
     const visibilityUnit = weatherUnits.visibility;
-
-    const METERS = 'm';
-    const KILOMETERS = 'km';
-    const MILES = 'mi';
 
     return (
         <CustomModal isVisible={isVisible} setVisible={setVisible} mainColor={theme.mainColor}>

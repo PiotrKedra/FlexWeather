@@ -4,16 +4,11 @@ import {Pressable, StyleSheet, View} from "react-native";
 import CheckBox from "../../../components/CheckBox";
 import React from "react";
 import {connect} from "react-redux";
+import {BEAUFORT_SCALE, KILOMETERS_PER_HOUR, KNOT, METERS_PER_SECOND, MILES_PER_HOUR} from "./UnitsValues";
 
 const WindUnitModal = ({isVisible, setVisible, theme, weatherUnits, setWeatherUnits}) => {
 
     const windUnit = weatherUnits.wind;
-
-    const KILOMETERS_PER_HOUR = 'km/h';
-    const METERS_PER_SECOND = 'm/s';
-    const MILES_PER_HOUR = 'MPH';
-    const KNOT = 'kn';
-    const BEAUFORT_SCALE = '°B';
 
     return (
         <CustomModal isVisible={isVisible} setVisible={setVisible} mainColor={theme.mainColor}>

@@ -4,13 +4,11 @@ import {Pressable, StyleSheet, View} from "react-native";
 import CheckBox from "../../../components/CheckBox";
 import React from "react";
 import {connect} from "react-redux";
+import {HECTOPASCAL, MILLIBARS} from "./UnitsValues";
 
 const PressureUnitModal = ({isVisible, setVisible, theme, weatherUnits, setWeatherUnits}) => {
 
     const pressureUnit = weatherUnits.pressure;
-
-    const HECTOPASCAL = 'hPa';
-    const MILLIBARS = 'ml'
 
     return (
         <CustomModal isVisible={isVisible} setVisible={setVisible} mainColor={theme.mainColor}>

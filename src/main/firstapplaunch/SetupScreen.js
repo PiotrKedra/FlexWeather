@@ -15,6 +15,8 @@ import {getSystemTheme} from "../theme/Theme";
 import ThemeModal from "./setupmodals/ThemeModal";
 import AsyncStorage from "@react-native-community/async-storage";
 import { CommonActions } from '@react-navigation/native';
+import {connect} from "react-redux";
+import {DEFAULT_UNITS} from "../menu/settingscreens/weatherunits/UnitsService";
 
 class SetupScreen extends React.PureComponent{
 
@@ -29,6 +31,7 @@ class SetupScreen extends React.PureComponent{
     };
 
     componentDidMount() {
+        this.props.setDefaultUnits(DEFAULT_UNITS);
         BackHandler.addEventListener('hardwareBackPress', this.state.onBackPress);
     }
 
@@ -50,6 +53,7 @@ class SetupScreen extends React.PureComponent{
     };
 
     render() {
+        const units = this.props.weatherUnits;
         return (
             <View style={{flex: 1, backgroundColor: this.state.theme.mainColor}}>
                 <ScrollView>
@@ -81,12 +85,14 @@ class SetupScreen extends React.PureComponent{
                             </View>
                         </Pressable>
                         <Pressable style={styles.settingView}
-                                   onPress={() => ToastAndroid.show('coming soon...', ToastAndroid.SHORT)}
+                                   onPress={() => {this.props.navigation.navigate('SetupUnitsScreen'); BackHandler.removeEventListener('hardwareBackPress', this.state.onBackPress);}}
                                    android_ripple={{color: '#ddd'}}>
                             <Image style={[styles.settingIcon, {tintColor: this.state.theme.mainText}]} source={require('../../../assets/images/icons/units.png')}/>
                             <View>
                                 <CustomText style={[styles.settingTitle, {color: this.state.theme.mainText}]}>weather units</CustomText>
-                                <CustomText style={[styles.settingInfo, {color: this.state.theme.softText}]}>°C, km/h ...</CustomText>
+                                <CustomText style={[styles.settingInfo, {color: this.state.theme.softText}]}>
+                                    {units.temp}, {units.wind}, {units.pressure}, {units.visibility}
+                                </CustomText>
                             </View>
                         </Pressable>
                         <View>
@@ -147,4 +153,16 @@ const styles = StyleSheet.create({
     settingInfo: {fontSize: 17, color: '#777'}
 });
 
-export default SetupScreen;
+function mapStateToProps(state){
+    return {
+        weatherUnits: state.weatherUnits
+    }
+}
+
+function mapDispatchToProps(dispatch){
+    return {
+        setDefaultUnits: (weatherUnits) => dispatch({type: 'WEATHER_UNITS', payload: weatherUnits}),
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(SetupScreen);

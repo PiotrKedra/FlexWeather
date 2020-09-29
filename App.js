@@ -21,6 +21,7 @@ import WelcomeScreen from "./src/main/firstapplaunch/WelcomeScreen";
 import SetupLocationScreen from "./src/main/firstapplaunch/SetupLocationScreen";
 import CurrentLocationScreen from "./src/main/firstapplaunch/CurrentLocationScreen";
 import ManualLocationScreen from "./src/main/firstapplaunch/ManualLocationScreen";
+import SetupUnitsScreen from "./src/main/firstapplaunch/SetupUnitsScreen";
 
 const Stack = createStackNavigator();
 
@@ -67,6 +68,9 @@ export default function App() {
                           headerShown: false,
                           cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS
                       }}/>
+            <Stack.Screen name="SetupUnitsScreen"
+                          component={SetupUnitsScreen}
+                          options={getSettingScreenOptions('UNITS', theme)}/>
             <Stack.Screen name="SetupLocationScreen"
                           component={SetupLocationScreen}
                           options={{
