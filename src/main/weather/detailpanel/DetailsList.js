@@ -2,8 +2,9 @@ import React, {Fragment} from "react";
 import {Image, View, StyleSheet} from "react-native";
 import Text from "../../components/CustomText";
 import {connect} from "react-redux";
+import {getTempValue} from "../../units/UnitsService";
 
-const DetailsList = ({forecast, theme}) => {
+const DetailsList = ({forecast, theme, weatherUnits}) => {
 
     const imageStyle = [styles.image, {tintColor: theme.mainText}];
     const textValueStyle = [styles.textValue, {color: theme.mainText}];
@@ -70,7 +71,7 @@ const DetailsList = ({forecast, theme}) => {
                 <View style={styles.elementInRow}>
                     <Image style={imageStyle} source={require('../../../../assets/images/details/dew-point.png')}/>
                     <View style={styles.textView}>
-                        <Text style={textValueStyle}>{Math.round(forecast.dew_point)}°</Text>
+                        <Text style={textValueStyle}>{getTempValue(forecast.dew_point, weatherUnits.temp)}°</Text>
                         <Text style={textTitleStyle}>dew point</Text>
                     </View>
                 </View>
@@ -149,7 +150,8 @@ const styles = StyleSheet.create({
 function mapStateToProps(state) {
     return {
         forecast: state.currentForecast,
-        theme: state.theme
+        theme: state.theme,
+        weatherUnits: state.weatherUnits
     }
 }
 

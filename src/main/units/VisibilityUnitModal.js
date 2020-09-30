@@ -1,7 +1,7 @@
-import CustomModal from "../../../firstapplaunch/setupmodals/CustomModal";
-import Text from "../../../components/CustomText";
+import CustomModal from "../firstapplaunch/setupmodals/CustomModal";
+import Text from "../components/CustomText";
 import {Pressable, StyleSheet, View} from "react-native";
-import CheckBox from "../../../components/CheckBox";
+import CheckBox from "../components/CheckBox";
 import React from "react";
 import {connect} from "react-redux";
 import {KILOMETERS, METERS, MILES} from "./UnitsValues";

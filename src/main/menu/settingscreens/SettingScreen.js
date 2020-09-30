@@ -2,7 +2,7 @@ import React from "react";
 import {Image, Pressable, ScrollView, StyleSheet, ToastAndroid, View} from "react-native";
 import CustomText from "../../components/CustomText";
 import {connect} from "react-redux";
-import WeatherUnitsSettings from "./weatherunits/WeatherUnitsSettings";
+import WeatherUnitsSettings from "../../units/WeatherUnitsSettings";
 
 const SettingScreen = ({theme}) => {
 

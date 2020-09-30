@@ -2,8 +2,9 @@ import React, {Fragment} from "react";
 import {Image, Text, View, StyleSheet} from "react-native";
 import CustomText from "../../../components/CustomText";
 import {connect} from "react-redux";
+import {getTempValue} from "../../../units/UnitsService";
 
-const MainDetailsList = ({currentForecast, dailyForecast, theme}) => {
+const MainDetailsList = ({currentForecast, dailyForecast, theme, weatherUnits}) => {
 
     const imageStyle = [styles.image, {tintColor: theme.mainText}];
     const valueTextStyle = [styles.valueText, {color: theme.mainText}];
@@ -14,14 +15,14 @@ const MainDetailsList = ({currentForecast, dailyForecast, theme}) => {
                 <View style={{flex: 1, flexDirection: 'row'}}>
                     <Image style={imageStyle} source={require('../../../../../assets/images/details/temperature.png')}/>
                     <View style={{paddingLeft: 10}}>
-                        <CustomText style={valueTextStyle}>{Math.round(dailyForecast[0].temp.max)}°/{Math.round(dailyForecast[0].temp.min)}°</CustomText>
+                        <CustomText style={valueTextStyle}>{getTempValue(dailyForecast[0].temp.max, weatherUnits.temp)}°/{getTempValue(dailyForecast[0].temp.min, weatherUnits.temp)}°</CustomText>
                         <CustomText style={smallTitleTextStyle}>temperature</CustomText>
                     </View>
                 </View>
                 <View style={{flex: 1, flexDirection: 'row'}}>
                     <Image style={imageStyle} source={require('../../../../../assets/images/details/sensed-temperature.png')}/>
                     <View style={{paddingLeft: 10, flexShrink: 1}}>
-                        <CustomText style={valueTextStyle}>{Math.round(currentForecast.feels_like)}°</CustomText>
+                        <CustomText style={valueTextStyle}>{getTempValue(currentForecast.feels_like, weatherUnits.temp)}°</CustomText>
                         <Text style={[smallTitleTextStyle, {fontFamily: 'Neucha-Regular'}]}>sensed temperature</Text>
                     </View>
                 </View>
@@ -63,7 +64,8 @@ function mapStateToProps(state){
     return {
         currentForecast: state.currentForecast,
         dailyForecast: state.rootForecastPerDay,
-        theme: state.theme
+        theme: state.theme,
+        weatherUnits: state.weatherUnits
     }
 }
 

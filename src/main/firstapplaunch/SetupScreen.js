@@ -16,7 +16,7 @@ import ThemeModal from "./setupmodals/ThemeModal";
 import AsyncStorage from "@react-native-community/async-storage";
 import { CommonActions } from '@react-navigation/native';
 import {connect} from "react-redux";
-import {DEFAULT_UNITS} from "../menu/settingscreens/weatherunits/UnitsService";
+import {DEFAULT_UNITS} from "../units/UnitsService";
 
 class SetupScreen extends React.PureComponent{
 

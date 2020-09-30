@@ -17,7 +17,6 @@ import AnimatedMenu from '../menu/AnimatedMenu';
 import GeneralStatusBar from "../components/GeneralStatusBar";
 import PoweredBy from "../components/PoweredBy";
 import WeatherPanels from "./WeatherPanels";
-import RefreshInfo from "../components/RefreshInfo";
 import NoInternetConnectionComponent from "../components/NoInternetConnectionComponent";
 import fetchRootForecast from "./api/ForecastApi";
 import getWeatherTheme from "../theme/ThemeService";

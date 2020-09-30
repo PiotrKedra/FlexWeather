@@ -1,7 +1,7 @@
-import CustomModal from "../../../firstapplaunch/setupmodals/CustomModal";
-import Text from "../../../components/CustomText";
+import CustomModal from "../firstapplaunch/setupmodals/CustomModal";
+import Text from "../components/CustomText";
 import {Pressable, StyleSheet, View} from "react-native";
-import CheckBox from "../../../components/CheckBox";
+import CheckBox from "../components/CheckBox";
 import React from "react";
 import {connect} from "react-redux";
 import {BEAUFORT_SCALE, KILOMETERS_PER_HOUR, KNOT, METERS_PER_SECOND, MILES_PER_HOUR} from "./UnitsValues";

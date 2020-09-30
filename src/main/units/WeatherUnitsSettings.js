@@ -1,5 +1,5 @@
 import {Image, Pressable, StyleSheet, ToastAndroid, View} from "react-native";
-import CustomText from "../../../components/CustomText";
+import CustomText from "../components/CustomText";
 import React, {useState} from "react";
 import {connect} from "react-redux";
 import TempUnitModal from "./TempUnitModal";
@@ -22,7 +22,7 @@ const WeatherUnitsSettings = ({theme, weatherUnits}) => {
             <Pressable style={styles.settingView}
                        onPress={() => setTempUnitModal(true)}
                        android_ripple={{color: '#ddd'}}>
-                <Image style={[styles.settingIcon, {tintColor: theme.iconColor}]} source={require('../../../../../assets/images/details/temperature.png')}/>
+                <Image style={[styles.settingIcon, {tintColor: theme.iconColor}]} source={require('../../../assets/images/details/temperature.png')}/>
                 <View>
                     <CustomText style={[styles.settingTitle, {color: theme.mainText}]}>temperature</CustomText>
                     <CustomText style={[styles.settingInfo, {color: theme.softText}]}>{weatherUnits.temp}</CustomText>
@@ -31,7 +31,7 @@ const WeatherUnitsSettings = ({theme, weatherUnits}) => {
             <Pressable style={styles.settingView}
                        onPress={() => setWindUnitModal(true)}
                        android_ripple={{color: '#ddd'}}>
-                <Image style={[styles.settingIcon, {tintColor: theme.iconColor}]} source={require('../../../../../assets/images/details/wind-speed.png')}/>
+                <Image style={[styles.settingIcon, {tintColor: theme.iconColor}]} source={require('../../../assets/images/details/wind-speed.png')}/>
                 <View>
                     <CustomText style={[styles.settingTitle, {color: theme.mainText}]}>wind</CustomText>
                     <CustomText style={[styles.settingInfo, {color: theme.softText}]}>{weatherUnits.wind}</CustomText>
@@ -40,7 +40,7 @@ const WeatherUnitsSettings = ({theme, weatherUnits}) => {
             <Pressable style={styles.settingView}
                        onPress={() => setPressureUnitModal(true)}
                        android_ripple={{color: '#ddd'}}>
-                <Image style={[styles.settingIcon, {tintColor: theme.iconColor}]} source={require('../../../../../assets/images/details/pressure.png')}/>
+                <Image style={[styles.settingIcon, {tintColor: theme.iconColor}]} source={require('../../../assets/images/details/pressure.png')}/>
                 <View>
                     <CustomText style={[styles.settingTitle, {color: theme.mainText}]}>pressure</CustomText>
                     <CustomText style={[styles.settingInfo, {color: theme.softText}]}>{weatherUnits.pressure}</CustomText>
@@ -49,7 +49,7 @@ const WeatherUnitsSettings = ({theme, weatherUnits}) => {
             <Pressable style={styles.settingView}
                        onPress={() => setVisibilityUnitModal(true)}
                        android_ripple={{color: '#ddd'}}>
-                <Image style={[styles.settingIcon, {tintColor: theme.iconColor}]} source={require('../../../../../assets/images/details/visibility.png')}/>
+                <Image style={[styles.settingIcon, {tintColor: theme.iconColor}]} source={require('../../../assets/images/details/visibility.png')}/>
                 <View>
                     <CustomText style={[styles.settingTitle, {color: theme.mainText}]}>visibility</CustomText>
                     <CustomText style={[styles.settingInfo, {color: theme.softText}]}>{weatherUnits.visibility}</CustomText>

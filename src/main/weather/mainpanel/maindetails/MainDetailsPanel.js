@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
 function mapStateToProps(state){
     return {
         currentForecast: state.currentForecast,
-        theme: state.theme
+        theme: state.theme,
     }
 }
 

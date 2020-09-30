@@ -1,6 +1,6 @@
 import React from "react";
 import {View} from "react-native";
-import WeatherUnitsSettings from "../menu/settingscreens/weatherunits/WeatherUnitsSettings";
+import WeatherUnitsSettings from "../units/WeatherUnitsSettings";
 
 const SetupUnitsScreen = () => {
 
