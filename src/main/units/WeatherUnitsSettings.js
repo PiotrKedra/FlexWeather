@@ -6,6 +6,7 @@ import TempUnitModal from "./TempUnitModal";
 import WindUnitModal from "./WIndUnitModal";
 import VisibilityUnitModal from "./VisibilityUnitModal";
 import PressureUnitModal from "./PressureUnitModal";
+import ClockUnitModal from "./ClockUnitModal";
 
 const WeatherUnitsSettings = ({theme, weatherUnits}) => {
 
@@ -13,6 +14,7 @@ const WeatherUnitsSettings = ({theme, weatherUnits}) => {
     const [windUnitModal, setWindUnitModal] = useState(false);
     const [pressureUnitModal, setPressureUnitModal] = useState(false);
     const [visibilityUnitModal, setVisibilityUnitModal] = useState(false);
+    const [clockUnitModal, setClockUnitModal] = useState(false);
 
     return (
         <View>
@@ -55,10 +57,20 @@ const WeatherUnitsSettings = ({theme, weatherUnits}) => {
                     <CustomText style={[styles.settingInfo, {color: theme.softText}]}>{weatherUnits.visibility}</CustomText>
                 </View>
             </Pressable>
+            <Pressable style={styles.settingView}
+                       onPress={() => setClockUnitModal(true)}
+                       android_ripple={{color: '#ddd'}}>
+                <Image style={[styles.settingIcon, {tintColor: theme.iconColor}]} source={require('../../../assets/images/details/clock.png')}/>
+                <View>
+                    <CustomText style={[styles.settingTitle, {color: theme.mainText}]}>clock hours</CustomText>
+                    <CustomText style={[styles.settingInfo, {color: theme.softText}]}>{weatherUnits.clock}</CustomText>
+                </View>
+            </Pressable>
             <TempUnitModal isVisible={tempUnitModal} setVisible={setTempUnitModal}/>
             <WindUnitModal isVisible={windUnitModal} setVisible={setWindUnitModal}/>
             <PressureUnitModal isVisible={pressureUnitModal} setVisible={setPressureUnitModal}/>
             <VisibilityUnitModal isVisible={visibilityUnitModal} setVisible={setVisibilityUnitModal}/>
+            <ClockUnitModal isVisible={clockUnitModal} setVisible={setClockUnitModal}/>
         </View>
     )
 }

@@ -50,7 +50,7 @@ const RainfallChart = (props) => {
 
                 {/*/!* data values ( text for: hour, temperature, rainfall % ) *!/*/}
                 {generateDegreeTextForEachItem(data, xFunction, yFunction, mainTextColor)}
-                {getTimeLabels(data,  xFunction, (initialYCordOfChart + graphHeight) * -1 - 70, mainTextColor)}
+                {getTimeLabels(data,  xFunction, (initialYCordOfChart + graphHeight) * -1 - 70, mainTextColor, props.weatherUnits.clock)}
             </G>
         </Svg>
     )
@@ -118,7 +118,8 @@ function generateDegreeTextForEachItem(data, x, y, color) {
 
 function mapStateToProps(state){
     return {
-        theme: state.theme
+        theme: state.theme,
+        weatherUnits: state.weatherUnits
     }
 }
 

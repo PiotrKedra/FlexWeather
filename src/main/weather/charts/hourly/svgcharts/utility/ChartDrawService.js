@@ -4,7 +4,7 @@ import {G, Image, Line, Text} from "react-native-svg";
 
 import COLORS from "../../../utility/ChartColors";
 import mapDataToIcon, {mapToDayIcon, mapToHourlyIcon} from "../../../utility/ForecastIconMapper";
-import {getTempValue} from "../../../../../units/UnitsService";
+import {getClockTimeValue, getTempValue} from "../../../../../units/UnitsService";
 
 function getFunctionX(data, svgWidth) {
     const xDomain = data.map(item => item.dt);
@@ -108,7 +108,7 @@ function parseToDay(timestamp) {
     return days[new Date(timestamp*1000).getDay()];
 }
 
-function getTimeLabels(data, xFunction, y, color){
+function getTimeLabels(data, xFunction, y, color, unit){
     return (data.map(item => (
         <Text
             key={item.dt}
@@ -118,7 +118,7 @@ function getTimeLabels(data, xFunction, y, color){
             textAnchor="middle"
             fill={color}
             fontFamily="Neucha-Regular">
-            {parseTime(item.dt)}
+            {getClockTimeValue(parseTime(item.dt), unit)}
         </Text>
     )))
 }

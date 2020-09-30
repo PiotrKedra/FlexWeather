@@ -3,6 +3,7 @@ import {View} from "react-native";
 import CustomText from "./CustomText";
 import AsyncStorage from "@react-native-community/async-storage";
 import {connect} from "react-redux";
+import {getClockTimeValue} from "../units/UnitsService";
 
 class RefreshInfo extends React.Component{
 
@@ -35,7 +36,7 @@ class RefreshInfo extends React.Component{
                     <CustomText style={{fontSize: 14, color: this.props.theme.softText}}>!</CustomText>
                 </View>
                 <CustomText style={{marginLeft: 10, fontSize: 15, color: this.props.theme.softText}}>
-                    Last update {this.state.dateUpdate}
+                    Last update {getClockTimeValue(this.state.dateUpdate, this.props.weatherUnits.clock)}
                 </CustomText>
             </View>
         )
@@ -44,7 +45,8 @@ class RefreshInfo extends React.Component{
 
 function mapStateToProps(state) {
     return {
-        theme: state.theme
+        theme: state.theme,
+        weatherUnits: state.weatherUnits
     };
 }
 

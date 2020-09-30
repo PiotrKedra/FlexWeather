@@ -13,6 +13,9 @@ const MILES_PER_HOUR = 'MPH';
 const KNOT = 'kn';
 const BEAUFORT_SCALE = '°B';
 
+const CLOCK_24H = '24h';
+const CLOCK_12H = '12h';
+
 export {
     HECTOPASCAL,
     MILLIBARS,
@@ -26,4 +29,6 @@ export {
     MILES_PER_HOUR,
     KNOT,
     BEAUFORT_SCALE,
+    CLOCK_12H,
+    CLOCK_24H
 }

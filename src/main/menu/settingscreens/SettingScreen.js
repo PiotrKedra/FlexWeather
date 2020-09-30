@@ -51,7 +51,7 @@ const SettingScreen = ({theme}) => {
                     <Image style={[styles.settingIcon, {tintColor: theme.iconColor}]} source={require('../../../../assets/images/icons/edit.png')}/>
                     <View>
                         <CustomText style={[styles.settingTitle, {color: theme.mainText}]}>refresh time</CustomText>
-                        <CustomText style={[styles.settingInfo, {color: theme.softText}]}>60 min8</CustomText>
+                        <CustomText style={[styles.settingInfo, {color: theme.softText}]}>60 min</CustomText>
                     </View>
                 </Pressable>
             </View>

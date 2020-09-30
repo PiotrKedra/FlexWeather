@@ -59,7 +59,7 @@ const TemperatureChart = (props) => {
                 {/* data values ( text for: hour, temperature, rainfall % ) */}
                 {getDataTextForEachItemAboveBars(data, xFunction, yFunction, 'temp', DEGREE_SIGN, mainTextColor, tempUnit)}
                 {getRainData(data, xFunction, softTextColor)}
-                {getTimeLabels(data, xFunction, svgHeight*-1 + 40, mainTextColor)}
+                {getTimeLabels(data, xFunction, svgHeight*-1 + 40, mainTextColor, props.weatherUnits.clock)}
             </G>
         </Svg>
     );

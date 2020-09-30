@@ -46,7 +46,7 @@ const WindChart = (props) => {
 
                 {getWindBearingStringForEach(data, xFunction, mainTextColor)}
                 {getDataTextForEachItemAboveBars(data, xFunction, yFunction, mainTextColor, props.weatherUnits.wind)}
-                {getTimeLabels(data, xFunction, svgHeight * -1 + 40, mainTextColor)}
+                {getTimeLabels(data, xFunction, svgHeight * -1 + 40, mainTextColor, props.weatherUnits.clock)}
             </G>
         </Svg>
     )

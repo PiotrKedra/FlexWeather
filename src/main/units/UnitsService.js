@@ -5,7 +5,7 @@ import {
     KILOMETERS_PER_HOUR, KNOT,
     METERS, MILES,
     MILES_PER_HOUR,
-    MILLIBARS
+    MILLIBARS, CLOCK_24H, CLOCK_12H
 } from "./UnitsValues";
 
 const DEFAULT_UNITS = {
@@ -13,6 +13,7 @@ const DEFAULT_UNITS = {
     wind: KILOMETERS_PER_HOUR,
     pressure: HECTOPASCAL,
     visibility: METERS,
+    clock: CLOCK_24H
 }
 
 const getTempValue = (value, unit) => {
@@ -47,10 +48,21 @@ const getVisibilityValue = (value, unit) => {
     return value;
 }
 
+const getClockTimeValue = (value, unit) => {
+    if(unit===CLOCK_12H){
+        const HH = value.length===5 ? value.substr(0, 2) : value.substr(0, 1);
+        const hh = HH % 12 || 12;
+        const ampm = (HH < 12 || HH === 24) ? "am" : "pm";
+        return hh + (value.length===5 ? value.substr(2, 4) : value.substr(1, 3))  + ampm;
+    }
+    return value;
+}
+
 export {
     DEFAULT_UNITS,
     getTempValue,
     getWindValue,
     getPressureValue,
-    getVisibilityValue
+    getVisibilityValue,
+    getClockTimeValue
 }
