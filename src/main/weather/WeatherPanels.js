@@ -1,4 +1,4 @@
-import React, {useState, useEffect, Fragment} from 'react';
+import React, {Fragment} from 'react';
 import {View} from 'react-native';
 import HourlyForecastPanel from "./charts/hourly/HourlyForecastPanel";
 import DailyForecastPanel from "./mainpanel/DailyForecastPanel";
@@ -21,7 +21,7 @@ const WeatherPanels = ({currentForecast, weatherTheme, weatherUnits}) => {
                         :
                         <Fragment>
                             <CustomText style={{fontSize: 60, color: weatherTheme.textColor}}>
-                                {getTempValue(currentForecast.temp, weatherUnits.temp)}°
+                                {getTempValue(currentForecast.temp, weatherUnits.temp) + weatherUnits.temp}
                             </CustomText>
                             <CustomText style={{fontSize: 20, color: weatherTheme.textColor}}>{weatherTheme.summary}</CustomText>
                         </Fragment>

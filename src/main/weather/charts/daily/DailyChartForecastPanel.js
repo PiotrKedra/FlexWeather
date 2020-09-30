@@ -23,11 +23,19 @@ const DailyChartForecastPanel = ({theme, weatherTheme, weatherUnits}) => {
                         horizontal={true}>
                 <TouchableOpacity style={[styles.chartSelectionButton, (currentChart==='general') ? {backgroundColor: weatherTheme.mainColor} : chartNotSelectedStyle]}
                                   onPress={() => setCurrentChart('general')}>
-                    <AnimatedChartText selected={currentChart==='general'} title={'general'} unit={weatherUnits.temp} selectedTextColor={weatherTheme.textColor} textColor={theme.mainText}/>
+                    <AnimatedChartText selected={currentChart==='general'}
+                                       title={'general'}
+                                       unit={weatherUnits ? weatherUnits.temp : ''}
+                                       selectedTextColor={weatherTheme.textColor}
+                                       textColor={theme.mainText}/>
                 </TouchableOpacity>
                 <TouchableOpacity style={[styles.chartSelectionButton, (currentChart==='wind') ? {backgroundColor: weatherTheme.mainColor} : chartNotSelectedStyle]}
                                   onPress={() => setCurrentChart('wind')}>
-                    <AnimatedChartText selected={currentChart==='wind'} title={'wind'} unit={weatherUnits.wind}  selectedTextColor={weatherTheme.textColor} textColor={theme.mainText}/>
+                    <AnimatedChartText selected={currentChart==='wind'}
+                                       title={'wind'}
+                                       unit={weatherUnits ? weatherUnits.wind : ''}
+                                       selectedTextColor={weatherTheme.textColor}
+                                       textColor={theme.mainText}/>
                 </TouchableOpacity>
                 <TouchableOpacity style={[styles.chartSelectionButton, (currentChart==='rainfall') ? {backgroundColor: weatherTheme.mainColor} : chartNotSelectedStyle]}
                                   onPress={() => setCurrentChart('rainfall')}>

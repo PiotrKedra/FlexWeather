@@ -2,7 +2,7 @@ import React, {Fragment} from "react";
 import {Image, View, StyleSheet} from "react-native";
 import Text from "../../components/CustomText";
 import {connect} from "react-redux";
-import {getTempValue} from "../../units/UnitsService";
+import {getPressureValue, getTempValue, getVisibilityValue, getWindValue} from "../../units/UnitsService";
 
 const DetailsList = ({forecast, theme, weatherUnits}) => {
 
@@ -10,13 +10,17 @@ const DetailsList = ({forecast, theme, weatherUnits}) => {
     const textValueStyle = [styles.textValue, {color: theme.mainText}];
     const textTitleStyle = [styles.textTitle, {color: theme.softText}];
 
+    const windUnit = weatherUnits ? weatherUnits.wind : '';
+    const pressureUnit = weatherUnits ? weatherUnits.pressure : '';
+    const visibilityUnit = weatherUnits ? weatherUnits.visibility : '';
+
     return (
         <Fragment>
             <View style={styles.itemRow}>
                 <View style={styles.elementInRow}>
                     <Image style={imageStyle} source={require('../../../../assets/images/details/wind-speed.png')}/>
                     <View style={styles.textView}>
-                        <Text style={textValueStyle}>{Math.round(forecast.wind_speed*36)/10} km/h</Text>
+                        <Text style={textValueStyle}>{getWindValue(forecast.wind_speed, windUnit)} {windUnit}</Text>
                         <Text style={textTitleStyle}>wind speed</Text>
                     </View>
                 </View>
@@ -32,7 +36,7 @@ const DetailsList = ({forecast, theme, weatherUnits}) => {
                 <View style={styles.elementInRow}>
                     <Image style={imageStyle} source={require('../../../../assets/images/details/pressure.png')}/>
                     <View style={styles.textView}>
-                        <Text style={textValueStyle}>{forecast.pressure} hPa</Text>
+                        <Text style={textValueStyle}>{getPressureValue(forecast.pressure, pressureUnit)} {pressureUnit}</Text>
                         <Text style={textTitleStyle}>pressure</Text>
                     </View>
                 </View>
@@ -55,7 +59,7 @@ const DetailsList = ({forecast, theme, weatherUnits}) => {
                 <View style={styles.elementInRow}>
                     <Image style={imageStyle} source={require('../../../../assets/images/details/visibility.png')}/>
                     <View style={styles.textView}>
-                        <Text style={textValueStyle}>{forecast.visibility}m</Text>
+                        <Text style={textValueStyle}>{getVisibilityValue(forecast.visibility, visibilityUnit) + visibilityUnit} </Text>
                         <Text style={textTitleStyle}>visibility</Text>
                     </View>
                 </View>
@@ -71,7 +75,7 @@ const DetailsList = ({forecast, theme, weatherUnits}) => {
                 <View style={styles.elementInRow}>
                     <Image style={imageStyle} source={require('../../../../assets/images/details/dew-point.png')}/>
                     <View style={styles.textView}>
-                        <Text style={textValueStyle}>{getTempValue(forecast.dew_point, weatherUnits.temp)}°</Text>
+                        <Text style={textValueStyle}>{getTempValue(forecast.dew_point, weatherUnits ? weatherUnits.temp : '')}°</Text>
                         <Text style={textTitleStyle}>dew point</Text>
                     </View>
                 </View>

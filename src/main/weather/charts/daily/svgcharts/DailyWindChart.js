@@ -5,11 +5,12 @@ import {getFunctionY} from "../../hourly/svgcharts/utility/ChartDrawService";
 import {getDaysText, getFunctionX, getGrid} from "./utility/DailyChartDrawService";
 import COLORS from "../../utility/ChartColors";
 import {connect} from "react-redux";
+import {getWindValue} from "../../../../units/UnitsService";
 
 const SVG_WIDTH = 600;
 const SVG_HEIGHT = 300;
 
-const DailyWindChart = ({forecast, theme}) => {
+const DailyWindChart = ({forecast, theme, weatherUnits}) => {
 
     const minValue = 0;
     const potentialMaxValue = d3.max(forecast, d => d.wind_speed);
@@ -31,13 +32,13 @@ const DailyWindChart = ({forecast, theme}) => {
                 {getWindBearingStringForEach(forecast, xFunction, mainTextColor)}
 
                 {getDataBars(forecast, xFunction, yFunction, maxValue, 60)}
-                {getWindSpeedValues(forecast, xFunction, mainTextColor)}
+                {getWindSpeedValues(forecast, xFunction, mainTextColor, weatherUnits.wind)}
             </G>
         </Svg>
     )
 };
 
-function getWindSpeedValues(forecast, xFunction, color){
+function getWindSpeedValues(forecast, xFunction, color, unit){
     return (forecast.map(item => (
         <Text
             key={item.dt}
@@ -47,7 +48,7 @@ function getWindSpeedValues(forecast, xFunction, color){
             textAnchor="middle"
             fill={color}
             fontFamily="Neucha-Regular">
-            {Math.round(item.wind_speed*36)/10}
+            {getWindValue(item.wind_speed, unit)}
         </Text>
     )))
 }
@@ -135,7 +136,8 @@ function getWindDirectionString(windDirection) {
 function mapStateToProps(state) {
     return {
         forecast: state.rootForecastPerDay,
-        theme: state.theme
+        theme: state.theme,
+        weatherUnits: state.weatherUnits
     }
 }
 

@@ -17,6 +17,7 @@ import {
     getTimeLabels,
 } from "./utility/ChartDrawService";
 import COLORS from "../../utility/ChartColors";
+import {getWindValue} from "../../../../units/UnitsService";
 
 const WindChart = (props) => {
 
@@ -44,14 +45,14 @@ const WindChart = (props) => {
                 {generateDataBars(data, xFunction, yFunction, maxValue, initialYCordOfChart)}
 
                 {getWindBearingStringForEach(data, xFunction, mainTextColor)}
-                {getDataTextForEachItemAboveBars(data, xFunction, yFunction, mainTextColor)}
+                {getDataTextForEachItemAboveBars(data, xFunction, yFunction, mainTextColor, props.weatherUnits.wind)}
                 {getTimeLabels(data, xFunction, svgHeight * -1 + 40, mainTextColor)}
             </G>
         </Svg>
     )
 };
 
-function getDataTextForEachItemAboveBars(data, x, y, color) {
+function getDataTextForEachItemAboveBars(data, x, y, color, unit) {
     return (data.map(item => (
         <Text
             key={item.dt}
@@ -61,7 +62,7 @@ function getDataTextForEachItemAboveBars(data, x, y, color) {
             textAnchor="middle"
             fill={color}
             fontFamily="Neucha-Regular">
-            {Math.round(item.wind_speed*36)/10}
+            {getWindValue(item.wind_speed, unit)}
         </Text>
     )))
 }
@@ -154,7 +155,8 @@ function getWindDirectionString(windDirection) {
 
 function mapStateToProps(state){
     return {
-        theme: state.theme
+        theme: state.theme,
+        weatherUnits: state.weatherUnits
     }
 }
 

@@ -29,11 +29,18 @@ class HourlyForecastPanel extends React.PureComponent {
                             horizontal={true}>
                     <TouchableOpacity style={[styles.chartSelectionButton, (this.state.currentChart==='temperature') ? {backgroundColor: this.props.weatherTheme.mainColor} : chartNotSelectedStyle]}
                                       onPress={() => this.setState({currentChart: 'temperature'})}>
-                        <AnimatedChartText selected={this.state.currentChart==='temperature'} title={'temperature'} unit={this.props.weatherUnits.temp} selectedTextColor={this.props.weatherTheme.textColor} textColor={mainTextColor}/>
+                        <AnimatedChartText selected={this.state.currentChart==='temperature'}
+                                           title={'temperature'}
+                                           unit={this.props.weatherUnits ? this.props.weatherUnits.temp : '-'}
+                                           selectedTextColor={this.props.weatherTheme.textColor}
+                                           textColor={mainTextColor}/>
                     </TouchableOpacity>
                     <TouchableOpacity style={[styles.chartSelectionButton, (this.state.currentChart==='wind') ? {backgroundColor: this.props.weatherTheme.mainColor} : chartNotSelectedStyle]}
                                       onPress={() => this.setState({currentChart: 'wind'})}>
-                        <AnimatedChartText selected={this.state.currentChart==='wind'} title={'wind'} unit={this.props.weatherUnits.wind} selectedTextColor={this.props.weatherTheme.textColor} textColor={mainTextColor}/>
+                        <AnimatedChartText selected={this.state.currentChart==='wind'}
+                                           title={'wind'}
+                                           unit={this.props.weatherUnits ? this.props.weatherUnits.wind : '-'}
+                                           selectedTextColor={this.props.weatherTheme.textColor} textColor={mainTextColor}/>
                     </TouchableOpacity>
                     <TouchableOpacity style={[styles.chartSelectionButton, (this.state.currentChart==='rainfall') ? {backgroundColor: this.props.weatherTheme.mainColor} : chartNotSelectedStyle]}
                                       onPress={() => this.setState({currentChart: 'rainfall'})}>

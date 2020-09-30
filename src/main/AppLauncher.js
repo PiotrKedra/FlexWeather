@@ -55,11 +55,11 @@ class AppLauncher extends React.Component {
 
   async normalAppLaunch(){
     const location = await this.getProperLocation();
+    this.props.setWeatherUnits(JSON.parse(await AsyncStorage.getItem('@weather_units')));
     if (await this.shouldLoadDataFromStorage(location))
       await this.showForecastFromStorage(location);
     else
       await this.tryToLoadDataFromInternet(location);
-    this.props.setWeatherUnits(JSON.parse(await AsyncStorage.getItem('@weather_units')));
   }
 
   async getProperLocation(){

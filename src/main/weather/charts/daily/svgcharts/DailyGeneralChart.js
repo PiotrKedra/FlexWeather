@@ -5,7 +5,6 @@ import COLORS from "../../utility/ChartColors";
 import {mapToDayIcon, mapToNightIcon} from "../../utility/ForecastIconMapper";
 import {getDaysText, getFunctionX, getGrid} from "./utility/DailyChartDrawService";
 import {connect} from "react-redux";
-import {main} from "d3/dist/package";
 import {getTempValue} from "../../../../units/UnitsService";
 
 const DailyGeneralChart = ({forecast, weatherTheme, theme, weatherUnits}) => {
@@ -28,6 +27,8 @@ const DailyGeneralChart = ({forecast, weatherTheme, theme, weatherUnits}) => {
     const mainTextColor = theme.mainText;
     const softTextColor = theme.softText;
 
+    const tempUnit = weatherUnits ? weatherUnits.temp : '';
+
     return (
         <Svg width={600} height={300}>
             <G y={300}>
@@ -47,8 +48,8 @@ const DailyGeneralChart = ({forecast, weatherTheme, theme, weatherUnits}) => {
                 {generateLineComponentsMin(forecast, functionX, functionMinY)}
 
 
-                {getDataTextForEachItemAboveBars(forecast, functionX, functionY, 'max', '°', mainTextColor, weatherUnits.temp)}
-                {getDataTextForEachItemAboveBars(forecast, functionX, functionMinY, 'min', '°', mainTextColor, weatherUnits.temp)}
+                {getDataTextForEachItemAboveBars(forecast, functionX, functionY, 'max', '°', mainTextColor, tempUnit)}
+                {getDataTextForEachItemAboveBars(forecast, functionX, functionMinY, 'min', '°', mainTextColor, tempUnit)}
                 {generateDotForEachMin(forecast, functionX, functionMinY)}
             </G>
         </Svg>
