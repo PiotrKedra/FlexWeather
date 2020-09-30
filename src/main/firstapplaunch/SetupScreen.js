@@ -53,7 +53,7 @@ class SetupScreen extends React.PureComponent{
     };
 
     render() {
-        const units = this.props.weatherUnits;
+        const units = this.props.weatherUnits ? this.props.weatherUnits : DEFAULT_UNITS;
         return (
             <View style={{flex: 1, backgroundColor: this.state.theme.mainColor}}>
                 <ScrollView>
@@ -91,7 +91,7 @@ class SetupScreen extends React.PureComponent{
                             <View>
                                 <CustomText style={[styles.settingTitle, {color: this.state.theme.mainText}]}>weather units</CustomText>
                                 <CustomText style={[styles.settingInfo, {color: this.state.theme.softText}]}>
-                                    {units.temp}, {units.wind}, {units.pressure}, {units.visibility}
+                                    {units.temp}, {units.wind}, {units.pressure}, {units.visibility}, {units.clock}
                                 </CustomText>
                             </View>
                         </Pressable>

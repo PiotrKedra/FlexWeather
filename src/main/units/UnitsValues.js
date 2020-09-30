@@ -1,12 +1,12 @@
 
 
 const HECTOPASCAL = 'hPa';
-const MILLIBARS = 'ml'
+const MILLIBARS = 'mbar'
 const CELSIUS = '°C';
 const FAHRENHEIT = '°F'
 const METERS = 'm';
 const KILOMETERS = 'km';
-const MILES = 'mbar';
+const MILES = 'mi';
 const KILOMETERS_PER_HOUR = 'km/h';
 const METERS_PER_SECOND = 'm/s';
 const MILES_PER_HOUR = 'MPH';
