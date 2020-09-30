@@ -13,7 +13,7 @@ const AboutScreen = ({theme}) => {
             </View>
             <View style={styles.itemView}>
                 <Text style={titleTextStyle}>version</Text>
-                <Text style={contentTextStyle}>1.2</Text>
+                <Text style={contentTextStyle}>1.3</Text>
             </View>
             <View style={styles.itemView}>
                 <Text style={titleTextStyle}>author</Text>
