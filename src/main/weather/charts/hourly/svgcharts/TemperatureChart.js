@@ -13,6 +13,7 @@ import {
     getDataTextForEachItemAboveBars,
     getTimeLabels,
 } from "./utility/ChartDrawService";
+import {getTempValue} from "../../../../units/UnitsService";
 
 const DEGREE_SIGN = '°';
 const GRADIENT_ID = 'grad';
@@ -40,8 +41,8 @@ const TemperatureChart = (props) => {
                 {getDefinitions(props.weatherTheme.mainColor)}
                 {getGrid(svgWidth, svgHeight, graphHeight, initialYCordOfChart, xFunction, data, softTextColor)}
 
-                {generateSingleText('MAX ' + Math.round(maxValue) + DEGREE_SIGN, 13, -initialYCordOfChart - graphHeight - 2, softTextColor)}
-                {generateSingleText('MIN ' + Math.round(minValue) + DEGREE_SIGN, 13, -initialYCordOfChart - 2, softTextColor)}
+                {generateSingleText('MAX ' + getTempValue(maxValue, props.weatherUnits.temp) + DEGREE_SIGN, 13, -initialYCordOfChart - graphHeight - 2, softTextColor)}
+                {generateSingleText('MIN ' + getTempValue(minValue, props.weatherUnits.temp) + DEGREE_SIGN, 13, -initialYCordOfChart - 2, softTextColor)}
                 {generateDateText(data, svgHeight, softTextColor)}
 
                 {/* forecast images*/}
@@ -54,7 +55,7 @@ const TemperatureChart = (props) => {
                 {generateDotForEach(data, xFunction, yFunction, props.weatherTheme.mainColor)}
 
                 {/* data values ( text for: hour, temperature, rainfall % ) */}
-                {getDataTextForEachItemAboveBars(data, xFunction, yFunction, 'temp', DEGREE_SIGN, mainTextColor)}
+                {getDataTextForEachItemAboveBars(data, xFunction, yFunction, 'temp', DEGREE_SIGN, mainTextColor, props.weatherUnits.temp)}
                 {getRainData(data, xFunction, softTextColor)}
                 {getTimeLabels(data, xFunction, svgHeight*-1 + 40, mainTextColor)}
             </G>
@@ -167,6 +168,7 @@ function mapStateToProps(state){
     return {
         theme: state.theme,
         weatherTheme: state.weatherTheme,
+        weatherUnits: state.weatherUnits
     }
 }
 

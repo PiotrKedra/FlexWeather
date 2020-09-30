@@ -4,6 +4,7 @@ import {G, Image, Line, Text} from "react-native-svg";
 
 import COLORS from "../../../utility/ChartColors";
 import mapDataToIcon, {mapToDayIcon, mapToHourlyIcon} from "../../../utility/ForecastIconMapper";
+import {getTempValue} from "../../../../../units/UnitsService";
 
 function getFunctionX(data, svgWidth) {
     const xDomain = data.map(item => item.dt);
@@ -143,7 +144,7 @@ function generateTextForEachItem(data, itemKey, xFunction, xShift, y, fontSize, 
     )))
 }
 
-function getDataTextForEachItemAboveBars(data, x, y, key, sufix, color) {
+function getDataTextForEachItemAboveBars(data, x, y, key, sufix, color, unit) {
     return (data.map(item => (
         <Text
             key={item.dt}
@@ -153,7 +154,7 @@ function getDataTextForEachItemAboveBars(data, x, y, key, sufix, color) {
             textAnchor="middle"
             fill={color}
             fontFamily="Neucha-Regular">
-            {Math.round(item[key]) + sufix}
+            {getTempValue(item[key], unit) + sufix}
         </Text>
     )))
 }

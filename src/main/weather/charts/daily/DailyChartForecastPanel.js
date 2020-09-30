@@ -6,7 +6,7 @@ import ChartLoading from "../utility/ChartLoading";
 import DailyChartService from "./DailyChartService";
 import {connect} from "react-redux";
 
-const DailyChartForecastPanel = ({theme, weatherTheme}) => {
+const DailyChartForecastPanel = ({theme, weatherTheme, weatherUnits}) => {
 
     const [currentChart, setCurrentChart] = useState('general');
     const chartNotSelectedStyle = {backgroundColor: theme.softColor};
@@ -23,11 +23,11 @@ const DailyChartForecastPanel = ({theme, weatherTheme}) => {
                         horizontal={true}>
                 <TouchableOpacity style={[styles.chartSelectionButton, (currentChart==='general') ? {backgroundColor: weatherTheme.mainColor} : chartNotSelectedStyle]}
                                   onPress={() => setCurrentChart('general')}>
-                    <AnimatedChartText selected={currentChart==='general'} title={'general'} unit={'°C'} selectedTextColor={weatherTheme.textColor} textColor={theme.mainText}/>
+                    <AnimatedChartText selected={currentChart==='general'} title={'general'} unit={weatherUnits.temp} selectedTextColor={weatherTheme.textColor} textColor={theme.mainText}/>
                 </TouchableOpacity>
                 <TouchableOpacity style={[styles.chartSelectionButton, (currentChart==='wind') ? {backgroundColor: weatherTheme.mainColor} : chartNotSelectedStyle]}
                                   onPress={() => setCurrentChart('wind')}>
-                    <AnimatedChartText selected={currentChart==='wind'} title={'wind'} unit={'km/h'}  selectedTextColor={weatherTheme.textColor} textColor={theme.mainText}/>
+                    <AnimatedChartText selected={currentChart==='wind'} title={'wind'} unit={weatherUnits.wind}  selectedTextColor={weatherTheme.textColor} textColor={theme.mainText}/>
                 </TouchableOpacity>
                 <TouchableOpacity style={[styles.chartSelectionButton, (currentChart==='rainfall') ? {backgroundColor: weatherTheme.mainColor} : chartNotSelectedStyle]}
                                   onPress={() => setCurrentChart('rainfall')}>
@@ -77,7 +77,8 @@ const styles = StyleSheet.create({
 function mapStateToProps(state){
     return {
         theme: state.theme,
-        weatherTheme: state.weatherTheme
+        weatherTheme: state.weatherTheme,
+        weatherUnits: state.weatherUnits
     }
 }
 

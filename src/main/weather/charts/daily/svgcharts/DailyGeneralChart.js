@@ -6,8 +6,9 @@ import {mapToDayIcon, mapToNightIcon} from "../../utility/ForecastIconMapper";
 import {getDaysText, getFunctionX, getGrid} from "./utility/DailyChartDrawService";
 import {connect} from "react-redux";
 import {main} from "d3/dist/package";
+import {getTempValue} from "../../../../units/UnitsService";
 
-const DailyGeneralChart = ({forecast, weatherTheme, theme}) => {
+const DailyGeneralChart = ({forecast, weatherTheme, theme, weatherUnits}) => {
 
     const minValue = d3.min(forecast, i => parseInt(i.temp.max));
     const maxValue = d3.max(forecast, i => parseInt(i.temp.max));
@@ -46,8 +47,8 @@ const DailyGeneralChart = ({forecast, weatherTheme, theme}) => {
                 {generateLineComponentsMin(forecast, functionX, functionMinY)}
 
 
-                {getDataTextForEachItemAboveBars(forecast, functionX, functionY, 'max', '°', mainTextColor)}
-                {getDataTextForEachItemAboveBars(forecast, functionX, functionMinY, 'min', '°', mainTextColor)}
+                {getDataTextForEachItemAboveBars(forecast, functionX, functionY, 'max', '°', mainTextColor, weatherUnits.temp)}
+                {getDataTextForEachItemAboveBars(forecast, functionX, functionMinY, 'min', '°', mainTextColor, weatherUnits.temp)}
                 {generateDotForEachMin(forecast, functionX, functionMinY)}
             </G>
         </Svg>
@@ -95,7 +96,7 @@ function generateGradientComponent(data, x, y){
     )
 }
 
-function getDataTextForEachItemAboveBars(data, x, y, key, sufix, color) {
+function getDataTextForEachItemAboveBars(data, x, y, key, sufix, color, unit) {
     return (data.map(item => (
         <Text
             key={item.dt}
@@ -105,7 +106,7 @@ function getDataTextForEachItemAboveBars(data, x, y, key, sufix, color) {
             textAnchor="middle"
             fill={color}
             fontFamily="Neucha-Regular">
-            {Math.round(item.temp[key]) + sufix}
+            {getTempValue(item.temp[key], unit) + sufix}
         </Text>
     )))
 }
@@ -206,7 +207,8 @@ function mapStateToProps(state) {
     return {
         forecast: state.rootForecastPerDay,
         theme: state.theme,
-        weatherTheme: state.weatherTheme
+        weatherTheme: state.weatherTheme,
+        weatherUnits: state.weatherUnits
     }
 }
 
