@@ -12,6 +12,7 @@ import { setJSExceptionHandler, setNativeExceptionHandler } from 'react-native-e
 import getLocation from "./location/LocationService";
 import hasDistanceChanged from "./location/DistanceCalculator";
 import LauncherLoadingComponent from "./components/LauncherLoadingComponent";
+import {DEFAULT_UNITS} from "./units/UnitsService";
 
 setJSExceptionHandler((error, isFatal) => {
   console.log('### IS FATAL ERROR: ' + isFatal);
@@ -54,12 +55,21 @@ class AppLauncher extends React.Component {
   }
 
   async normalAppLaunch(){
+    this.props.setWeatherUnits(await this.getWeatherUnits());
     const location = await this.getProperLocation();
-    this.props.setWeatherUnits(JSON.parse(await AsyncStorage.getItem('@weather_units')));
     if (await this.shouldLoadDataFromStorage(location))
       await this.showForecastFromStorage(location);
     else
       await this.tryToLoadDataFromInternet(location);
+  }
+
+  async getWeatherUnits(){
+    try{
+      const units = await AsyncStorage.getItem('@weather_units');
+      return units === null ? DEFAULT_UNITS : JSON.parse(units);
+    } catch (e){
+      return DEFAULT_UNITS;
+    }
   }
 
   async getProperLocation(){

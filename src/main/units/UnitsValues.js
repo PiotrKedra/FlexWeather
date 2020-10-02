@@ -1,5 +1,4 @@
 
-
 const HECTOPASCAL = 'hPa';
 const MILLIBARS = 'mbar'
 const CELSIUS = '°C';
