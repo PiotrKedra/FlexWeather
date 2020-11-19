@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {View} from 'react-native';
+import {View, NativeModules} from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 
 import fetchRootForecast from './weather/api/ForecastApi';
@@ -39,6 +39,11 @@ class AppLauncher extends React.Component {
       this.props.navigation.replace('WelcomeScreen');
     else
       await this.normalAppLaunch();
+
+    const SharedStorage = NativeModules.SharedStorage;
+    SharedStorage.set(
+        JSON.stringify({text: 'This is data from the React Native app'})
+    );
   };
 
   async setTheme(){
