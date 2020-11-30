@@ -10,16 +10,16 @@ import {
   Dimensions,
   TouchableOpacity, BackHandler, RefreshControl,
 } from 'react-native';
-import { connect } from 'react-redux';
+import {connect} from 'react-redux';
 
 import Text from '../components/CustomText';
 import AnimatedMenu from '../menu/AnimatedMenu';
-import GeneralStatusBar from "../components/GeneralStatusBar";
-import PoweredBy from "../components/PoweredBy";
-import WeatherPanels from "./WeatherPanels";
-import NoInternetConnectionComponent from "../components/NoInternetConnectionComponent";
-import fetchRootForecast from "./api/ForecastApi";
-import getWeatherTheme from "../theme/ThemeService";
+import GeneralStatusBar from '../components/GeneralStatusBar';
+import PoweredBy from '../components/PoweredBy';
+import WeatherPanels from './WeatherPanels';
+import NoInternetConnectionComponent from '../components/NoInternetConnectionComponent';
+import fetchRootForecast from './api/ForecastApi';
+import getWeatherTheme from '../theme/ThemeService';
 
 class WeatherScreen extends React.Component {
   state = {
@@ -33,43 +33,43 @@ class WeatherScreen extends React.Component {
     BackHandler.addEventListener('hardwareBackPress', () => false);
   }
 
-  onScrollNotTopMinimizeHeader = event => {
+  onScrollNotTopMinimizeHeader = (event) => {
     const y = event.nativeEvent.contentOffset.y;
     if (y >= 10 && this.state.scroll === false) {
       Animated.timing(this.state.locationLeftPosition, {
         toValue: -200,
         duration: 400,
-        useNativeDriver: false
+        useNativeDriver: false,
       }).start();
-      this.setState({ scroll: true });
+      this.setState({scroll: true});
     }
     if (y < 10 && this.state.scroll === true) {
       Animated.timing(this.state.locationLeftPosition, {
         toValue: Dimensions.get('window').width*0.03,
         duration: 400,
-        useNativeDriver: false
+        useNativeDriver: false,
       }).start();
-      this.setState({ scroll: false });
+      this.setState({scroll: false});
     }
   };
 
-  async refresh(){
+  async refresh() {
     this.setState({refreshing: true});
-    let forecast = await fetchRootForecast(this.props.activeLocation.latitude, this.props.activeLocation.longitude);
+    const forecast = await fetchRootForecast(this.props.activeLocation.latitude, this.props.activeLocation.longitude);
     await this.props.refreshForecast(forecast, getWeatherTheme(forecast));
     this.setState({refreshing: false});
   }
 
   render = () => {
-    let locationStyle = {
+    const locationStyle = {
       position: 'absolute',
       top: 0,
-      left: this.state.locationLeftPosition
+      left: this.state.locationLeftPosition,
     };
 
     this.shouldDisplayHourlyCharts();
     return (
-      <View style={{ flex: 1 }}>
+      <View style={{flex: 1}}>
         <ImageBackground
           style={styles.imageBackground}
           source={this.props.weatherTheme.background}
@@ -81,24 +81,34 @@ class WeatherScreen extends React.Component {
             nestedScrollEnabled={true}
             refreshControl={
               <RefreshControl refreshing={this.state.refreshing}
-                              onRefresh={()=> this.refresh()}
-                              colors={[this.props.weatherTheme.mainColor]}
-                              progressBackgroundColor={this.props.theme.mainColor}
-                              progressViewOffset={75}
+                onRefresh={()=> this.refresh()}
+                colors={[this.props.weatherTheme.mainColor]}
+                progressBackgroundColor={this.props.theme.mainColor}
+                progressViewOffset={75}
               />
             }
           >
             <Animated.View style={[styles.locationView, locationStyle]}>
               <TouchableOpacity
-                  style={{
-                    flex: 1,
-                    alignItems: 'center',
-                    flexDirection: 'row',
-                    paddingTop: 10
-                  }}
-                  onPress={() => this.props.navigation.navigate('SearchScreen', {saveHomeLocation: false})}
+                style={{
+                  flex: 1,
+                  alignItems: 'center',
+                  flexDirection: 'row',
+                  paddingTop: 10,
+                }}
+                onPress={() => this.props.navigation.navigate('SearchScreen', {saveHomeLocation: false})}
               >
-                <Image style={{width: 26, height: 26, marginBottom: 2, marginRight: 5, tintColor: this.props.weatherTheme.textColor}} source={require('../../../assets/images/icons/location-marker.png')}/>
+                <Image
+                  style={
+                    {
+                      width: 26,
+                      height: 26,
+                      marginBottom: 2,
+                      marginRight: 5,
+                      tintColor: this.props.weatherTheme.textColor,
+                    }
+                  }
+                  source={require('../../../assets/images/icons/location-marker.png')}/>
                 <Text style={{fontSize: 30, color: this.props.weatherTheme.textColor}}>
                   {this.props.activeLocation.city}
                 </Text>
@@ -109,7 +119,11 @@ class WeatherScreen extends React.Component {
               <PoweredBy weatherTheme={this.props.weatherTheme}/>
             </View>
           </ScrollView>
-          <AnimatedMenu isScroll={this.state.scroll} weatherTheme={this.props.weatherTheme} location={this.props.activeLocation.city} navigation={this.props.navigation}/>
+          <AnimatedMenu
+            isScroll={this.state.scroll}
+            weatherTheme={this.props.weatherTheme}
+            location={this.props.activeLocation.city}
+            navigation={this.props.navigation}/>
           <NoInternetConnectionComponent/>
         </ImageBackground>
       </View>
@@ -117,9 +131,9 @@ class WeatherScreen extends React.Component {
   };
 
   shouldDisplayHourlyCharts = () => {
-    let date = new Date(this.props.currentTimestamp * 1000);
+    const date = new Date(this.props.currentTimestamp * 1000);
     date.setDate(date.getDate() - 2);
-    let today = new Date();
+    const today = new Date();
     return today.getTime() > date.getTime();
   }
 }
@@ -128,13 +142,14 @@ function mapStateToProps(state) {
   return {
     activeLocation: state.activeLocation,
     weatherTheme: state.weatherTheme,
-    theme: state.theme
+    theme: state.theme,
   };
 }
 
 function mapDispatcherToProps(dispatch) {
   return {
-    refreshForecast: (forecast, weatherTheme) => dispatch({type: 'FORECAST_REFRESH', payload: {forecast: forecast, weatherTheme: weatherTheme}}),
+    refreshForecast: (forecast, weatherTheme) =>
+      dispatch({type: 'FORECAST_REFRESH', payload: {forecast: forecast, weatherTheme: weatherTheme}}),
   };
 }
 
