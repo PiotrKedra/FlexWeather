@@ -20,4 +20,4 @@ async function fetchRootForecast(lat, lng) {
   }
 }
 
-const a = 'OWZhNjhjMDgzZjI0MjkyOGM0MWNmZWEzNDU3MDk5NTA=';
+const a = ${{WEATHER_API}};
